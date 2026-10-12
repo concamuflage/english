@@ -334,6 +334,26 @@ h3 {
   margin-bottom: 30px;
 }
 
+.practice-note {
+  background: #f8fbf8;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 24px 0 0;
+  padding: 14px 16px;
+}
+
+.practice-note summary {
+  color: var(--green-deep);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.practice-note p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 12px 0 0;
+}
+
 .question-stack {
   display: grid;
   gap: 26px;
@@ -344,6 +364,7 @@ h3 {
 }
 
 .flashcard-question {
+  align-items: start;
   border-bottom: 1px solid var(--line);
   display: grid;
   gap: 18px;
@@ -398,6 +419,7 @@ h3 {
 }
 
 .selection-row {
+  align-self: start;
   border: 0;
   display: grid;
   gap: 12px;
@@ -421,6 +443,7 @@ h3 {
 }
 
 .selection-options {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -436,7 +459,7 @@ h3 {
   display: inline-flex;
   font-weight: 800;
   gap: 8px;
-  min-height: 38px;
+  height: 38px;
   padding: 8px 14px;
 }
 

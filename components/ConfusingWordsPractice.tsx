@@ -40,6 +40,24 @@ function shuffleQuestions(cardSlug: string, questions: ConfusingWordPair["questi
 }
 
 /**
+ * Renders an expandable note for a practice card when note text exists.
+ *
+ * Example: a `coma-comma` note can explain that `coma` is a medical state and `comma` is punctuation.
+ */
+function PracticeNote({ note }: { note?: string }) {
+  if (!note) {
+    return null;
+  }
+
+  return (
+    <details className="practice-note">
+      <summary>Note</summary>
+      <p>{note}</p>
+    </details>
+  );
+}
+
+/**
  * Renders the pair list and flashcard practice interaction for confusing words.
  *
  * Example: selecting `coma / comma` shows every sentence on that card with `coma` and `comma` as choices.
@@ -166,6 +184,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
               );
             })}
           </div>
+          <PracticeNote note={selectedPair.note} />
         </div>
       </section>
     </div>

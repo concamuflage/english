@@ -10,6 +10,7 @@ export type ConfusingWordPair = {
   wordOne: string;
   wordTwo: string;
   questions: ConfusingWordQuestions;
+  note?: string;
 };
 
 type ConfusingWordAnswerKey = "wordOne" | "wordTwo";
@@ -144,25 +145,72 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
     "The convert chose to ____ old beliefs.",
     ["The judge will ____ the witness to answer plainly.", "wordOne"]
   ],
-  ["lithe", "blithe", "The dancer moved with a ____ grace.", "He gave a ____ reply to the warning."],
+  [
+    "lithe",
+    "blithe",
+    "The dancer moved with a ____ grace.",
+    "He gave a ____ reply to the warning.",
+    ["She sang a ____ tune while packing for the holiday.", "wordTwo"],
+    ["His ____ laughter made the picnic feel easy and bright.", "wordTwo"],
+    ["The manager showed a ____ disregard for the safety rules.", "wordTwo"]
+  ],
   ["momentous", "momentary", "The treaty was a ____ event.", "A ____ pause followed the joke."],
-  ["agog", "aghast", "The children were ____ at the show.", "The crowd stood ____ at the damage."],
+  ["agog", "aghast", "The children were ____ with excitement before the curtain rose.", "The crowd stood ____ at the damage."],
   ["trope", "troupe", "The critic disliked that old ____.", "The theater ____ toured Spain."],
-  ["reckless", "feckless", "The ____ driver ignored the light.", "The ____ manager missed every deadline."],
-  ["deference", "difference", "She spoke with ____ to the judge.", "There is a clear ____ in price."],
+  [
+    "reckless",
+    "feckless",
+    "The ____ driver ignored the light.",
+    "The ____ manager missed every deadline.",
+    ["His ____ promise sounded impressive but contained no real commitment.", "wordTwo"],
+    ["The proposal was a ____ plan with no budget, timeline, or owner.", "wordTwo"]
+  ],
+  [
+    "deference",
+    "difference",
+    "She spoke with ____ to the judge.",
+    "There is a clear ____ in price.",
+    ["Out of ____ to his parents, he did not sell the home.", "wordOne"]
+  ],
   ["diffidence", "indifference", "His ____ made public speaking hard.", "Her ____ hurt his feelings."],
   ["contour", "couture", "Trace the ____ of the hill.", "The dress came from a ____ house."],
   ["inveterate", "invertebrate", "He is an ____ liar.", "A worm is an ____."],
-  ["grate", "prate", "The rusty hinges began to ____.", "He tends to ____ about politics."],
+  [
+    "grate",
+    "prate",
+    "The rusty hinges began to ____.",
+    "He tends to ____ about politics.",
+    ["Her constant complaints began to ____ on everyone in the room.", "wordOne"]
+  ],
   ["ratify", "rectify", "The senate must ____ the treaty.", "We must ____ the error today."],
   ["perish", "parish", "The plants will ____ without water.", "The village ____ restored its church."],
   ["apprise", "appraise", "Please ____ me of any change.", "The expert will ____ the painting."],
   ["ardent", "arduous", "He made an ____ defense of the plan.", "The rescue was an ____ task."],
-  ["gentile", "genteel", "The text refers to a ____ convert.", "The inn had a ____ charm."],
+  [
+    "gentile",
+    "genteel",
+    "The text refers to a ____ convert.",
+    "Her ____ manners were polite, refined, and carefully proper.",
+    ["He spoke in a ____ tone, soft and well-bred.", "wordTwo"],
+    ["The tea room had a ____ atmosphere of quiet elegance.", "wordTwo"]
+  ],
   ["venial", "venal", "The priest called it a ____ sin.", "The ____ official took bribes."],
-  ["averse", "avert", "She is ____ to needless risk.", "Quick action can ____ disaster."],
+  [
+    "averse",
+    "avert",
+    "She is ____ to needless risk.",
+    "Quick action can ____ disaster.",
+    ["When the camera points at him, he will ____ his face.", "wordTwo"]
+  ],
   ["averse", "aver", "He is ____ to loud parties.", "The witness will ____ that it happened."],
-  ["founder", "flounder", "The startup began to ____ after costs rose.", "The speaker began to ____ under pressure."],
+  [
+    "founder",
+    "flounder",
+    "The startup began to ____ and soon collapsed after costs rose.",
+    "The speaker began to ____ under pressure.",
+    ["Without funding, the project will ____ and be abandoned before launch.", "wordOne"],
+    ["The rescue plan began to ____ when the partners withdrew, and the whole effort collapsed.", "wordOne"]
+  ],
   ["vocation", "avocation", "Teaching became her ____.", "Painting remained his weekend ____."],
   ["lance", "lancet", "The knight raised his ____.", "The nurse used a ____ for the sample."],
   ["hurtle", "hurdle", "Rocks began to ____ down the slope.", "She cleared the final ____."],
@@ -170,8 +218,23 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["jagged", "ragged", "The glass had a ____ edge.", "The flag was old and ____."],
   ["steep", "steeple", "The trail was too ____ for bikes.", "The church ____ rose above town."],
   ["pumpkin", "bumpkin", "We carved a ____ for Halloween.", "The joke mocked him as a country ____."],
-  ["pathos", "ethos", "The speech used ____ to stir pity.", "The school's ____ values service."],
-  ["saddle", "bridle", "Tighten the horse's ____.", "The rider adjusted the ____."],
+  [
+    "pathos",
+    "ethos",
+    "The speech used ____ to stir pity.",
+    "The school's ____ values service.",
+    ["The film's final scene had real ____ because it showed the family's quiet grief.", "wordOne"],
+    ["The charity ad relied on ____ by showing children waiting for clean water.", "wordOne"],
+    ["The company's ____ emphasizes honesty, restraint, and public responsibility.", "wordTwo"],
+    ["Her campaign tried to build an ____ of fairness, competence, and trust.", "wordTwo"]
+  ],
+  [
+    "saddle",
+    "bridle",
+    "Before mounting, she checked the ____ on the horse's back.",
+    "The rider adjusted the ____ around the horse's head and reins.",
+    ["He tends to ____ at any criticism of his work.", "wordTwo"]
+  ],
   ["saddle", "straddle", "He lifted the ____ onto the horse.", "Do not ____ the painted line."],
   ["incommensurable", "incommensurate", "The two values are ____ in kind.", "The reward was ____ with the risk."],
   ["naturalist", "naturist", "The ____ cataloged local birds.", "The resort welcomed every ____."],
@@ -182,18 +245,44 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["progeny", "progenitor", "The mare's ____ won the race.", "The old device was the ____ of the modern phone."],
   ["displace", "replace", "The flood may ____ many families.", "Please ____ the broken tile."],
   ["ferment", "foment", "The juice will ____ in the barrel.", "The rumor helped ____ unrest."],
-  ["instigate", "agitate", "The speech could ____ a protest.", "Do not ____ the patient with noise."],
+  [
+    "instigate",
+    "agitate",
+    "The speech could ____ a protest.",
+    "Do not ____ the patient with noise.",
+    ["Gently ____ the bottle so the powder mixes with the liquid.", "wordTwo"]
+  ],
   ["scrimp", "skimp", "They had to ____ to pay rent.", "Do not ____ on safety checks."],
   ["impassioned", "impassive", "She gave an ____ plea.", "His face stayed ____ during the verdict."],
   ["stoical", "stolid", "He remained ____ despite pain.", "The ____ guard barely reacted."],
   ["execrable", "inexorable", "The food was ____.", "The tide made ____ progress."],
-  ["fractious", "factitious", "The ____ toddler refused to nap.", "The scandal was based on ____ claims."],
+  [
+    "fractious",
+    "factitious",
+    "The ____ toddler refused to nap.",
+    "The scandal was based on ____ claims.",
+    ["The ____ committee argued over every small detail.", "wordOne"],
+    ["The lab created a ____ mineral that looked natural but was artificial.", "wordTwo"]
+  ],
   ["intelligent", "intelligible", "The dog seemed unusually ____.", "Her explanation was finally ____."],
-  ["pliable", "pliant", "Warm wax is ____.", "The ____ assistant obeyed every order."],
+  [
+    "pliable",
+    "pliant",
+    "Warm wax is ____ enough to bend and shape by hand.",
+    "The ____ assistant obeyed every order without question.",
+    ["The leather became ____ after oiling, so it folded without cracking.", "wordOne"],
+    ["The dictator preferred ____ advisers who yielded to every demand.", "wordTwo"]
+  ],
   ["pliant", "compliant", "The wire stayed ____ after heating.", "The company became ____ with the rule."],
   ["compliant", "complaisant", "The form is ____ with the law.", "The ____ clerk happily changed the booking."],
   ["onerous", "ornery", "The contract placed ____ duties on us.", "The ____ mule refused to move."],
-  ["precipitous", "precipitate", "The cliff had a ____ drop.", "Do not make a ____ decision."],
+  [
+    "precipitous",
+    "precipitate",
+    "The cliff had a ____ drop.",
+    "Do not make a ____ decision.",
+    ["The scandal could ____ a sudden crisis in the government.", "wordTwo"]
+  ],
   ["precipitous", "precipice", "The road climbed a ____ slope.", "He stood near the ____."],
   ["reconcile", "conciliate", "They tried to ____ the accounts.", "The diplomat tried to ____ both sides."],
   ["torpor", "stupor", "The heat left him in ____.", "The drug left him in a ____."],
@@ -334,6 +423,14 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["epigraph", "epitaph", "The essay begins with an ____.", "The tombstone bore a short ____."]
 ];
 
+const confusingWordPairNotes: Record<string, string> = {
+  "pliable-pliant":
+    "Pliable and pliant can often be used interchangeably. For materials, they mean easy to bend or shape. For people, they mean easily influenced, easily led, or too willing to yield. In all sentences on this card, both words can be correct.",
+  "progeny-progenitor": "The progenitor produces progeny.",
+  "vocation-avocation":
+    "A vocation is your main calling, profession, or life work. An avocation is a hobby or side interest. One memory hook: the initial a- can suggest a negation of vocation, so the main job becomes a pastime."
+};
+
 /**
  * Converts display text into a stable URL-safe slug segment.
  *
@@ -347,7 +444,7 @@ function slugifyWord(word: string): string {
  * Builds unique practice cards from compact word-pair rows.
  *
  * Example: duplicate `doughty / dowdy` rows become `doughty-dowdy` and `doughty-dowdy-2`,
- * while extra `flair` rows can add talent and style examples to the same card.
+ * while `confusingWordPairNotes["coma-comma"] = "Use coma for unconsciousness."` adds a card note.
  */
 function buildConfusingWordPairs(rows: ConfusingWordPairRow[]): ConfusingWordPair[] {
   const slugCounts = new Map<string, number>();
@@ -378,6 +475,7 @@ function buildConfusingWordPairs(rows: ConfusingWordPairRow[]): ConfusingWordPai
       slug,
       wordOne: trimmedWordOne,
       wordTwo: trimmedWordTwo,
+      note: confusingWordPairNotes[slug],
       questions
     };
   });
