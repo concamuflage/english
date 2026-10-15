@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Unknown English | English Learning Blog",
-  description: "A focused blog for English reading, vocabulary, writing, and GRE preparation."
+  title: "Personal Blog",
+  description: "A personal blog with GRE study notes and confusing word practice."
 };
 
 /**
- * Provides the shared page shell for the English learning blog.
+ * Provides the shared page shell for the personal blog.
  *
- * Example: every route receives the header with the GRE navigation link.
+ * Example: every route receives the minimal header and footer navigation.
  */
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );

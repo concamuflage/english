@@ -1,31 +1,22 @@
 import Link from "next/link";
 
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/gre", label: "GRE" },
-  { href: "/confusing-words", label: "Confusing Words" },
-  { href: "/#articles", label: "Articles" },
-  { href: "/#practice", label: "Practice" }
-];
-
 /**
- * Renders the primary navigation shared across the static blog.
+ * Renders the primary navigation for the personal blog shell.
  *
- * Example: the `Confusing Words` item links to `/confusing-words` for pair-based practice.
+ * Example: `English` links to `/`, while `Confusing Words` appears under the GRE section.
  */
 export function SiteHeader() {
   return (
     <header className="site-header">
-      <Link className="brand" href="/" aria-label="Unknown English home">
-        <span className="brand-mark">U</span>
-        <span>Unknown English</span>
-      </Link>
+      <Link className="brand brand-empty" href="/" aria-label="Home" />
       <nav className="nav-links" aria-label="Primary navigation">
-        {navItems.map((item) => (
-          <Link key={item.href} href={item.href}>
-            {item.label}
+        <Link href="/">English</Link>
+        <div className="nav-group">
+          <Link href="/gre">GRE</Link>
+          <Link className="nav-child-link" href="/gre/confusing-words">
+            Confusing Words
           </Link>
-        ))}
+        </div>
       </nav>
     </header>
   );

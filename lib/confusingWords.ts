@@ -284,7 +284,7 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
     ["The scandal could ____ a sudden crisis in the government.", "wordTwo"]
   ],
   ["precipitous", "precipice", "The road climbed a ____ slope.", "He stood near the ____."],
-  ["reconcile", "conciliate", "They tried to ____ the accounts.", "The diplomat tried to ____ both sides."],
+  ["reconcile", "conciliate", "They tried to ____ the accounts.", "The manager tried to ____ the angry customer with a sincere apology."],
   ["torpor", "stupor", "The heat left him in ____.", "The drug left him in a ____."],
   ["grub", "grubby", "The bird carried a ____ to its nest.", "His hands were ____ after digging."],
   ["grub", "scrub", "The campers ate simple ____.", "Use a brush to ____ the pan."],
