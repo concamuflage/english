@@ -1,6 +1,6 @@
-# English Learning Blog
+# Personal Blog
 
-A static Next.js blog for English learners, ready for Cloudflare Pages. The site has no database; articles and GRE study items live in local TypeScript data files.
+A static Next.js personal blog deployed to Cloudflare Workers at `https://bumblebee.work`. The site has no database; articles and GRE study items live in local TypeScript data files.
 
 ## Local Development
 
@@ -11,12 +11,13 @@ npm run dev
 
 Example local URL: `http://localhost:3000`
 
-## Cloudflare Pages
+## Cloudflare Workers
 
-Use these settings in Cloudflare Pages:
+Authenticate with your Cloudflare account, then build and deploy:
 
-- Build command: `npm run build`
-- Build output directory: `out`
-- Framework preset: `Next.js`
+```bash
+npx wrangler login
+npm run deploy
+```
 
-The `next.config.ts` file uses `output: "export"`, so the production build is a static site suitable for Cloudflare Pages.
+The `next.config.ts` file uses `output: "export"`. Wrangler uploads the `out` directory as Worker static assets and connects the `bumblebee.work` custom domain. The domain must be an active zone in the authenticated Cloudflare account.

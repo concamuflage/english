@@ -1,3 +1,10 @@
-name = "english-learning-blog"
-pages_build_output_dir = "out"
+name = "bumblebee-blog"
 compatibility_date = "2026-10-04"
+
+[[routes]]
+pattern = "bumblebee.work"
+custom_domain = true
+
+[assets]
+directory = "./out"
+not_found_handling = "404-page"
