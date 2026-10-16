@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 /**
  * Provides the shared page shell for the personal blog.
  *
- * Example: every route receives the minimal header and footer navigation.
+ * Example: both `/` and `/english/gre/confusing-words` reuse the same header and copyright footer.
  */
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

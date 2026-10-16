@@ -1,22 +1,12 @@
-import Link from "next/link";
-
 /**
- * Renders the minimal footer for the personal blog shell.
+ * Renders the copyright footer shared by every blog page.
  *
- * Example: the footer keeps `Confusing Words` grouped under GRE.
+ * Example: a build in 2026 displays `Copyright 2026 a bumblebee's garden. All rights reserved.`
  */
 export function SiteFooter() {
   return (
     <footer className="site-footer">
-      <nav className="footer-links" aria-label="Footer navigation">
-        <Link href="/">English</Link>
-        <div className="nav-group">
-          <Link href="/gre">GRE</Link>
-          <Link className="nav-child-link" href="/gre/confusing-words">
-            Confusing Words
-          </Link>
-        </div>
-      </nav>
+      <small>&copy; {new Date().getFullYear()} a bumblebee&apos;s garden. All rights reserved.</small>
     </footer>
   );
 }

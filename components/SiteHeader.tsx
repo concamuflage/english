@@ -1,22 +1,25 @@
+import Image from "next/image";
 import Link from "next/link";
 
 /**
  * Renders the primary navigation for the personal blog shell.
  *
- * Example: `English` links to `/`, while `Confusing Words` appears under the GRE section.
+ * Example: the logo links home and the sole navigation item opens `/english`.
  */
 export function SiteHeader() {
   return (
     <header className="site-header">
-      <Link className="brand brand-empty" href="/" aria-label="Home" />
+      <Link className="brand brand-logo" href="/" aria-label="A bumblebee's garden home">
+        <Image
+          src="/images/bumblebees-garden-logo.png"
+          alt="a bumblebee's garden"
+          width={1774}
+          height={887}
+          preload
+        />
+      </Link>
       <nav className="nav-links" aria-label="Primary navigation">
-        <Link href="/">English</Link>
-        <div className="nav-group">
-          <Link href="/gre">GRE</Link>
-          <Link className="nav-child-link" href="/gre/confusing-words">
-            Confusing Words
-          </Link>
-        </div>
+        <Link href="/english">English</Link>
       </nav>
     </header>
   );

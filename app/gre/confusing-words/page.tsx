@@ -1,17 +1,10 @@
-import { ConfusingWordsPractice } from "@/components/ConfusingWordsPractice";
-import { confusingWordPairs } from "@/lib/confusingWords";
+import { redirect } from "next/navigation";
 
 /**
- * Renders the GRE confusing words practice section.
+ * Preserves links to the former GRE practice page.
  *
- * Example: learners can select `coma / comma` and answer fill-in-the-blank practice cards.
+ * Example: `/gre/confusing-words` redirects to `/english/gre/confusing-words`.
  */
 export default function GreConfusingWordsPage() {
-  return (
-    <main>
-      <section className="section-band">
-        <ConfusingWordsPractice pairs={confusingWordPairs} />
-      </section>
-    </main>
-  );
+  redirect("/english/gre/confusing-words");
 }

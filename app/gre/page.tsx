@@ -1,8 +1,10 @@
+import { redirect } from "next/navigation";
+
 /**
- * Renders the currently empty GRE blog section page.
+ * Preserves links to the former top-level GRE page.
  *
- * Example: `/gre/confusing-words` can contain GRE practice while `/gre` waits for real section content.
+ * Example: `/gre` redirects to `/english/gre`.
  */
 export default function GrePage() {
-  return <main className="empty-page" />;
+  redirect("/english/gre");
 }

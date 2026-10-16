@@ -1,8 +1,10 @@
+import { redirect } from "next/navigation";
+
 /**
- * Renders the currently empty personal blog home page.
+ * Sends homepage visitors directly to Confusing Words practice.
  *
- * Example: the page intentionally contains no placeholder sections until real posts exist.
+ * Example: visiting `/` opens `/english/gre/confusing-words`.
  */
 export default function HomePage() {
-  return <main className="empty-page" />;
+  redirect("/english/gre/confusing-words");
 }
