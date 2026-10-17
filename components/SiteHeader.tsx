@@ -4,7 +4,7 @@ import Link from "next/link";
 /**
  * Renders the compact bee-only branding and primary blog navigation.
  *
- * Example: the logo links home and the sole navigation item opens `/english`.
+ * Example: the primary links open `/english` and `/entrepreneurship`.
  */
 export function SiteHeader() {
   return (
@@ -21,6 +21,7 @@ export function SiteHeader() {
       </Link>
       <nav className="nav-links" aria-label="Primary navigation">
         <Link href="/english">English</Link>
+        <Link href="/entrepreneurship">Entrepreneurship</Link>
       </nav>
     </header>
   );

@@ -1,8 +1,17 @@
 import { notFound } from "next/navigation";
+import type { ComponentType } from "react";
+import { BlogEntry } from "@/components/blog/BlogEntry";
+import { KeywordPlannerPost } from "@/components/blog/KeywordPlannerPost";
+import { StudyNotePost } from "@/components/blog/StudyNotePost";
 import { articles } from "@/lib/content";
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
+};
+
+// Register each authored body once; the same component can also be rendered in another section.
+const articleBodies: Partial<Record<string, ComponentType>> = {
+  "validate-demand-google-keyword-planner": KeywordPlannerPost
 };
 
 /**
@@ -17,9 +26,9 @@ export function generateStaticParams() {
 }
 
 /**
- * Renders a static article page from local content data.
+ * Renders local article components inside the reusable BlogEntry shell.
  *
- * Example: `/articles/gre-sentence-equivalence-patterns` renders the GRE article shell.
+ * Example: `/articles/validate-demand-google-keyword-planner` renders KeywordPlannerPost with its screenshots.
  */
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
@@ -29,26 +38,20 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
+  const ArticleBody = articleBodies[slug];
+
   return (
     <main>
-      <article className="article-page">
-        <p className="eyebrow">{article.section}</p>
-        <h1>{article.title}</h1>
-        <p className="article-date">
-          {article.date} · {article.readingTime}
-        </p>
-        <p className="lede">{article.excerpt}</p>
-        <h2>Study note</h2>
-        <p>
-          Start by reading once for meaning. On the second pass, mark the signal words that show contrast, cause,
-          emphasis, or sequence. On the third pass, write one original sentence that uses the most useful new word.
-        </p>
-        <h2>Try this</h2>
-        <p>
-          Choose a paragraph from today&apos;s reading and reduce it to one sentence. Then expand it again with two new
-          details. This before-and-after exercise trains accuracy and style at the same time.
-        </p>
-      </article>
+      <BlogEntry article={article}>
+        {ArticleBody ? (
+          <ArticleBody />
+        ) : (
+          <>
+            <p className="lede">{article.excerpt}</p>
+            <StudyNotePost />
+          </>
+        )}
+      </BlogEntry>
     </main>
   );
 }

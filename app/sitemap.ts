@@ -11,7 +11,7 @@ export const dynamic = "force-static";
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   // List destination pages only: /gre and /confusing-words redirect into /english.
-  const paths = ["/", "/english", "/english/gre", "/english/gre/confusing-words"];
+  const paths = ["/", "/english", "/english/gre", "/english/gre/confusing-words", "/entrepreneurship"];
   return [
     ...paths.map((path) => ({ url: new URL(path, "https://bumblebee.work").href })),
     ...articles.map((article) => ({

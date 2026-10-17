@@ -1,7 +1,7 @@
 export type Article = {
   slug: string;
   title: string;
-  section: "Reading" | "Vocabulary" | "Writing" | "GRE";
+  section: "Reading" | "Vocabulary" | "Writing" | "GRE" | "Entrepreneurship";
   excerpt: string;
   date: string;
   readingTime: string;
@@ -14,6 +14,14 @@ export type GreResource = {
 };
 
 export const articles: Article[] = [
+  {
+    slug: "validate-demand-google-keyword-planner",
+    title: "How Can We Validate Demand with Google Keyword Planner?",
+    section: "Entrepreneurship",
+    excerpt: "What I learned about checking demand after building a medical tourism website.",
+    date: "2026-10-17",
+    readingTime: "3 min read"
+  },
   {
     slug: "build-a-daily-reading-loop",
     title: "Build a Daily Reading Loop That Actually Sticks",

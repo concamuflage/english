@@ -11,6 +11,20 @@ npm run dev
 
 Example local URL: `http://localhost:3000`
 
+## Blog posts
+
+`ArticleCard` renders reusable post previews and `BlogEntry` renders the shared
+full-post layout. Each authored body is a reusable React component, such as
+`components/blog/KeywordPlannerPost.tsx`. To add a post, add its metadata to
+`articles` in `lib/content.ts` and register its body in `articleBodies` in
+`app/articles/[slug]/page.tsx`.
+
+For example, `validate-demand-google-keyword-planner` opens at
+`/articles/validate-demand-google-keyword-planner`. Its `Entrepreneurship`
+section value includes it in that section's article listing, and the sitemap
+includes it automatically. Original screenshots live in
+`public/images/entrepreneurship/` and can be opened at full size from the article.
+
 ## Sitemap generation
 
 `npm run build` generates `out/sitemap.xml` and `out/robots.txt` for

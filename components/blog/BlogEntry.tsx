@@ -1,0 +1,28 @@
+import type { ReactNode } from "react";
+import type { Article } from "@/lib/content";
+
+type BlogEntryProps = {
+  article: Article;
+  children: ReactNode;
+};
+
+/**
+ * Provides shared full-post typography and metadata for any site section.
+ *
+ * Example: `<BlogEntry article={article}><KeywordPlannerPost /></BlogEntry>`
+ * renders an Entrepreneurship post using the same shell as an English article.
+ */
+export function BlogEntry({ article, children }: BlogEntryProps) {
+  return (
+    <article className="article-page">
+      <header>
+        <p className="eyebrow">{article.section}</p>
+        <h1>{article.title}</h1>
+        <p className="article-date">
+          <time dateTime={article.date}>{article.date}</time> · {article.readingTime}
+        </p>
+      </header>
+      {children}
+    </article>
+  );
+}

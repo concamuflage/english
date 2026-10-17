@@ -129,6 +129,19 @@ a {
   color: var(--accent-deep);
 }
 
+@media (max-width: 600px) {
+  :root {
+    --site-header-height: 100px;
+  }
+
+  /* Give the two section links their own row below the logo on narrow screens. */
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
 .empty-page {
   min-height: 50vh;
 }
@@ -284,6 +297,11 @@ h3 {
 .subpage-hero,
 .resource-grid {
   padding: clamp(42px, 7vw, 90px) clamp(20px, 5vw, 72px);
+}
+
+.section-page-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.2;
 }
 
 .section-heading {
@@ -658,6 +676,28 @@ h3 {
 .article-date {
   color: var(--accent);
   font-weight: 800;
+}
+
+.article-figure {
+  margin: 32px 0;
+}
+
+.article-figure img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.article-figure figcaption {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+.article-page a {
+  color: var(--accent-deep);
+  text-underline-offset: 3px;
 }
 
 .article-page h1 {
