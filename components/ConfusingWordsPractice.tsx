@@ -68,11 +68,15 @@ function PracticeNote({ note, noteImage }: Pick<ConfusingWordPair, "note" | "not
  * Example: selecting `coma / comma` shows its questions; page scrolling hides pair buttons above the sticky card.
  * Every heading shows each word and its IPA on a separate line, e.g. `coma / ˈkoʊmə /`.
  * Reopening the page resumes a saved pair such as `blight-plight` with unanswered questions.
+ * On mobile, tapping a pair opens a modal; closing it returns to the same place in the vertical list.
  */
 export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   const [selectedSlug, setSelectedSlug] = useState(pairs[0]?.slug ?? "");
   const [feedbackByQuestion, setFeedbackByQuestion] = useState<FeedbackByQuestion>({});
   const [pairToResume, setPairToResume] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isCardOpen, setIsCardOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const activePairButtonRef = useRef<HTMLButtonElement>(null);
   const pairListRef = useRef<HTMLElement>(null);
   const cardShellRef = useRef<HTMLElement>(null);
@@ -86,6 +90,36 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
     () => (selectedPair ? shuffleQuestions(selectedPair.slug, selectedPair.questions) : []),
     [selectedPair]
   );
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 860px)");
+    /** Keeps modal behavior aligned with the layout; e.g. desktop resizing closes the mobile popup. */
+    function updateMobileLayout() {
+      setIsMobile(media.matches);
+      if (!media.matches) setIsCardOpen(false);
+    }
+    updateMobileLayout();
+    media.addEventListener("change", updateMobileLayout);
+    return () => media.removeEventListener("change", updateMobileLayout);
+  }, []);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!isMobile || !isCardOpen || !dialog) return;
+
+    // Native modal behavior traps focus and makes the underlying list inert.
+    const scrollY = window.scrollY;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    dialog.scrollTop = 0;
+    document.body.style.overflow = "hidden";
+    return () => {
+      if (dialog.open) dialog.close();
+      document.body.style.overflow = previousOverflow;
+      activePairButtonRef.current?.focus({ preventScroll: true });
+      window.scrollTo({ top: scrollY, behavior: "instant" });
+    };
+  }, [isMobile, isCardOpen]);
 
   useEffect(() => {
     // Read after hydration so the server and initial browser render both use the first pair.
@@ -117,9 +151,14 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
       return;
     }
 
-    // Align the button with the viewport bottom so late-list cards retain room below the sticky header.
+    // Resume at the saved button, leaving the mobile popup closed until the user taps it.
     const frame = window.requestAnimationFrame(() => {
-      activePairButtonRef.current?.scrollIntoView({ block: "end", inline: "nearest", behavior: "instant" });
+      const button = activePairButtonRef.current;
+      button?.scrollIntoView({
+        block: window.matchMedia("(max-width: 860px)").matches ? "center" : "end",
+        inline: "nearest",
+        behavior: "instant"
+      });
       setPairToResume(null);
     });
     return () => window.cancelAnimationFrame(frame);
@@ -163,7 +202,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
       window.removeEventListener("resize", updateListClip);
       observer.disconnect();
     };
-  }, [selectedPair]);
+  }, [selectedPair, isMobile]);
 
   if (!selectedPair) {
     return null;
@@ -175,16 +214,25 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
    * Selects and remembers a pair while clearing the card's previous answers.
    *
    * Example: clicking `weather / whether` saves `weather-whether` locally and loads unanswered questions.
+   * On mobile, the same tap opens the practice popup.
    */
   function selectPair(slug: string) {
     setPairToResume(null);
     setSelectedSlug(slug);
     setFeedbackByQuestion({});
+    if (window.matchMedia("(max-width: 860px)").matches) {
+      setIsCardOpen(true);
+    }
     try {
       window.localStorage.setItem(LAST_PAIR_STORAGE_KEY, slug);
     } catch {
       // A failed browser-storage write must not prevent selecting or studying a pair.
     }
+  }
+
+  /** Closes mobile practice; e.g. Close or Escape returns to the selected pair in the list. */
+  function closePracticeCard() {
+    setIsCardOpen(false);
   }
 
   /**
@@ -209,25 +257,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
     }));
   }
 
-  return (
-    <div className="confusing-words-workspace">
-      <aside ref={pairListRef} className="pair-list" aria-label="Confusing word pairs">
-        {pairs.map((pair) => (
-          <button
-            className={pair.slug === selectedPair.slug ? "pair-button pair-button-active" : "pair-button"}
-            key={pair.slug}
-            ref={pair.slug === selectedPair.slug ? activePairButtonRef : null}
-            onClick={() => selectPair(pair.slug)}
-            type="button"
-          >
-            <span>
-              {pair.wordOne} / {pair.wordTwo}
-            </span>
-          </button>
-        ))}
-      </aside>
-
-      <section ref={cardShellRef} className="flashcard-shell" aria-live="polite">
+  const practiceCard = (
         <div className="flashcard">
           <div className="flashcard-topline">
             <span className="pair-pronunciations">
@@ -283,7 +313,45 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
           </div>
           <PracticeNote note={selectedPair.note} noteImage={selectedPair.noteImage} />
         </div>
-      </section>
+  );
+
+  return (
+    <div className="confusing-words-workspace">
+      <aside ref={pairListRef} className="pair-list" aria-label="Confusing word pairs">
+        {pairs.map((pair) => (
+          <button
+            className={pair.slug === selectedPair.slug ? "pair-button pair-button-active" : "pair-button"}
+            key={pair.slug}
+            ref={pair.slug === selectedPair.slug ? activePairButtonRef : null}
+            onClick={() => selectPair(pair.slug)}
+            type="button"
+          >
+            <span>
+              {pair.wordOne} / {pair.wordTwo}
+            </span>
+          </button>
+        ))}
+      </aside>
+
+      {!isMobile && (
+        <section ref={cardShellRef} className="flashcard-shell" aria-live="polite">
+          {practiceCard}
+        </section>
+      )}
+      <dialog
+        ref={dialogRef}
+        className="practice-dialog"
+        aria-label={`Practice ${selectedPair.wordOne} and ${selectedPair.wordTwo}`}
+        onCancel={closePracticeCard}
+        onClose={closePracticeCard}
+      >
+        <div className="practice-dialog-toolbar">
+          <button type="button" onClick={closePracticeCard} aria-label="Close practice card">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        {isMobile && practiceCard}
+      </dialog>
     </div>
   );
 }

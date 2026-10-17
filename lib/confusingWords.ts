@@ -683,7 +683,13 @@ function buildConfusingWordPairs(rows: ConfusingWordPairRow[]): ConfusingWordPai
   });
 }
 
-export const confusingWordPairs: ConfusingWordPair[] = buildConfusingWordPairs(confusingWordPairRows);
+// Sort by the first word (e.g. abstruse before acerbic), then the second word for matching first words.
+// Case and accents do not affect alphabetical order; existing slugs stay stable for saved selections.
+export const confusingWordPairs: ConfusingWordPair[] = buildConfusingWordPairs(confusingWordPairRows).sort(
+  (left, right) =>
+    left.wordOne.localeCompare(right.wordOne, "en", { sensitivity: "base" }) ||
+    left.wordTwo.localeCompare(right.wordTwo, "en", { sensitivity: "base" })
+);
 
 /**
  * Finds a confusing word pair by its stable URL slug.
