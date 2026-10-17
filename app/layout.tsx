@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Personal Blog",
+  title: "the bumblebee's",
   description: "A personal blog with GRE study notes and confusing word practice."
 };
 

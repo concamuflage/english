@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prepare": "npm run setup:hooks",
+    "setup:hooks": "git config --local core.hooksPath .githooks",
     "dev": "next dev",
     "build": "next build",
     "deploy": "npm run build && wrangler deploy",

@@ -5,6 +5,7 @@ import { confusingWordPairs } from "@/lib/confusingWords";
  * Renders word-pair practice inside English's GRE section.
  *
  * Example: `/english/gre/confusing-words` shows a personal introduction above the word-pair list and practice card.
+ * An IPA reference below the practice area links to the source wordlist and dictionary references.
  */
 export default function GreConfusingWordsPage() {
   return (
@@ -18,6 +19,15 @@ export default function GreConfusingWordsPage() {
         </p>
       </aside>
       <ConfusingWordsPractice pairs={confusingWordPairs} />
+      <footer className="pronunciation-references" aria-label="IPA references">
+        <p>
+          IPA references: primarily adapted from the General American wordlist in{" "}
+          <a href="https://github.com/open-dict-data/ipa-dict">open-dict-data/ipa-dict</a>,
+          with selected pronunciations checked against{" "}
+          <a href="https://www.dictionary.com/">Dictionary.com</a> and{" "}
+          <a href="https://dictionary.cambridge.org/">Cambridge Dictionary</a>.
+        </p>
+      </footer>
     </main>
   );
 }

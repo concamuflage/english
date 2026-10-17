@@ -1,3 +1,5 @@
+import { wordPronunciations } from "@/lib/wordPronunciations";
+
 export type ConfusingWordQuestion = {
   sentence: string;
   answer: string;
@@ -9,8 +11,12 @@ export type ConfusingWordPair = {
   slug: string;
   wordOne: string;
   wordTwo: string;
+  /** IPA in word order; for example, solipsism is `/ ˈsɒl ɪpˌsɪz əm /`. */
+  pronunciations: readonly [string, string];
   questions: ConfusingWordQuestions;
   note?: string;
+  /** Image-only note; e.g. the apothem card displays a labeled hexagon diagram. */
+  noteImage?: { src: string; alt: string; width: number; height: number };
 };
 
 type ConfusingWordAnswerKey = "wordOne" | "wordTwo";
@@ -252,7 +258,14 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
     "Do not ____ the patient with noise.",
     ["Gently ____ the bottle so the powder mixes with the liquid.", "wordTwo"]
   ],
-  ["scrimp", "skimp", "They had to ____ to pay rent.", "Do not ____ on safety checks."],
+  [
+    "scrimp",
+    "skimp",
+    "They had to ____ to pay rent.",
+    "Do not ____ on safety checks.",
+    ["They had to ____ for years, saving every spare coin and giving up small luxuries to buy a home.", "wordOne"],
+    ["Do not ____ on insulation; using too little will leave the house cold and increase heating bills.", "wordTwo"]
+  ],
   ["impassioned", "impassive", "She gave an ____ plea.", "His face stayed ____ during the verdict."],
   ["stoical", "stolid", "He remained ____ despite pain.", "The ____ guard barely reacted."],
   ["execrable", "inexorable", "The food was ____.", "The tide made ____ progress."],
@@ -362,7 +375,14 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ],
   ["exultation", "exaltation", "The room erupted in ____.", "The hymn expressed ____ of the divine."],
   ["rectitude", "turpitude", "The judge was known for ____.", "The crime showed moral ____."],
-  ["doughty", "dowdy", "The ____ fighter would not yield.", "The dress looked ____."],
+  [
+    "doughty",
+    "dowdy",
+    "The ____ fighter would not yield.",
+    "The dress looked ____.",
+    ["The ____ guard stood firm against the attackers, bravely defending the gate despite his injuries.", "wordOne"],
+    ["The curtains looked ____, their drab pattern and heavy frills making the room seem unfashionable.", "wordTwo"]
+  ],
   [
     "common",
     "commonplace",
@@ -425,81 +445,205 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["deprecation", "depredation", "His self-____ made the crowd laugh as he jokingly dismissed his own achievements as beginner's luck.", "The coastal village suffered pirate ____, with raiders looting homes and stealing supplies."],
   ["degradation", "depredation", "Years of pollution caused soil ____, reducing its fertility until crops could barely grow.", "The invading army's ____ ruined the farms as soldiers looted barns and stole livestock."],
   ["denigration", "abnegation", "The essay was full of ____ of her rival, belittling his achievements and calling him incompetent.", "The monk's vow required self-____: he renounced personal comforts and possessions to serve others."],
-  ["inimitable", "inimical", "Her comic style is ____; countless performers have tried to copy it, but none can reproduce its charm.", "The policy is ____ to small businesses, burdening them with costs that threaten their survival."],
-  ["solipsism", "solecism", "The philosopher criticized ____, the view that only one's own mind is certain to exist.", "The sentence contains a ____: its singular subject is incorrectly paired with a plural verb."],
+  [
+    "inimitable",
+    "inimical",
+    "Her comic style is ____; countless performers have tried to copy it, but none can reproduce its charm.",
+    "The policy is ____ to small businesses, burdening them with costs that threaten their survival.",
+    ["He met the ambassador with an ____ stare, making his hostility plain before a word was spoken.", "wordTwo"],
+    ["A climate of fear is ____ to free inquiry, discouraging people from questioning accepted ideas.", "wordTwo"]
+  ],
+  [
+    "solipsism",
+    "solecism",
+    "The philosopher criticized ____, the view that only one's own mind is certain to exist.",
+    "The sentence contains a ____: its singular subject is incorrectly paired with a plural verb.",
+    ["The architect considered the plastic window frame a ____ in the medieval stone facade, a jarring departure from its traditional design.", "wordTwo"],
+    ["Leaving the formal dinner without thanking the host was a social ____, a breach of accepted etiquette.", "wordTwo"]
+  ],
   ["offshoot", "upshot", "The company launched an ____ of its research division, a separate business developing the division's inventions.", "The negotiations achieved nothing; the ____ was a costly delay rather than an agreement."],
   ["amity", "enmity", "The treaty restored ____ between the neighbors, allowing them to trade and cooperate as friends again.", "The bitter feud created lasting ____, and the families treated each other as enemies for decades."],
   ["disprove", "disapprove", "The new data may ____ the theory by showing that its central prediction is false.", "Her parents ____ of the plan because they believe leaving school would be a serious mistake."],
-  ["rebuff", "spurn", "He met every request with a ____, bluntly refusing even to consider helping.", "She chose to ____ the dishonest offer, rejecting it with contempt despite the promised fortune."],
-  ["rebuff", "rebut", "The senator gave the request a cool ____, refusing a meeting and sending the visitor away.", "The lawyer tried to ____ the claim by presenting records that directly contradicted it."],
-  ["captious", "caption", "The ____ critic ignored the book's strengths and kept raising petty objections to tiny flaws.", "Write a photo ____ that identifies the people pictured and explains what they are doing."],
-  ["scrimp", "skimp", "They had to ____ for years, saving every spare coin and giving up small luxuries to buy a home.", "Do not ____ on insulation; using too little will leave the house cold and increase heating bills."],
+  [
+    "rebuff",
+    "spurn",
+    "He met every request with a ____, bluntly refusing even to consider helping.",
+    "She chose to ____ the dishonest offer, rejecting it with contempt despite the promised fortune.",
+    ["She would ____ his attempts at conversation, snubbing him by turning away without a reply.", "wordOne"]
+  ],
+  [
+    "rebuff",
+    "rebut",
+    "The senator gave the request a cool ____, refusing a meeting and sending the visitor away.",
+    "The lawyer tried to ____ the claim by presenting records that directly contradicted it.",
+    ["The manager chose to ____ their offer of help, brushing it aside with a curt wave of his hand.", "wordOne"]
+  ],
+  [
+    "captious",
+    "caption",
+    "The ____ critic ignored the book's strengths and kept raising petty objections to tiny flaws.",
+    "Write a photo ____ that identifies the people pictured and explains what they are doing.",
+    ["Even a small typo triggered his ____ complaints.", "wordOne"]
+  ],
   ["presumptuous", "sumptuous", "It was ____ to accept the invitation on her behalf without asking whether she wanted to attend.", "They served a ____ meal of elaborate dishes on silver platters, sparing no expense."],
   ["breach", "broach", "The stolen password caused a security ____, allowing an outsider to access confidential files.", "She will ____ the sensitive topic tomorrow, raising it gently to begin a discussion."],
   ["tamper", "hamper", "Do not ____ with the evidence by altering or removing anything before investigators arrive.", "Heavy snow may ____ travel by blocking roads and forcing trains to run slowly."],
-  ["damper", "hamper", "Rain put a ____ on the picnic, spoiling everyone's cheerful mood.", "The shortage of supplies could ____ progress, slowing construction for weeks."],
+  [
+    "damper",
+    "hamper",
+    "Rain put a ____ on the picnic, spoiling everyone's cheerful mood.",
+    "The shortage of supplies could ____ progress, slowing construction for weeks.",
+    ["The technician adjusted the ____ in the furnace flue, turning the metal plate to regulate the draft.", "wordOne"],
+    ["The news of the canceled concert put a ____ on the celebration, dampening everyone's excitement.", "wordOne"],
+    ["She tossed her dirty clothes into the laundry ____, a large basket beside the washing machine.", "wordTwo"]
+  ],
   ["epilogue", "epigraph", "The novel ends with an ____ describing the characters' lives ten years after the main story.", "The chapter opens with an ____, a short quotation from another writer that introduces its theme."],
   ["epilogue", "prologue", "After the final scene, an actor delivers an ____ reflecting on how the story ended.", "Before the first scene, a narrator delivers a ____ explaining the events that led to the story."],
-  ["monograph", "monogram", "The scholar published a ____ devoted entirely to the history of one medieval monastery.", "The towel had a stitched ____ combining the owner's initials into a decorative design."],
+  [
+    "monograph",
+    "monogram",
+    "The scholar published a ____ devoted entirely to the history of one medieval monastery.",
+    "The towel had a stitched ____ combining the owner's initials into a decorative design.",
+    ["The mathematician published a ____ on spectral graph theory, a detailed scholarly book exploring the eigenvalues of graphs.", "wordOne"]
+  ],
   ["frisk", "brisk", "The guard had to ____ each visitor, patting down their clothing to check for hidden weapons.", "We took a ____ walk, moving at a quick, energetic pace that left us pleasantly warm."],
   ["neoplasm", "pleonasm", "The scan revealed a ____, an abnormal growth of tissue that required further examination.", "The phrase 'free gift' was criticized as a ____ because 'free' repeats an idea already implied by 'gift'."],
-  ["cognate", "magnate", "Spanish padre and Italian padre are ____ words, both descended from the same Latin word for father.", "The steel ____, a wealthy industrialist who owned several mills, bought the football team."],
-  ["dower", "dowry", "In the historical estate record, the widow claimed her ____, a share of her late husband's property for her support.", "The historical account describes a bride bringing money and household goods to her marriage as a ____."],
-  ["scrooge", "scrounge", "Do not be a ____ about tips; refusing to leave a penny after excellent service is miserly.", "With no money for new equipment, we had to ____ for spare parts in discarded machines."],
+  [
+    "cognate",
+    "magnate",
+    "Spanish and Italian are ____ languages, both having developed from Latin.",
+    "The steel ____, a wealthy industrialist who owned several mills, bought the football team.",
+    ["The conference brought together researchers from psychology and ____ disciplines, including neuroscience and education.", "wordOne"]
+  ],
+  [
+    "dower",
+    "dowry",
+    "In the historical estate record, the widow claimed her ____, a share of her late husband's property for her support.",
+    "The historical account describes a bride bringing money and household goods to her marriage as a ____.",
+    ["Ohio still recognizes ____, and its law applies to either spouse.", "wordOne"]
+  ],
+  [
+    "scrooge",
+    "scrounge",
+    "Do not be a ____ about tips; refusing to leave a penny after excellent service is miserly.",
+    "With no money for new equipment, we had to ____ for spare parts in discarded machines.",
+    ["Everyone called him a ____ because he refused to turn on the heating even when his guests were shivering.", "wordOne"],
+    ["Having forgotten his wallet, he tried to ____ a few coins from his friends to pay for the bus.", "wordTwo"]
+  ],
   ["edema", "enema", "The injury caused ankle ____, with fluid building up in the tissues and making the joint swell.", "The nurse administered an ____, introducing fluid into the rectum to help empty the bowel."],
-  ["brash", "brazen", "The ____ newcomer interrupted senior colleagues to boast that he could do all their jobs better.", "The thief made a ____ attempt to sell the stolen watch back to its owner, showing no shame."],
-  ["wry", "awry", "She gave a ____ smile at the irony of missing her own lecture on punctuality.", "The plan went ____ when the bus broke down, leaving the group stranded instead of at the museum."],
-  ["dudgeon", "dungeon", "He left in high ____ after the insult, visibly outraged and declaring that he deserved respect.", "The prisoner sat in a ____, a dark underground cell beneath the castle."],
+  [
+    "brash",
+    "brazen",
+    "The ____ newcomer interrupted senior colleagues to boast that he could do all their jobs better.",
+    "The thief made a ____ attempt to sell the stolen watch back to its owner, showing no shame.",
+    ["The guests were drinking from ____ cups, their brass surfaces gleaming in the candlelight.", "wordTwo"],
+    ["The horrible ____ voice of the fire bell shattered the silence with its harsh metallic clang.", "wordTwo"],
+    ["He showed a ____ disregard for the rules, openly breaking them without the slightest embarrassment.", "wordTwo"],
+    ["He was a ____ young executive, full of confidence and quick to dismiss advice from more experienced colleagues.", "wordOne"],
+    ["She asks such ____ questions, demanding to know strangers' salaries within minutes of meeting them.", "wordOne"]
+  ],
+  [
+    "wry",
+    "awry",
+    "She gave a ____ smile at the irony of missing her own lecture on punctuality.",
+    "The plan went ____ when the bus broke down, leaving the group stranded instead of at the museum.",
+    ["After the roof began leaking during his housewarming party, he made the ____ remark, 'At least the indoor pool is free,' finding dry humor in his misfortune.", "wordOne"]
+  ],
+  [
+    "dudgeon",
+    "dungeon",
+    "He left in high ____ after the insult, visibly outraged and declaring that he deserved respect.",
+    "The prisoner sat in a ____, a dark underground cell beneath the castle.",
+    ["She took the accusation of cheating in high ____, angrily insisting that her honesty had never before been questioned.", "wordOne"]
+  ],
   ["detract", "detractor", "The single typo did not ____ from the essay's quality; its argument was still clear and convincing.", "Even a popular leader has a ____, someone who publicly criticizes and belittles their achievements."],
-  ["dismal", "abysmal", "The weather was ____, with gray skies and relentless drizzle that made the whole day feel gloomy.", "The service was ____, so extremely bad that every order was wrong and several meals never arrived."],
   ["adjoin", "adjourn", "The new kitchen will ____ the hall, sharing a wall and connecting through a doorway.", "The judge will ____ court until Monday, suspending the proceedings for the weekend."],
-  ["obeisance", "abeyance", "The courtier made an ____, bowing deeply before the queen as a sign of respect.", "The rule was held in ____ while the appeal was considered, so enforcement was temporarily suspended."],
+  [
+    "obeisance",
+    "abeyance",
+    "The courtier made an ____, bowing deeply before the queen as a sign of respect.",
+    "The rule was held in ____ while the appeal was considered, so enforcement was temporarily suspended.",
+    ["The minister paid ____ to the party leader, praising his every decision and never daring to disagree.", "wordOne"],
+    ["Plans for the new library remained in ____ until funding could be secured, with all construction temporarily on hold.", "wordTwo"]
+  ],
   ["bawdy", "dowdy", "The play included a ____ song filled with sexual jokes that made the audience blush.", "The suit looked ____, with a shapeless cut and a drab pattern decades out of fashion."],
   ["doughty", "doughy", "The ____ captain held the line despite overwhelming odds, refusing to retreat even after being wounded.", "The bread was still ____ inside, soft, sticky, and clearly underbaked."],
-  ["melange", "menagerie", "The stew was a ____ of flavors, mixing smoky spices, sweet vegetables, and tangy lemon.", "The estate kept a private ____, a collection of exotic animals including monkeys and peacocks."],
-  ["infraction", "fractious", "Parking beside the no-parking sign is a minor ____, a violation punishable by a fine.", "The ____ committee argued all night, its members snapping at one another and refusing to cooperate."],
+  ["mélange", "menagerie", "The stew was a ____ of flavors, mixing smoky spices, sweet vegetables, and tangy lemon.", "The estate kept a private ____, a collection of exotic animals including monkeys and peacocks."],
+  [
+    "infraction",
+    "fractious",
+    "Parking beside the no-parking sign is a minor ____, a violation punishable by a fine.",
+    "The ____ committee argued all night, its members snapping at one another and refusing to cooperate.",
+    ["The ____ crowd kept interrupting the speaker.", "wordTwo"],
+    ["The toddler was ____ after missing his nap.", "wordTwo"]
+  ],
   ["sedulous", "acidulous", "The ____ assistant checked every detail for hours, patiently verifying each figure until the report was accurate.", "The sauce tasted ____, with a slightly sour tang from the lemon juice."],
   ["console", "condole", "She tried to ____ her friend after his rejection, offering comforting words to ease his distress.", "Neighbors came to ____ with the family after the funeral, expressing sympathy for their loss."],
   ["condole", "condone", "We went to ____ with the bereaved parents, expressing our sorrow at their loss.", "The school will not ____ cheating: it treats dishonesty as unacceptable and punishes every proven case."],
   ["wreak", "wreck", "The storm may ____ havoc, causing widespread damage and disruption across the region.", "The jagged reef could ____ the ship, tearing its hull apart and leaving it beyond repair."],
   ["intolerable", "intolerant", "The noise became ____, so unbearable that residents could neither sleep nor hold a conversation.", "He was ____ of dissent, refusing to let anyone express an opinion different from his own."],
-  ["sensibility", "sensitivity", "The painter's artistic ____ shaped her work: she noticed beauty in ordinary objects and responded deeply to color.", "The test measures skin ____ to touch by checking whether the patient can feel a light brush."],
   ["apothegm", "apothem", "The elder offered a concise ____, 'Look before you leap,' to warn against acting without thought.", "The regular polygon's ____ runs from its center perpendicular to the midpoint of a side."],
-  ["doughty", "dowdy", "The ____ guard stood firm against the attackers, bravely defending the gate despite his injuries.", "The curtains looked ____, their drab pattern and heavy frills making the room seem unfashionable."],
-  ["scrooge", "stooge", "He acted like a ____ with money, refusing even a small donation despite his enormous wealth.", "The villain used him as a ____, tricking him into carrying out the scheme and taking the blame."],
+  [
+    "scrooge",
+    "stooge",
+    "He acted like a ____ with money, refusing even a small donation despite his enormous wealth.",
+    "The villain used him as a ____, tricking him into carrying out the scheme and taking the blame.",
+    ["The gangster sent a ____ to intimidate a witness, using the obedient underling to do his dirty work.", "wordTwo"],
+    ["He's just a ____ for the oil industry, repeating the companies' talking points while pretending to offer an independent opinion.", "wordTwo"],
+    ["The journalist called the spokesman a government ____, accusing him of blindly defending every official decision instead of thinking for himself.", "wordTwo"]
+  ],
   ["snob", "snub", "The ____ refused to speak to anyone without an expensive car or a prestigious job.", "Do not ____ the new student by deliberately ignoring her greeting and excluding her from the group."],
   ["dork", "dock", "He called himself a lovable ____, laughing at his own social awkwardness and clumsy attempts to flirt.", "The boat tied up at the ____, where passengers stepped ashore onto the wooden platform."],
   ["democrat", "Democrat", "A committed ____ supports government chosen by the people, regardless of political party.", "The ____ won the Senate race as the candidate of the U.S. Democratic Party."],
   ["statue", "statute", "The bronze ____ depicted the town's founder standing on a pedestal in the park.", "The legislature passed a new ____ making it illegal to dump waste in the river."],
-  ["blight", "plight", "The fungus caused potato ____, a plant disease that blackened the leaves and destroyed the crop.", "The refugees described their ____, trapped without shelter, clean water, or a safe route home."],
+  [
+    "blight",
+    "plight",
+    "The fungus caused potato ____, a plant disease that blackened the leaves and destroyed the crop.",
+    "The refugees described their ____, trapped without shelter, clean water, or a safe route home.",
+    ["Corruption was a ____ on the city's reputation, destroying public trust and driving away investors.", "wordOne"]
+  ],
   ["epigraph", "epitaph", "The essay begins with an ____, a short quotation from a poet that introduces its central idea.", "The tombstone bore a short ____ honoring the person buried beneath it."]
 ];
 
 const confusingWordPairNotes: Record<string, string> = {
+  "statue-statute":
+    "A bill is a proposed law; a statute is an enacted law. Example: A river-protection bill becomes a statute when enacted.",
   "obnoxious-noxious":
     "Noxious can also mean disagreeable or offensive, overlapping with obnoxious in the sense of annoying or unpleasant. However, noxious usually emphasizes harm, as in noxious fumes, while obnoxious usually emphasizes annoyance or offensiveness, as in obnoxious behavior.",
   "doughty-dowdy": "In doughty, the t is pronounced /t/, not /d/. Say DOW-tee, not DOW-dee.",
-  "doughty-dowdy-2": "In doughty, the t is pronounced /t/, not /d/. Say DOW-tee, not DOW-dee.",
   "doughty-doughy": "In doughty, the t is pronounced /t/, not /d/. Say DOW-tee, not DOW-dee.",
   "progeny-progenitor": "The progenitor produces progeny.",
   "vocation-avocation":
     "A vocation is your main calling, profession, or life work. An avocation is a hobby or side interest. One memory hook: the initial a- can suggest a negation of vocation, so the main job becomes a pastime."
 };
 
+const confusingWordPairNoteImages: Record<string, ConfusingWordPair["noteImage"]> = {
+  "apothegm-apothem": {
+    src: "/images/apothem.png",
+    alt: "A regular hexagon with its apothem marked in red from the center perpendicular to a side.",
+    width: 574,
+    height: 488
+  }
+};
+
 /**
  * Converts display text into a stable URL-safe slug segment.
  *
  * Example: `slugifyWord("New Word")` returns `"new-word"`.
+ * Accents are removed so `slugifyWord("mélange")` preserves the existing `"melange"` slug.
  */
 function slugifyWord(word: string): string {
-  return word.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return word.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 /**
  * Builds unique practice cards from compact word-pair rows.
  *
- * Example: duplicate `doughty / dowdy` rows become `doughty-dowdy` and `doughty-dowdy-2`,
+ * Example: duplicate `perspicacious / perspicuous` rows become `perspicacious-perspicuous` and `perspicacious-perspicuous-2`,
  * while `confusingWordPairNotes["coma-comma"] = "Use coma for unconsciousness."` adds a card note.
+ * Every heading displays two word/IPA lines, e.g. `coma / ˈkoʊmə /` and `comma / ˈkɑmə /`.
+ * The `apothegm-apothem` card includes an image-only note showing an apothem.
  */
 function buildConfusingWordPairs(rows: ConfusingWordPairRow[]): ConfusingWordPair[] {
   const slugCounts = new Map<string, number>();
@@ -530,7 +674,10 @@ function buildConfusingWordPairs(rows: ConfusingWordPairRow[]): ConfusingWordPai
       slug,
       wordOne: trimmedWordOne,
       wordTwo: trimmedWordTwo,
+      // Exact spelling preserves stress distinctions such as August versus august.
+      pronunciations: [wordPronunciations[trimmedWordOne], wordPronunciations[trimmedWordTwo]],
       note: confusingWordPairNotes[slug],
+      noteImage: confusingWordPairNoteImages[slug],
       questions
     };
   });
