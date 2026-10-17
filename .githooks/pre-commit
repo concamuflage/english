@@ -1,5 +1,0 @@
-#!/bin/sh
-# Rebuild the static site and sitemap before a commit, e.g. git commit -m "Update words".
-set -eu
-cd "$(git rev-parse --show-toplevel)"
-npm run build

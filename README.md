@@ -21,16 +21,16 @@ The sitemap includes public destination pages and every article in
 to the paths in `app/sitemap.ts`. For example, adding an article with slug
 `new-study-note` automatically adds `/articles/new-study-note` on the next build.
 
-`npm install` and `npm ci` install the versioned Git hooks through the `prepare`
-script. For an existing checkout, run `npm run setup:hooks` once. These hooks
-run a build before every commit and push; a failed build blocks that operation.
-They validate the current working checkout. Hook installation sets this
-repository's `core.hooksPath` to `.githooks`.
+Cloudflare's connected deployment builds and publishes the site on pushes,
+including the generated sitemap and robots file. For example, deploying a new
+article publishes its sitemap entry in the same deployment. Generated files
+stay untracked. This repository has no GitHub Actions build workflow.
 
-GitHub Actions also builds the site on pushes and pull requests and saves the
-generated `out/` folder as the `static-site` artifact. Generated files stay
-untracked. Building does not publish them: `npm run deploy` rebuilds and uploads
-the site, sitemap, and robots file to Cloudflare.
+Local commits and pushes do not run builds. Run `npm run build` for a local
+check, or `npm run deploy` to rebuild and upload directly to Cloudflare.
+The earlier automatic build hooks have been removed. In older checkouts,
+if `git config --local --get core.hooksPath` prints `.githooks`, remove that
+old setting with `git config --local --unset core.hooksPath`.
 
 ## Cloudflare Workers
 

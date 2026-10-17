@@ -1,5 +1,0 @@
-#!/bin/sh
-# Regenerate the site and sitemap before pushing, e.g. git push origin main.
-set -eu
-cd "$(git rev-parse --show-toplevel)"
-npm run build
