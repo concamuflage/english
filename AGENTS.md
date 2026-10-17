@@ -1,4 +1,20 @@
+
+# SEO 
+
+- Always follow the best onsite SEO optimization practices.
+
+# Practice Sentences
+
+- When writing practice sentences, always give enough context so the user knows which one to choose. 
+
+
 # Site Color Theme
+
+
+
+
+
+
 
 - Use shades of bumblebee yellow where general UI color accents are needed, including headings, active navigation, borders, and focus indicators. Use the shared palette in `app/globals.css`.
 - Exception: keep correct-answer feedback green and incorrect-answer feedback red, including status icons, option borders, text, and radio indicators. Do not recolor these states yellow.
