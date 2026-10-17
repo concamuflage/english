@@ -4,7 +4,6 @@ import Image from "next/image";
  * Renders the author's demand-validation post with the two original Pages screenshots.
  *
  * Example: use this body inside BlogEntry on `/articles/validate-demand-google-keyword-planner`.
- * The phrase "my website" links to the author's Lotus Health site.
  */
 export function KeywordPlannerPost() {
   return (
@@ -15,8 +14,7 @@ export function KeywordPlannerPost() {
       </p>
       <p>
         After moving back to China from the U.S., I thought it would be a good idea to offer a medical tourism concierge
-        service for Americans. I built a website without doing much research first. But{" "}
-        <a href="https://lotushealth.cc/">my website</a> was getting only about
+        service for Americans. I built a website without doing much research first. But my website was getting only about
         one visitor a month, so I decided to study SEO to increase traffic. That’s how I found the book{" "}
         <a href="https://www.amazon.com/dp/1522005676"><em>3 Months to No.1</em></a>.
       </p>

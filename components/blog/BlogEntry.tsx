@@ -11,6 +11,7 @@ type BlogEntryProps = {
  *
  * Example: `<BlogEntry article={article}><KeywordPlannerPost /></BlogEntry>`
  * renders an Entrepreneurship post using the same shell as an English article.
+ * Body content uses black text, separate from the header's theme accents.
  */
 export function BlogEntry({ article, children }: BlogEntryProps) {
   return (
@@ -22,7 +23,7 @@ export function BlogEntry({ article, children }: BlogEntryProps) {
           <time dateTime={article.date}>{article.date}</time> · {article.readingTime}
         </p>
       </header>
-      {children}
+      <div className="article-body">{children}</div>
     </article>
   );
 }
