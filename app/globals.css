@@ -578,7 +578,8 @@ h3 {
   font: inherit;
   font-weight: 700;
   min-height: 44px;
-  padding: 10px 24px;
+  /* At the current font size, widen Next from roughly 84px to 112px (one-third more). */
+  padding: 10px 38px;
   grid-column: 2;
 }
 
@@ -659,6 +660,7 @@ h3 {
 }
 
 .flashcard-question {
+  --question-font-size: clamp(1.05rem, 1.7vw, 1.35rem);
   align-items: start;
   border-bottom: 1px solid var(--line);
   display: grid;
@@ -677,7 +679,6 @@ h3 {
 }
 
 .question-line {
-  --question-font-size: clamp(1.05rem, 1.7vw, 1.35rem);
   align-items: start;
   display: grid;
   gap: 14px;
@@ -686,10 +687,10 @@ h3 {
 
 .question-status {
   align-items: center;
-  background: #fff4f1;
-  border: 1px solid #efc1b5;
+  background: color-mix(in srgb, var(--accent) 8%, white);
+  border: 1px solid var(--accent);
   border-radius: 999px;
-  color: var(--error);
+  color: var(--accent);
   display: inline-flex;
   font-size: calc(var(--question-font-size) * 0.7);
   font-weight: 900;
@@ -699,6 +700,13 @@ h3 {
   /* Match the sentence's font height and center on its first line, e.g. a 17px circle for 17px text. */
   margin-top: calc(var(--question-font-size) * 0.225);
   width: var(--question-font-size);
+}
+
+/* Answered circles retain feedback colors; e.g. an incorrect choice shows a red !. */
+.incorrect-status {
+  background: #fff4f1;
+  border-color: #efc1b5;
+  color: var(--error);
 }
 
 .correct-status {
@@ -714,7 +722,7 @@ h3 {
   margin-bottom: 0;
 }
 
-.question-stack-dense .question-line {
+.question-stack-dense .flashcard-question {
   --question-font-size: clamp(1rem, 1.5vw, 1.2rem);
 }
 
@@ -764,7 +772,18 @@ h3 {
 }
 
 .selection-option input {
-  accent-color: var(--accent);
+  /* Hide the radio glyph while retaining keyboard selection and its accessible label. */
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.selection-option:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .selection-option-selected {
@@ -883,15 +902,32 @@ h3 {
   }
 
   .flashcard-question {
-    grid-template-columns: 1fr;
+    /* Share the sentence indent with its choices: e.g. a 17px circle plus a 14px gap. */
+    grid-template-columns: var(--question-font-size) minmax(0, 1fr);
+    column-gap: 14px;
+  }
+
+  .question-line {
+    grid-column: 1 / -1;
   }
 
   .selection-row {
+    grid-column: 2;
     justify-self: stretch;
   }
 
   .pair-list {
     clip-path: none;
+  }
+
+  .pair-button {
+    /* Increase the default 13.33px button text to about 17.78px on phones. */
+    font-size: 1.111111rem;
+    justify-content: center;
+    line-height: 1.25;
+    min-height: 44px;
+    padding: 8px 12px;
+    overflow-wrap: anywhere;
   }
 
   .flashcard-shell {

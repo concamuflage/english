@@ -293,7 +293,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
               return (
                 <div className="flashcard-question" key={question.sentence}>
                   <div className="question-line">
-                    <span className={feedback?.isCorrect ? "question-status correct-status" : "question-status"}>
+                    <span className={`question-status${feedback ? (feedback.isCorrect ? " correct-status" : " incorrect-status") : ""}`}>
                       {feedback ? (feedback.isCorrect ? "✓" : "!") : questionIndex + 1}
                     </span>
                     <p className="flashcard-sentence">{question.sentence}</p>
