@@ -321,7 +321,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["peremptory", "preemptive", "The judge gave a ____ order.", "The army launched a ____ strike."],
   ["errant", "arrant", "An ____ ball broke the window.", "That is ____ nonsense."],
   ["regal", "regale", "The queen had a ____ bearing.", "He would ____ guests with stories."],
-  ["deferent", "deferential", "The ____ manner showed respect.", "She was ____ toward her mentor."],
   ["quixotic", "inquisitive", "His ____ plan ignored reality.", "The ____ child asked why."],
   ["inquisitive", "quizzical", "The ____ reporter asked more questions.", "He gave a ____ look."],
   ["apposite", "opposite", "Her example was perfectly ____.", "The bank is on the ____ side."],

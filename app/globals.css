@@ -129,12 +129,36 @@ a {
   color: var(--accent-deep);
 }
 
+.contact-page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.contact-reveal-link {
+  background: transparent;
+  border: 0;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Leave one blank text line between Reveal email and the revealed address. */
+#contact-email:not(:empty) {
+  margin-top: 1lh;
+}
+
 @media (max-width: 600px) {
   :root {
     --site-header-height: 100px;
   }
 
-  /* Give the two section links their own row below the logo on narrow screens. */
+  /* Give navigation links, including Contact, their own row below the logo on narrow screens. */
   .site-header {
     align-items: flex-start;
     flex-direction: column;
