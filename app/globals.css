@@ -454,6 +454,11 @@ h3 {
   gap: 10px;
 }
 
+.word-list-results {
+  display: grid;
+  gap: 10px;
+}
+
 .pair-button {
   align-items: flex-start;
   background: white;
@@ -954,6 +959,27 @@ h3 {
 
   .pair-list {
     clip-path: none;
+  }
+
+  .word-list-search {
+    background: var(--paper);
+    padding: 8px 0;
+    position: sticky;
+    /* Keep search reachable when resuming a word far down the list. */
+    top: var(--site-header-height);
+    z-index: 1;
+  }
+
+  .word-list-search input {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    font: inherit;
+    font-size: 1rem;
+    min-height: 44px;
+    padding: 10px 16px;
+    width: 100%;
   }
 
   .pair-button {

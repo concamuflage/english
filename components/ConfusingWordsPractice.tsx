@@ -24,6 +24,11 @@ const MERGED_GROUP_SLUGS: Readonly<Record<string, string>> = {
   "ellipse-ellipsis": "ellipsis-ellipse-eclipse"
 };
 
+/** Normalizes word searches; e.g. ` MÉLANGE ` and `melange` both become `melange`. */
+function normalizeWordSearch(value: string) {
+  return value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 /**
  * Produces a stable numeric sort weight for a question on a selected card.
  *
@@ -81,6 +86,7 @@ function PracticeNote({ note, noteImage }: Pick<ConfusingWordPair, "note" | "not
  * The mobile card's bottom Next button advances alphabetically with unanswered questions.
  * Its progress indicator shows list position, e.g. pair 1 of 245 with 244 pairs left, not completed practice.
  * Mobile actions place Next in the bottom center and the close icon at the lower right.
+ * Mobile search filters any word in a group; e.g. `ragged` finds jagged / rugged / ragged.
  */
 export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   const [selectedSlug, setSelectedSlug] = useState(pairs[0]?.slug ?? "");
@@ -88,6 +94,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   const [pairToResume, setPairToResume] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
   const activePairButtonRef = useRef<HTMLButtonElement>(null);
   const pairListRef = useRef<HTMLElement>(null);
@@ -102,6 +109,14 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
     () => (selectedPair ? shuffleQuestions(selectedPair.slug, selectedPair.questions) : []),
     [selectedPair]
   );
+
+  const visiblePairs = useMemo(() => {
+    const query = normalizeWordSearch(searchQuery);
+    // Filtering only changes the mobile list; the current card and saved selection stay intact.
+    return isMobile && query
+      ? pairs.filter((pair) => pair.words.some((word) => normalizeWordSearch(word).includes(query)))
+      : pairs;
+  }, [pairs, searchQuery, isMobile]);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 860px)");
@@ -360,19 +375,35 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   return (
     <div className="confusing-words-workspace">
       <aside ref={pairListRef} className="pair-list" aria-label="Confusing word pairs">
-        {pairs.map((pair) => (
-          <button
-            className={pair.slug === selectedPair.slug ? "pair-button pair-button-active" : "pair-button"}
-            key={pair.slug}
-            ref={pair.slug === selectedPair.slug ? activePairButtonRef : null}
-            onClick={() => selectPair(pair.slug)}
-            type="button"
-          >
-            <span>
-              {pair.words.join(" / ")}
-            </span>
-          </button>
-        ))}
+        {isMobile && (
+          <div className="word-list-search">
+            <input
+              aria-label="Search words"
+              aria-controls="word-list-results"
+              autoComplete="off"
+              placeholder="Search words…"
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+            />
+          </div>
+        )}
+        <div id="word-list-results" className="word-list-results">
+          {visiblePairs.map((pair) => (
+            <button
+              className={pair.slug === selectedPair.slug ? "pair-button pair-button-active" : "pair-button"}
+              key={pair.slug}
+              ref={pair.slug === selectedPair.slug ? activePairButtonRef : null}
+              onClick={() => selectPair(pair.slug)}
+              type="button"
+            >
+              <span>
+                {pair.words.join(" / ")}
+              </span>
+            </button>
+          ))}
+          {isMobile && visiblePairs.length === 0 && <p role="status">No matching words.</p>}
+        </div>
       </aside>
 
       {!isMobile && (
