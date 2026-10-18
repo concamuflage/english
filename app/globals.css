@@ -563,23 +563,33 @@ h3 {
 .practice-card-actions {
   align-items: center;
   display: grid;
-  /* Equal outer columns center Next independently of the smaller close icon. */
+  /* Equal outer columns center the arrow pair independently of the smaller close icon. */
   grid-template-columns: 1fr auto 1fr;
   gap: 8px;
   margin-top: 16px;
 }
 
+.practice-pair-navigation {
+  display: flex;
+  gap: 8px;
+  grid-column: 2;
+}
+
 .practice-next-button {
+  align-items: center;
   background: white;
   border: 1px solid var(--accent);
   border-radius: 999px;
   color: var(--accent-deep);
   cursor: pointer;
+  display: inline-flex;
   font: inherit;
+  font-size: 1.25rem;
   font-weight: 700;
+  justify-content: center;
   min-height: 44px;
-  padding: 10px 24px;
-  grid-column: 2;
+  min-width: 44px;
+  padding: 8px 12px;
 }
 
 .practice-next-button:disabled {

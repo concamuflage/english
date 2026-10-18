@@ -213,6 +213,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
 
   const choices = [selectedPair.wordOne, selectedPair.wordTwo];
   const pairPosition = pairs.findIndex((pair) => pair.slug === selectedPair.slug) + 1;
+  const previousPair = pairs[pairPosition - 2];
   const nextPair = pairs[pairPosition];
 
   /**
@@ -241,14 +242,15 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   }
 
   /**
-   * Advances the mobile popup to the next pair and returns to its heading.
+   * Moves the mobile popup one pair backward or forward and returns to its heading.
    *
    * Example: Next moves `abstruse / obstruct` to `abyssal / abysmal`, clearing answers
-   * and saving the new slug. The button is disabled on the final pair.
+   * and saving the new slug. Previous reverses that move; neither direction wraps.
    */
-  function selectNextPair() {
-    if (!nextPair) return;
-    selectPair(nextPair.slug);
+  function selectAdjacentPair(direction: -1 | 1) {
+    const adjacentPair = direction === -1 ? previousPair : nextPair;
+    if (!adjacentPair) return;
+    selectPair(adjacentPair.slug);
     // Wait for the new questions to render before resetting a long card's scroll position.
     window.requestAnimationFrame(() => {
       dialogRef.current?.scrollTo({ top: 0, behavior: "instant" });
@@ -335,9 +337,18 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
           <PracticeNote note={selectedPair.note} noteImage={selectedPair.noteImage} />
           {isMobile && (
             <div className="practice-card-actions">
-              <button className="practice-next-button" type="button" onClick={selectNextPair} disabled={!nextPair}>
-                Next
-              </button>
+              <div className="practice-pair-navigation">
+                <button className="practice-next-button" type="button" onClick={() => selectAdjacentPair(-1)} disabled={!previousPair} aria-label="Previous pair">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path d="M16 5 5 12l11 7Z" />
+                  </svg>
+                </button>
+                <button className="practice-next-button" type="button" onClick={() => selectAdjacentPair(1)} disabled={!nextPair} aria-label="Next pair">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path d="m8 5 11 7-11 7Z" />
+                  </svg>
+                </button>
+              </div>
               <button className="practice-close-button" type="button" onClick={closePracticeCard} aria-label="Close practice card">
                 <span aria-hidden="true">×</span>
               </button>
