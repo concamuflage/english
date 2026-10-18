@@ -69,6 +69,9 @@ function PracticeNote({ note, noteImage }: Pick<ConfusingWordPair, "note" | "not
  * Every heading shows each word and its IPA on a separate line, e.g. `coma / ˈkoʊmə /`.
  * Reopening the page resumes a saved pair such as `blight-plight` with unanswered questions.
  * On mobile, tapping a pair opens a modal; closing it returns to the same place in the vertical list.
+ * The mobile card's bottom Next button advances alphabetically with unanswered questions.
+ * Its progress indicator shows list position, e.g. pair 1 of 245 with 244 pairs left, not completed practice.
+ * Mobile actions place Next in the bottom center and the close icon at the lower right.
  */
 export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   const [selectedSlug, setSelectedSlug] = useState(pairs[0]?.slug ?? "");
@@ -209,6 +212,8 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   }
 
   const choices = [selectedPair.wordOne, selectedPair.wordTwo];
+  const pairPosition = pairs.findIndex((pair) => pair.slug === selectedPair.slug) + 1;
+  const nextPair = pairs[pairPosition];
 
   /**
    * Selects and remembers a pair while clearing the card's previous answers.
@@ -236,6 +241,22 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   }
 
   /**
+   * Advances the mobile popup to the next pair and returns to its heading.
+   *
+   * Example: Next moves `abstruse / obstruct` to `abyssal / abysmal`, clearing answers
+   * and saving the new slug. The button is disabled on the final pair.
+   */
+  function selectNextPair() {
+    if (!nextPair) return;
+    selectPair(nextPair.slug);
+    // Wait for the new questions to render before resetting a long card's scroll position.
+    window.requestAnimationFrame(() => {
+      dialogRef.current?.scrollTo({ top: 0, behavior: "instant" });
+      dialogRef.current?.querySelector<HTMLElement>(".pair-pronunciations")?.focus({ preventScroll: true });
+    });
+  }
+
+  /**
    * Checks one sentence answer and stores visual-only feedback for its selection row.
    *
    * Example: choosing `comma` for `He fell into a ____.` marks question 1 as wrong.
@@ -260,7 +281,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   const practiceCard = (
         <div className="flashcard">
           <div className="flashcard-topline">
-            <span className="pair-pronunciations">
+            <span className="pair-pronunciations" tabIndex={isMobile ? -1 : undefined}>
               <span>{selectedPair.wordOne} {selectedPair.pronunciations[0]}</span>
               <span>{selectedPair.wordTwo} {selectedPair.pronunciations[1]}</span>
             </span>
@@ -312,6 +333,16 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
             })}
           </div>
           <PracticeNote note={selectedPair.note} noteImage={selectedPair.noteImage} />
+          {isMobile && (
+            <div className="practice-card-actions">
+              <button className="practice-next-button" type="button" onClick={selectNextPair} disabled={!nextPair}>
+                Next
+              </button>
+              <button className="practice-close-button" type="button" onClick={closePracticeCard} aria-label="Close practice card">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+          )}
         </div>
   );
 
@@ -346,9 +377,15 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
         onClose={closePracticeCard}
       >
         <div className="practice-dialog-toolbar">
-          <button type="button" onClick={closePracticeCard} aria-label="Close practice card">
-            <span aria-hidden="true">×</span>
-          </button>
+          <div className="practice-progress">
+            <span>Pair {pairPosition} of {pairs.length} · {pairs.length - pairPosition} left</span>
+            <progress
+              value={pairPosition}
+              max={pairs.length}
+              aria-label="Word pair position"
+              aria-valuetext={`Pair ${pairPosition} of ${pairs.length}, ${pairs.length - pairPosition} pairs left`}
+            />
+          </div>
         </div>
         {isMobile && practiceCard}
       </dialog>
