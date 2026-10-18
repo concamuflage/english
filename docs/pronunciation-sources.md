@@ -30,6 +30,11 @@ Dictionary references for pronunciation checks include
 [apologue](https://www.dictionary.com/browse/apologue),
 [perspicuous](https://www.dictionary.com/browse/perspicuous), and
 [Cambridge's doughty pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/doughty).
+The added `eclipse / ɪˈklɪps /` entry follows
+[Cambridge's eclipse pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/eclipse).
+The entries `bile / baɪl /` and `bale / beɪl /` follow Cambridge's
+[bile pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/bile) and
+[bale entry](https://dictionary.cambridge.org/us/dictionary/english/bale).
 
 ## Upstream license
 

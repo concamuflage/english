@@ -9,10 +9,9 @@ export type ConfusingWordQuestions = [ConfusingWordQuestion, ConfusingWordQuesti
 
 export type ConfusingWordPair = {
   slug: string;
-  wordOne: string;
-  wordTwo: string;
+  words: readonly [string, string, ...string[]];
   /** IPA in word order; for example, solipsism is `/ ˈsɒl ɪpˌsɪz əm /`. */
-  pronunciations: readonly [string, string];
+  pronunciations: readonly string[];
   questions: ConfusingWordQuestions;
   note?: string;
   /** Image-only note; e.g. the apothem card displays a labeled hexagon diagram. */
@@ -25,7 +24,13 @@ type ConfusingWordExtraQuestion = readonly [sentence: string, answerKey: Confusi
 
 type ConfusingWordPairRow = readonly [string, string, string, string, ...ConfusingWordExtraQuestion[]];
 
-const confusingWordPairRows: ConfusingWordPairRow[] = [
+/** Explicit groups support three or more choices, e.g. jagged / rugged / ragged. */
+type ConfusingWordGroupRow = {
+  words: [string, string, ...string[]];
+  questions: ConfusingWordQuestions;
+};
+
+const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = [
   ["coma", "comma", "After the crash, he fell into a ____.", "Add a ____ after the opening phrase."],
   ["bowl", "bowel", "She poured soup into the ____.", "The surgeon examined the lower ____."],
   ["geography", "geology", "The class studied the ____ of river valleys.", "The class studied the ____ of volcanic rock."],
@@ -74,14 +79,18 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["peel", "peal", "Remove the orange ____ first.", "A loud ____ of bells filled the square."],
   ["deflect", "defect", "The shield can ____ the blow.", "A tiny ____ ruined the lens."],
   ["Google", "goggle", "I used ____ to find the address.", "Do not ____ at strangers."],
-  [
-    "rugged",
-    "ragged",
-    "The hikers crossed ____ ground.",
-    "His coat looked torn and ____.",
-    ["The phone has a ____ case for outdoor work.", "wordOne"],
-    ["His ____ face showed years of mountain weather.", "wordOne"]
-  ],
+  {
+    words: ["jagged", "rugged", "ragged"],
+    questions: [
+      { sentence: "The hikers crossed ____ ground, struggling over boulders and steep slopes where no smooth trail existed.", answer: "rugged" },
+      { sentence: "His coat looked torn and ____.", answer: "ragged" },
+      { sentence: "The phone has a ____ case for outdoor work.", answer: "rugged" },
+      { sentence: "His ____ face showed years of mountain weather.", answer: "rugged" },
+      { sentence: "The glass had a ____ edge.", answer: "jagged" },
+      { sentence: "The ____ mountains rose against the sky, their sharp, uneven peaks resembling the teeth of a saw.", answer: "jagged" },
+      { sentence: "The flag was old and ____.", answer: "ragged" }
+    ]
+  },
   ["bubonic", "bucolic", "The doctor studied ____ plague.", "The poem praised a ____ village."],
   ["orc", "orca", "The fantasy game features an ____.", "The boat followed an ____ in the bay."],
   ["flub", "flob", "Do not ____ your opening line.", "In British informal English, to ____ is to spit."],
@@ -127,14 +136,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["subservient", "subversion", "He refused to be ____ to power.", "The plot aimed at political ____."],
   ["exceptional", "exceptionable", "Her results were ____.", "His rude comment was ____."],
   ["portable", "potable", "Bring a ____ charger.", "The hikers need ____ water."],
-  [
-    "orotund",
-    "rotund",
-    "The professor's ____ voice sounded grand, formal, and resonant.",
-    "The ____ jar sat on the shelf.",
-    ["The baby had a ____ belly and round cheeks.", "wordTwo"],
-    ["The singer's ____ voice was full, round, and warm.", "wordTwo"]
-  ],
   [
     "libertarian",
     "liberal",
@@ -221,7 +222,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["lance", "lancet", "The knight raised his ____.", "The nurse used a ____ for the sample."],
   ["hurtle", "hurdle", "Rocks began to ____ down the slope.", "She cleared the final ____."],
   ["quash", "squash", "The judge moved to ____ the order.", "Please ____ the box flat."],
-  ["jagged", "ragged", "The glass had a ____ edge.", "The flag was old and ____."],
   ["steep", "steeple", "The trail was too ____ for bikes.", "The church ____ rose above town."],
   ["pumpkin", "bumpkin", "We carved a ____ for Halloween.", "The joke mocked him as a country ____."],
   [
@@ -269,16 +269,7 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["impassioned", "impassive", "She gave an ____ plea.", "His face stayed ____ during the verdict."],
   ["stoical", "stolid", "He remained ____ despite pain.", "The ____ guard barely reacted."],
   ["execrable", "inexorable", "The food was ____.", "The tide made ____ progress."],
-  [
-    "fractious",
-    "factitious",
-    "The ____ toddler refused to nap.",
-    "The scandal was based on ____ claims.",
-    ["The ____ committee argued over every small detail.", "wordOne"],
-    ["The lab created a ____ mineral that looked natural but was artificial.", "wordTwo"]
-  ],
   ["intelligent", "intelligible", "The dog seemed unusually ____.", "Her explanation was finally ____."],
-  ["pliant", "compliant", "The wire stayed ____ after heating.", "The company became ____ with the rule."],
   ["compliant", "complaisant", "The form is ____ with the law.", "The ____ clerk happily changed the booking."],
   ["onerous", "ornery", "The contract placed ____ duties on us.", "The ____ mule refused to move."],
   [
@@ -293,7 +284,14 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["torpor", "stupor", "The heat left him in ____.", "The drug left him in a ____."],
   ["grub", "grubby", "The bird carried a ____ to its nest.", "His hands were ____ after digging."],
   ["grub", "scrub", "The campers ate simple ____.", "Use a brush to ____ the pan."],
-  ["perspicacious", "perspicuous", "Her ____ analysis found the flaw.", "The manual was brief and ____."],
+  [
+    "perspicacious",
+    "perspicuous",
+    "Her ____ analysis found the flaw.",
+    "The manual was brief and ____.",
+    ["The ____ judge saw the trick.", "wordOne"],
+    ["Her summary was ____ and direct.", "wordTwo"]
+  ],
   ["querulous", "garrulous", "The ____ customer complained again.", "The ____ guest talked for hours."],
   ["sinuous", "arduous", "A ____ path followed the river.", "The exam was ____."],
   ["renege", "negate", "Do not ____ on your promise.", "One error can ____ the result."],
@@ -304,17 +302,22 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["indigent", "indignant", "The clinic treats ____ patients.", "She sounded ____ at the accusation."],
   ["abstruse", "obstruct", "The theory was too ____ for beginners.", "Do not ____ the doorway."],
   ["decry", "descry", "The critic will ____ the policy.", "From the hill, we could ____ a sail."],
-  ["esurient", "prurient", "The ____ child asked for more food.", "The tabloid fed ____ curiosity."],
   ["ebullient", "emollient", "Her ____ mood lifted the room.", "The cream had an ____ effect."],
   ["expound", "propound", "The lecturer will ____ the theory.", "The scholar will ____ a new theory."],
   ["contrive", "connive", "They tried to ____ a clever excuse.", "The officials seemed to ____ in the fraud."],
   ["minatory", "nugatory", "The letter had a ____ tone.", "The change was ____ in practice."],
   ["baleful", "doleful", "He gave a ____ glare.", "The singer used a ____ tone."],
-  ["vindicate", "vindictive", "The evidence will ____ her claim.", "His reply sounded petty and ____."],
+  [
+    "vindicate",
+    "vindictive",
+    "The evidence will ____ her claim.",
+    "His reply sounded petty and ____.",
+    ["The records will ____ the whistleblower.", "wordOne"],
+    ["The note felt ____ rather than fair.", "wordTwo"]
+  ],
   ["desease", "decease", "The old text spelled disease as ____.", "The policy ends upon the holder's ____."],
   ["frumpy", "grumpy", "The coat looked ____ and old.", "The sleepy child was ____."],
   ["fusty", "fustian", "The attic smelled ____.", "The speech was full of ____."],
-  ["perspicacious", "perspicuous", "The ____ judge saw the trick.", "Her summary was ____ and direct."],
   ["vicarious", "precarious", "He felt ____ pride in her victory.", "The ladder looked ____."],
   ["preclude", "prelude", "Rain may ____ the picnic.", "The song served as a ____."],
   ["efficacy", "efface", "The trial measured the drug's ____.", "Time can ____ old inscriptions."],
@@ -325,7 +328,14 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["inquisitive", "quizzical", "The ____ reporter asked more questions.", "He gave a ____ look."],
   ["apposite", "opposite", "Her example was perfectly ____.", "The bank is on the ____ side."],
   ["bilk", "milk", "The scammer tried to ____ investors.", "Buy a carton of ____."],
-  ["expletive", "invective", "The angry driver shouted an ____.", "The column was filled with ____."],
+  [
+    "bile",
+    "bale",
+    "The liver produces ____, a bitter liquid that helps the body digest fats.",
+    "The farmer loaded a ____ of hay onto the truck, its tightly packed stalks held together with twine.",
+    ["His reply was full of ____, expressing bitter anger through a stream of insults.", "wordOne"],
+    ["The workers will ____ the dried hay, compressing it into bundles and tying them for storage.", "wordTwo"]
+  ],
   ["canny", "uncanny", "The ____ investor waited for proof.", "The resemblance was ____."],
   ["fray", "flay", "The rope began to ____.", "The chef will ____ the fish."],
   ["salacious", "sagacious", "The article had ____ gossip.", "The elder gave ____ advice."],
@@ -335,7 +345,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["trench", "trenchant", "The soldiers dug a ____.", "Her review was brief and ____."],
   ["baleful", "baneful", "The cat gave a ____ stare.", "The policy had a ____ effect."],
   ["miscreant", "recreant", "The ____ fled the scene.", "The ____ knight abandoned his duty."],
-  ["vindicate", "vindictive", "The records will ____ the whistleblower.", "The note felt ____ rather than fair."],
   ["tepid", "trepid", "The soup was only ____.", "The ____ intern entered the room."],
   ["anathema", "antithesis", "Dishonesty is ____ to her.", "Chaos is the ____ of order."],
   ["headlong", "headstrong", "He rushed ____ into the plan.", "The ____ child refused advice."],
@@ -364,7 +373,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
     ["The abandoned garden was filled with ____ growth, its vines spreading freely over every wall and path.", "wordOne"],
     ["The old novel described her as ____ for openly pursuing sexual pleasure, reflecting the moral judgments of its time.", "wordOne"]
   ],
-  ["abyssal", "abysmal", "The fish lives in the ____ zone.", "The team's record was ____."],
   [
     "exult",
     "exalt",
@@ -390,14 +398,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
     ["The speech was full of ____ remarks about working hard, offering nothing fresh or memorable.", "wordTwo"],
     ["The novel's plot was disappointingly ____, repeating familiar twists without a single original idea.", "wordTwo"]
   ],
-  [
-    "obnoxious",
-    "noxious",
-    "The ____ guest insulted everyone.",
-    "The factory released ____ fumes.",
-    ["The advertisement was so ____ that its loud music and repeated interruptions drove viewers away.", "wordOne"],
-    ["The group spread ____ propaganda that encouraged hatred and violence against its neighbors.", "wordTwo"]
-  ],
   ["intrepid", "insipid", "The ____ explorer crossed the dangerous ice alone, undaunted by the risk of falling through.", "The soup tasted ____, with so little seasoning that it seemed like warm water."],
   ["rowdy", "dowdy", "The ____ crowd shouted, shoved one another, and ignored repeated requests to quiet down.", "The room looked ____, furnished with shapeless chairs and drab, outdated curtains."],
   ["cortex", "vortex", "The brain's ____ is its outer layer of tissue, involved in perception and thought.", "Leaves spun in a ____, circling rapidly around the center of a swirling column of air."],
@@ -412,7 +412,15 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["elicit", "illicit", "The interviewer asked gentle, open-ended questions to ____ honest answers from the nervous witness.", "The police seized ____ goods that had been smuggled across the border in violation of the law."],
   ["hyperbole", "hyperbola", "Saying that a five-minute delay ruined your entire life is ____, an obvious exaggeration.", "The graph of x squared minus y squared equals one is a ____, with two separate curved branches."],
   ["hyperbola", "parabola", "The graph of y equals one divided by x is a ____, with two separate branches approaching the axes.", "Ignoring air resistance, a thrown ball traces a ____, a single curved arc rising and then falling."],
-  ["ellipse", "ellipsis", "The planet's orbit forms an ____, an oval curve rather than a perfect circle.", "Use an ____ of three dots to show that words have been omitted from a quotation."],
+  {
+    words: ["ellipsis", "ellipse", "eclipse"],
+    questions: [
+      { sentence: "Use an ____ of three dots to show that words have been omitted from a quotation.", answer: "ellipsis" },
+      { sentence: "The planet's orbit forms an ____, an oval curve rather than a perfect circle.", answer: "ellipse" },
+      { sentence: "During the solar ____, the Moon passed between Earth and the Sun, blocking the Sun from view.", answer: "eclipse" },
+      { sentence: "Her success as a novelist began to ____ her earlier achievements as a journalist, making them seem less remarkable.", answer: "eclipse" }
+    ]
+  },
   ["levee", "levity", "The river broke through the ____, the raised earth embankment built to keep floodwater out of town.", "A little ____ eased the tension when her gentle joke made everyone smile during the difficult meeting."],
   ["concave", "convex", "The inside of the spoon's bowl is ____, curving inward like a small hollow.", "The outside of a magnifying lens is ____, bulging outward rather than curving inward."],
   ["dilatory", "desultory", "The lawyer used ____ tactics, repeatedly requesting extensions to delay the trial.", "They had a ____ conversation, jumping from gardening to politics without following any topic for long."],
@@ -433,7 +441,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
     ["In her speech, she will ____ citizens to vote, urging them to make their voices heard rather than stay home.", "wordTwo"]
   ],
   ["indigent", "indigenous", "The charity serves ____ clients who cannot afford food, rent, or basic clothing.", "The tree is ____ to this forest, having grown here naturally long before imported species arrived."],
-  ["fathomless", "unfathomable", "The well seemed ____, its darkness giving no hint of how far down the water lay.", "Her decision was ____ to her friends; none could understand why she had abandoned her lifelong dream."],
   ["mirth", "smirch", "The joke filled the room with ____, and even the solemn host joined in the laughter.", "The false accusation could ____ his name, staining a reputation built on years of honest service."],
   ["effusive", "diffuse", "She gave an ____ welcome, hugging every guest and pouring out enthusiastic expressions of delight.", "The report was too ____ to follow, wandering through irrelevant details instead of making a clear point."],
   ["effusive", "effulgent", "His praise was ____, overflowing with enthusiastic compliments and repeated declarations of admiration.", "The sunrise was ____, bathing the hills in brilliant golden light."],
@@ -463,13 +470,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
   ["offshoot", "upshot", "The company launched an ____ of its research division, a separate business developing the division's inventions.", "The negotiations achieved nothing; the ____ was a costly delay rather than an agreement."],
   ["amity", "enmity", "The treaty restored ____ between the neighbors, allowing them to trade and cooperate as friends again.", "The bitter feud created lasting ____, and the families treated each other as enemies for decades."],
   ["disprove", "disapprove", "The new data may ____ the theory by showing that its central prediction is false.", "Her parents ____ of the plan because they believe leaving school would be a serious mistake."],
-  [
-    "rebuff",
-    "spurn",
-    "He met every request with a ____, bluntly refusing even to consider helping.",
-    "She chose to ____ the dishonest offer, rejecting it with contempt despite the promised fortune.",
-    ["She would ____ his attempts at conversation, snubbing him by turning away without a reply.", "wordOne"]
-  ],
   [
     "rebuff",
     "rebut",
@@ -530,17 +530,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
     ["Having forgotten his wallet, he tried to ____ a few coins from his friends to pay for the bus.", "wordTwo"]
   ],
   ["edema", "enema", "The injury caused ankle ____, with fluid building up in the tissues and making the joint swell.", "The nurse administered an ____, introducing fluid into the rectum to help empty the bowel."],
-  [
-    "brash",
-    "brazen",
-    "The ____ newcomer interrupted senior colleagues to boast that he could do all their jobs better.",
-    "The thief made a ____ attempt to sell the stolen watch back to its owner, showing no shame.",
-    ["The guests were drinking from ____ cups, their brass surfaces gleaming in the candlelight.", "wordTwo"],
-    ["The horrible ____ voice of the fire bell shattered the silence with its harsh metallic clang.", "wordTwo"],
-    ["He showed a ____ disregard for the rules, openly breaking them without the slightest embarrassment.", "wordTwo"],
-    ["He was a ____ young executive, full of confidence and quick to dismiss advice from more experienced colleagues.", "wordOne"],
-    ["She asks such ____ questions, demanding to know strangers' salaries within minutes of meeting them.", "wordOne"]
-  ],
   [
     "wry",
     "awry",
@@ -608,8 +597,6 @@ const confusingWordPairRows: ConfusingWordPairRow[] = [
 const confusingWordPairNotes: Record<string, string> = {
   "statue-statute":
     "A bill is a proposed law; a statute is an enacted law. Example: A river-protection bill becomes a statute when enacted.",
-  "obnoxious-noxious":
-    "Noxious can also mean disagreeable or offensive, overlapping with obnoxious in the sense of annoying or unpleasant. However, noxious usually emphasizes harm, as in noxious fumes, while obnoxious usually emphasizes annoyance or offensiveness, as in obnoxious behavior.",
   "doughty-dowdy": "In doughty, the t is pronounced /t/, not /d/. Say DOW-tee, not DOW-dee.",
   "doughty-doughy": "In doughty, the t is pronounced /t/, not /d/. Say DOW-tee, not DOW-dee.",
   "progeny-progenitor": "The progenitor produces progeny.",
@@ -637,44 +624,45 @@ function slugifyWord(word: string): string {
 }
 
 /**
- * Builds unique practice cards from compact word-pair rows.
+ * Builds unique practice cards from compact pairs or explicit word groups.
  *
- * Example: duplicate `perspicacious / perspicuous` rows become `perspicacious-perspicuous` and `perspicacious-perspicuous-2`,
+ * Example: the three-word group becomes `jagged-rugged-ragged`,
  * while `confusingWordPairNotes["coma-comma"] = "Use coma for unconsciousness."` adds a card note.
- * Every heading displays two word/IPA lines, e.g. `coma / ˈkoʊmə /` and `comma / ˈkɑmə /`.
+ * Every word has its own IPA line, e.g. `coma / ˈkoʊmə /` and `comma / ˈkɑmə /`.
  * The `apothegm-apothem` card includes an image-only note showing an apothem.
  */
-function buildConfusingWordPairs(rows: ConfusingWordPairRow[]): ConfusingWordPair[] {
+function buildConfusingWordPairs(rows: (ConfusingWordPairRow | ConfusingWordGroupRow)[]): ConfusingWordPair[] {
   const slugCounts = new Map<string, number>();
 
-  return rows.map(([wordOne, wordTwo, sentenceOne, sentenceTwo, ...extraQuestions]) => {
-    const trimmedWordOne = wordOne.trim();
-    const trimmedWordTwo = wordTwo.trim();
-    const baseSlug = `${slugifyWord(wordOne)}-${slugifyWord(wordTwo)}`;
+  return rows.map((row) => {
+    let words: [string, string, ...string[]];
+    let questions: ConfusingWordQuestions;
+    if ("words" in row) {
+      words = [row.words[0].trim(), row.words[1].trim(), ...row.words.slice(2).map((word) => word.trim())];
+      questions = row.questions;
+    } else {
+      // Preserve existing compact pair rows and their slugs while allowing explicit groups.
+      const [wordOne, wordTwo, sentenceOne, sentenceTwo, ...extraQuestions] = row;
+      words = [wordOne.trim(), wordTwo.trim()];
+      questions = [
+        { sentence: sentenceOne, answer: words[0] },
+        { sentence: sentenceTwo, answer: words[1] },
+        ...extraQuestions.map(([sentence, answerKey]) => ({
+          sentence,
+          answer: answerKey === "wordOne" ? words[0] : words[1]
+        }))
+      ];
+    }
+    const baseSlug = words.map(slugifyWord).join("-");
     const slugCount = slugCounts.get(baseSlug) ?? 0;
     const slug = slugCount === 0 ? baseSlug : `${baseSlug}-${slugCount + 1}`;
     slugCounts.set(baseSlug, slugCount + 1);
-    const questions: ConfusingWordQuestions = [
-      {
-        sentence: sentenceOne,
-        answer: trimmedWordOne
-      },
-      {
-        sentence: sentenceTwo,
-        answer: trimmedWordTwo
-      },
-      ...extraQuestions.map(([sentence, answerKey]) => ({
-        sentence,
-        answer: answerKey === "wordOne" ? trimmedWordOne : trimmedWordTwo
-      }))
-    ];
 
     return {
       slug,
-      wordOne: trimmedWordOne,
-      wordTwo: trimmedWordTwo,
+      words,
       // Exact spelling preserves stress distinctions such as August versus august.
-      pronunciations: [wordPronunciations[trimmedWordOne], wordPronunciations[trimmedWordTwo]],
+      pronunciations: words.map((word) => wordPronunciations[word]),
       note: confusingWordPairNotes[slug],
       noteImage: confusingWordPairNoteImages[slug],
       questions
@@ -686,8 +674,8 @@ function buildConfusingWordPairs(rows: ConfusingWordPairRow[]): ConfusingWordPai
 // Case and accents do not affect alphabetical order; existing slugs stay stable for saved selections.
 export const confusingWordPairs: ConfusingWordPair[] = buildConfusingWordPairs(confusingWordPairRows).sort(
   (left, right) =>
-    left.wordOne.localeCompare(right.wordOne, "en", { sensitivity: "base" }) ||
-    left.wordTwo.localeCompare(right.wordTwo, "en", { sensitivity: "base" })
+    left.words[0].localeCompare(right.words[0], "en", { sensitivity: "base" }) ||
+    left.words[1].localeCompare(right.words[1], "en", { sensitivity: "base" })
 );
 
 /**

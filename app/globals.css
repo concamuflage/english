@@ -781,7 +781,16 @@ h3 {
   gap: 10px;
 }
 
+@media (min-width: 861px) {
+  .selection-options {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 .selection-option {
+  /* Anchor the hidden radio inside its pill so focusing it cannot jump the outer word list. */
+  position: relative;
   align-items: center;
   background: white;
   border: 1px solid var(--line);
@@ -799,8 +808,11 @@ h3 {
   /* Hide the radio glyph while retaining keyboard selection and its accessible label. */
   clip-path: inset(50%);
   height: 1px;
+  left: 50%;
+  margin: 0;
   overflow: hidden;
   position: absolute;
+  top: 50%;
   white-space: nowrap;
   width: 1px;
 }

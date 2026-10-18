@@ -17,6 +17,13 @@ type ConfusingWordsPracticeProps = {
 
 const LAST_PAIR_STORAGE_KEY = "confusing-words:last-pair";
 
+// Keep saved selections on their merged cards, e.g. ellipse-ellipsis resumes the new three-word group.
+const MERGED_GROUP_SLUGS: Readonly<Record<string, string>> = {
+  "jagged-ragged": "jagged-rugged-ragged",
+  "rugged-ragged": "jagged-rugged-ragged",
+  "ellipse-ellipsis": "ellipsis-ellipse-eclipse"
+};
+
 /**
  * Produces a stable numeric sort weight for a question on a selected card.
  *
@@ -67,6 +74,8 @@ function PracticeNote({ note, noteImage }: Pick<ConfusingWordPair, "note" | "not
  *
  * Example: selecting `coma / comma` shows its questions; page scrolling hides pair buttons above the sticky card.
  * Every heading shows each word and its IPA on a separate line, e.g. `coma / ˈkoʊmə /`.
+ * Three-word groups, e.g. jagged / rugged / ragged, show three choices for every question.
+ * Saved selections for merged pairs, e.g. ellipse / ellipsis, resume the replacement group.
  * Reopening the page resumes a saved pair such as `blight-plight` with unanswered questions.
  * On mobile, tapping a pair opens a modal; closing it returns to the same place in the vertical list.
  * The mobile card's bottom Next button advances alphabetically with unanswered questions.
@@ -132,7 +141,8 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
         return;
       }
 
-      const slug = pairs.find((pair) => pair.slug === savedSlug)?.slug ?? pairs[0]?.slug;
+      const resumedSlug = MERGED_GROUP_SLUGS[savedSlug] ?? savedSlug;
+      const slug = pairs.find((pair) => pair.slug === resumedSlug)?.slug ?? pairs[0]?.slug;
       if (!slug) {
         return;
       }
@@ -211,7 +221,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
     return null;
   }
 
-  const choices = [selectedPair.wordOne, selectedPair.wordTwo];
+  const choices = selectedPair.words;
   const pairPosition = pairs.findIndex((pair) => pair.slug === selectedPair.slug) + 1;
   const nextPair = pairs[pairPosition];
 
@@ -282,8 +292,9 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
         <div className="flashcard">
           <div className="flashcard-topline">
             <span className="pair-pronunciations" tabIndex={isMobile ? -1 : undefined}>
-              <span>{selectedPair.wordOne} {selectedPair.pronunciations[0]}</span>
-              <span>{selectedPair.wordTwo} {selectedPair.pronunciations[1]}</span>
+              {selectedPair.words.map((word, index) => (
+                <span key={word}>{word} {selectedPair.pronunciations[index]}</span>
+              ))}
             </span>
           </div>
           <div className="question-stack">
@@ -358,7 +369,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
             type="button"
           >
             <span>
-              {pair.wordOne} / {pair.wordTwo}
+              {pair.words.join(" / ")}
             </span>
           </button>
         ))}
@@ -372,7 +383,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
       <dialog
         ref={dialogRef}
         className="practice-dialog"
-        aria-label={`Practice ${selectedPair.wordOne} and ${selectedPair.wordTwo}`}
+        aria-label={`Practice ${selectedPair.words.join(", ")}`}
         onCancel={closePracticeCard}
         onClose={closePracticeCard}
       >
