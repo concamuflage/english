@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import type { ConfusingWordPair } from "@/lib/confusingWords";
+import type { ConfusingWordPair, ConfusingWordQuestion } from "@/lib/confusingWords";
 
 type FeedbackState = {
   choice: string;
@@ -27,6 +27,11 @@ const MERGED_GROUP_SLUGS: Readonly<Record<string, string>> = {
 /** Normalizes word searches; e.g. ` MÉLANGE ` and `melange` both become `melange`. */
 function normalizeWordSearch(value: string) {
   return value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+/** Accepts the primary answer or an alternative; e.g. both fathomless and unfathomable fit ocean depths. */
+function isCorrectAnswer(question: ConfusingWordQuestion, choice: string) {
+  return choice === question.answer || question.alternativeAnswers?.includes(choice) === true;
 }
 
 /**
@@ -55,10 +60,11 @@ function shuffleQuestions(cardSlug: string, questions: ConfusingWordPair["questi
 }
 
 /**
- * Renders text and image notes inside the same collapsed-by-default disclosure.
+ * Renders text, comparison tables, and image notes inside a collapsed-by-default disclosure.
  *
  * Example: a `coma-comma` note can explain that `coma` is a medical state and `comma` is punctuation.
  * Expanding the `apothegm-apothem` note reveals the supplied diagram without a caption.
+ * The expletive/invective note displays a table, then its key distinction and examples.
  */
 function PracticeNote({ note, noteImage }: Pick<ConfusingWordPair, "note" | "noteImage">) {
   if (!note && !noteImage) {
@@ -68,7 +74,27 @@ function PracticeNote({ note, noteImage }: Pick<ConfusingWordPair, "note" | "not
   return (
     <details className="practice-note">
       <summary>Note</summary>
-      {note && <p>{note}</p>}
+      {typeof note === "string" && <p>{note}</p>}
+      {note && typeof note !== "string" && (
+        <>
+          <table className="practice-note-table">
+            <thead>
+              <tr>{note.table.columns.map((column, index) => <th key={index} scope="col">{column}</th>)}</tr>
+            </thead>
+            <tbody>
+              {note.table.rows.map(([label, ...cells]) => (
+                <tr key={label}>
+                  <th scope="row">{label}</th>
+                  {cells.map((cell, index) => <td key={index}>{cell}</td>)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p><strong>{note.heading}</strong></p>
+          <ul>{note.examples.map((example) => <li key={example}>{example}</li>)}</ul>
+          <p>{note.conclusion}</p>
+        </>
+      )}
       {noteImage && <Image className="practice-note-image" {...noteImage} />}
     </details>
   );
@@ -87,6 +113,7 @@ function PracticeNote({ note, noteImage }: Pick<ConfusingWordPair, "note" | "not
  * Its progress indicator shows list position, e.g. pair 1 of 245 with 244 pairs left, not completed practice.
  * Mobile actions place Next in the bottom center and the close icon at the lower right.
  * Mobile search filters any word in a group; e.g. `ragged` finds jagged / rugged / ragged.
+ * Questions may accept multiple choices, e.g. fathomless and unfathomable for ocean depths.
  */
 export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
   const [selectedSlug, setSelectedSlug] = useState(pairs[0]?.slug ?? "");
@@ -285,6 +312,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
    * Checks one sentence answer and stores visual-only feedback for its selection row.
    *
    * Example: choosing `comma` for `He fell into a ____.` marks question 1 as wrong.
+   * A listed alternative, e.g. unfathomable for ocean depths, receives correct feedback too.
    */
   function selectAnswer(questionIndex: number, choice: string) {
     const question = displayedQuestions[questionIndex];
@@ -298,7 +326,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
       ...currentFeedback,
       [questionIndex]: {
         choice,
-        isCorrect: choice === question.answer
+        isCorrect: isCorrectAnswer(question, choice)
       }
     }));
   }
@@ -329,7 +357,7 @@ export function ConfusingWordsPractice({ pairs }: ConfusingWordsPracticeProps) {
                     <div className="selection-options">
                       {choices.map((choice) => {
                         const isSelected = feedback?.choice === choice;
-                        const isCorrectChoice = feedback && choice === question.answer;
+                        const isCorrectChoice = feedback && isCorrectAnswer(question, choice);
                         const selectionClassName = [
                           "selection-option",
                           isSelected ? "selection-option-selected" : "",

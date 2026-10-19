@@ -36,6 +36,26 @@ The entries `bile / baɪl /` and `bale / beɪl /` follow Cambridge's
 [bile pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/bile) and
 [bale entry](https://dictionary.cambridge.org/us/dictionary/english/bale).
 
+The entry `subversive / səbˈvɝ sɪv /` follows the American pronunciation in
+[Cambridge's subversive entry](https://dictionary.cambridge.org/us/dictionary/english/subversive).
+
+The entry `facetious / fəˈsi ʃəs /` follows
+[Cambridge's facetious entry](https://dictionary.cambridge.org/us/dictionary/english/facetious).
+
+The entry `factious / ˈfæk ʃəs /` follows
+[Cambridge's factious entry](https://dictionary.cambridge.org/us/dictionary/english/factious).
+
+The entry `illegible / ɪˈlɛdʒ ə bəl /` follows
+[Cambridge's illegible entry](https://dictionary.cambridge.org/us/dictionary/english/illegible).
+
+The entries `bemuse / bɪˈmjuz /` and `amuse / əˈmjuz /` follow Cambridge's
+[bemuse entry](https://dictionary.cambridge.org/dictionary/english/bemuse) and
+[amuse pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/amuse),
+with vowel-length marks omitted to match the site's General American style.
+
+The entry `quarrelsome / ˈkwɔr əl səm /` follows the American pronunciation in
+[Cambridge's quarrelsome pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/quarrelsome).
+
 ## Upstream license
 
 The MIT License (MIT)

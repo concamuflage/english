@@ -679,6 +679,34 @@ h3 {
   margin: 12px 0 0;
 }
 
+.practice-note-table {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-top: 12px;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.practice-note-table th,
+.practice-note-table td {
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+  padding: 8px 6px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.practice-note-table th {
+  color: var(--accent-deep);
+}
+
+.practice-note ul {
+  color: var(--muted);
+  line-height: 1.6;
+  padding-left: 20px;
+}
+
 .question-stack {
   display: grid;
   gap: 26px;

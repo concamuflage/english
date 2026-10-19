@@ -3,9 +3,19 @@ import { wordPronunciations } from "@/lib/wordPronunciations";
 export type ConfusingWordQuestion = {
   sentence: string;
   answer: string;
+  /** Other valid choices, e.g. unfathomable also fits the fathomless ocean-depth sentence. */
+  alternativeAnswers?: string[];
 };
 
 export type ConfusingWordQuestions = [ConfusingWordQuestion, ConfusingWordQuestion, ...ConfusingWordQuestion[]];
+
+/** Supports plain notes or a comparison table followed by examples, e.g. expletive / invective. */
+export type ConfusingWordNote = string | {
+  table: { columns: string[]; rows: string[][] };
+  heading: string;
+  examples: string[];
+  conclusion: string;
+};
 
 export type ConfusingWordPair = {
   slug: string;
@@ -13,7 +23,7 @@ export type ConfusingWordPair = {
   /** IPA in word order; for example, solipsism is `/ ˈsɒl ɪpˌsɪz əm /`. */
   pronunciations: readonly string[];
   questions: ConfusingWordQuestions;
-  note?: string;
+  note?: ConfusingWordNote;
   /** Image-only note; e.g. the apothem card displays a labeled hexagon diagram. */
   noteImage?: { src: string; alt: string; width: number; height: number };
 };
@@ -134,8 +144,39 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
   ["preposterous", "preponderance", "That excuse sounds ____.", "The case rests on a ____ of evidence."],
   ["corpulent", "opulent", "The old portrait shows a ____ merchant.", "They stayed in an ____ hotel."],
   ["subservient", "subversion", "He refused to be ____ to power.", "The plot aimed at political ____."],
+  [
+    "subversive",
+    "subservient",
+    "The group's ____ activities aimed to undermine the government and replace the existing political system.",
+    "The ____ assistant agreed with every demand from his boss, never daring to express an opinion of his own."
+  ],
   ["exceptional", "exceptionable", "Her results were ____.", "His rude comment was ____."],
   ["portable", "potable", "Bring a ____ charger.", "The hikers need ____ water."],
+  [
+    "factious",
+    "factitious",
+    "The movement became ____, breaking into hostile camps that backed rival leaders and refused to cooperate.",
+    "The product's ____ popularity was manufactured through fake reviews and paid endorsements rather than genuine customer enthusiasm."
+  ],
+  [
+    "fractious",
+    "factitious",
+    "The tired toddler grew ____, whining at every suggestion and refusing to cooperate with his parents.",
+    "The campaign's ____ popularity came from paid supporters and staged crowds rather than genuine public enthusiasm.",
+    ["The ____ horse tossed its head and repeatedly refused to follow the rider's commands.", "wordOne"],
+    ["The company created a ____ shortage by withholding stock from stores, making an abundant product appear scarce.", "wordTwo"]
+  ],
+  [
+    "factitious",
+    "facetious",
+    "The rally's ____ enthusiasm came from paid actors instructed to cheer, rather than from genuine public support.",
+    "His ____ suggestion that they solve the budget crisis by printing money was an ill-timed joke during a serious meeting.",
+    ["It seems probable that several of the mounds are ____, built by people rather than formed naturally.", "wordOne"],
+    ["The merchants created a ____ demand by spreading rumors of a shortage.", "wordOne"],
+    ["True ____ patients are those who consciously feign physical or psychological symptoms to assume the role of a patient because they desire attention, sympathy, and caring.", "wordOne"],
+    ['She was being ____ when she said, "Oh, great! Another three-hour meeting. Just what I needed."', "wordTwo"],
+    ["Don't be ____. I'm asking you a serious question.", "wordTwo"]
+  ],
   [
     "libertarian",
     "liberal",
@@ -211,6 +252,13 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
   ],
   ["averse", "aver", "He is ____ to loud parties.", "The witness will ____ that it happened."],
   [
+    "avert",
+    "aver",
+    "The driver swerved to ____ a collision, narrowly avoiding the truck in front of her.",
+    "The witness continued to ____ that he had seen the suspect, firmly insisting that his account was true.",
+    ["She had to ____ her eyes from the dazzling headlights, turning her gaze toward the roadside.", "wordOne"]
+  ],
+  [
     "founder",
     "flounder",
     "The startup began to ____ and soon collapsed after costs rose.",
@@ -269,7 +317,21 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
   ["impassioned", "impassive", "She gave an ____ plea.", "His face stayed ____ during the verdict."],
   ["stoical", "stolid", "He remained ____ despite pain.", "The ____ guard barely reacted."],
   ["execrable", "inexorable", "The food was ____.", "The tide made ____ progress."],
+  [
+    "expletive",
+    "invective",
+    "When he hit his thumb with the hammer, he shouted an ____ that made the children cover their ears.",
+    "The editorial abandoned reasoned criticism and descended into ____, attacking the mayor with vicious personal insults.",
+    ["The broadcaster replaced the actor's ____ with a loud beep so viewers would not hear the swear word.", "wordOne"],
+    ["Her speech was a torrent of ____ against her former colleagues, filled with abusive accusations and contemptuous name-calling.", "wordTwo"]
+  ],
   ["intelligent", "intelligible", "The dog seemed unusually ____.", "Her explanation was finally ____."],
+  [
+    "illegible",
+    "intelligible",
+    "The address on the envelope was ____, its smudged letters impossible to read.",
+    "Once the speaker slowed down and explained the unfamiliar terms, her message became ____ to everyone in the room."
+  ],
   ["compliant", "complaisant", "The form is ____ with the law.", "The ____ clerk happily changed the booking."],
   ["onerous", "ornery", "The contract placed ____ duties on us.", "The ____ mule refused to move."],
   [
@@ -293,6 +355,12 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
     ["Her summary was ____ and direct.", "wordTwo"]
   ],
   ["querulous", "garrulous", "The ____ customer complained again.", "The ____ guest talked for hours."],
+  [
+    "querulous",
+    "quarrelsome",
+    "In a ____ voice, the passenger kept whining that the seat was too hard, the air too cold, and the journey too long.",
+    "The ____ neighbor picked fights over every minor disagreement, turning even a friendly conversation into a heated argument."
+  ],
   ["sinuous", "arduous", "A ____ path followed the river.", "The exam was ____."],
   ["renege", "negate", "Do not ____ on your promise.", "One error can ____ the result."],
   ["renege", "denigrate", "He may ____ on the deal.", "The ad tried to ____ its rival."],
@@ -328,6 +396,12 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
   ["inquisitive", "quizzical", "The ____ reporter asked more questions.", "He gave a ____ look."],
   ["apposite", "opposite", "Her example was perfectly ____.", "The bank is on the ____ side."],
   ["bilk", "milk", "The scammer tried to ____ investors.", "Buy a carton of ____."],
+  [
+    "bemuse",
+    "amuse",
+    "The contradictory instructions would ____ even an experienced technician, leaving her unsure which step to follow.",
+    "The clown tried to ____ the children with silly voices and balloon animals, making them laugh."
+  ],
   [
     "bile",
     "bale",
@@ -594,7 +668,24 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
   ["epigraph", "epitaph", "The essay begins with an ____, a short quotation from a poet that introduces its central idea.", "The tombstone bore a short ____ honoring the person buried beneath it."]
 ];
 
-const confusingWordPairNotes: Record<string, string> = {
+const confusingWordPairNotes: Record<string, ConfusingWordNote> = {
+  "expletive-invective": {
+    table: {
+      columns: ["", "Expletive", "Invective"],
+      rows: [
+        ["Meaning", "A swear word or curse", "Harsh, insulting, or abusive language"],
+        ["Emphasis", "Profanity", "Verbal attack"],
+        ["Typical form", "A single word", "A string of insults or angry remarks"]
+      ]
+    },
+    heading: "Key distinction",
+    examples: [
+      'Expletive: "Damn!" or "Fuck!"',
+      'Invective: "You\'re an incompetent, dishonest fool who has ruined everything!"'
+    ],
+    conclusion: "An invective can contain expletives, but it doesn't have to."
+  },
+  "factious-factitious": "Faction → Factious → Fighting between factions.",
   "statue-statute":
     "A bill is a proposed law; a statute is an enacted law. Example: A river-protection bill becomes a statute when enacted.",
   "doughty-dowdy": "In doughty, the t is pronounced /t/, not /d/. Say DOW-tee, not DOW-dee.",
