@@ -461,6 +461,8 @@ h3 {
 
 .pair-button {
   align-items: flex-start;
+  /* Preserve the former button's default text size after switching to crawlable links. */
+  font-size: 13.333333px;
   background: white;
   border-color: var(--line);
   border-radius: 8px;
@@ -665,6 +667,41 @@ h3 {
   /* Half the 574px diagram, also halving its available width on smaller screens. */
   max-width: 50%;
   width: 287px;
+}
+
+.practice-note-diagram {
+  display: block;
+  height: auto;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.practice-note-gallery {
+  display: grid;
+  gap: 12px;
+  /* Preserve left/right comparison order even on phones: embossed, then debossed. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.practice-note-gallery figure {
+  margin: 0;
+}
+
+.practice-note-gallery img {
+  /* Matching square frames align comparison photos and captions without stretching the images. */
+  aspect-ratio: 1;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.practice-note-gallery figcaption {
+  color: var(--accent-deep);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-top: 8px;
 }
 
 .practice-note summary {

@@ -7,10 +7,14 @@ export type ConfusingWordQuestion = {
   alternativeAnswers?: string[];
 };
 
-export type ConfusingWordQuestions = [ConfusingWordQuestion, ConfusingWordQuestion, ...ConfusingWordQuestion[]];
+/** At least one question per group; e.g. abyssal / abysmal can practice only the "very bad" meaning. */
+export type ConfusingWordQuestions = [ConfusingWordQuestion, ...ConfusingWordQuestion[]];
 
-/** Supports plain notes or a comparison table followed by examples, e.g. expletive / invective. */
+/** Supports plain notes, paragraph/list explanations (e.g. quantile / quartile), or comparison tables. */
 export type ConfusingWordNote = string | {
+  paragraphs: string[];
+  bullets: string[];
+} | {
   table: { columns: string[]; rows: string[][] };
   heading: string;
   examples: string[];
@@ -25,7 +29,9 @@ export type ConfusingWordPair = {
   questions: ConfusingWordQuestions;
   note?: ConfusingWordNote;
   /** Image-only note; e.g. the apothem card displays a labeled hexagon diagram. */
-  noteImage?: { src: string; alt: string; width: number; height: number };
+  noteImage?: { src: string; alt: string; width: number; height: number; wide?: boolean };
+  /** Side-by-side labeled images; e.g. embossed on the left and debossed on the right. */
+  noteImages?: { src: string; alt: string; width: number; height: number; caption: string }[];
 };
 
 type ConfusingWordAnswerKey = "wordOne" | "wordTwo";
@@ -152,6 +158,68 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
   ],
   ["exceptional", "exceptionable", "Her results were ____.", "His rude comment was ____."],
   ["portable", "potable", "Bring a ____ charger.", "The hikers need ____ water."],
+  [
+    "esurient",
+    "prurient",
+    "After two days without food, the ____ travelers devoured every scrap of bread they could find.",
+    "The tabloid catered to readers' ____ curiosity by publishing intimate details of the actor's sex life."
+  ],
+  [
+    "obnoxious",
+    "noxious",
+    "The ____ guest kept interrupting everyone and insulting the host until he was asked to leave.",
+    "Workers wore respirators to protect their lungs from the ____ fumes released by the chemicals."
+  ],
+  [
+    "quantile",
+    "quartile",
+    "The analyst calculated the 0.90 ____ of the response times, the cutoff corresponding to the 90th percentile rather than a division into quarters.",
+    "The first ____, Q1, is the 25th percentile, the first of the three cut points used to divide ordered data into four groups."
+  ],
+  {
+    words: ["fathomless", "unfathomable"],
+    questions: [
+      {
+        sentence: "Her decision to reject the offer was ____ to her friends; despite her explanation, they could not understand her reasons.",
+        answer: "unfathomable"
+      }
+    ]
+  },
+  {
+    words: ["abyssal", "abysmal"],
+    questions: [
+      {
+        sentence: "The restaurant's service was ____: our food arrived cold after a two-hour wait, and the staff ignored every complaint.",
+        answer: "abysmal"
+      }
+    ]
+  },
+  [
+    "emboss",
+    "engrave",
+    "The stationer will ____ the initials on the invitation, raising the letters above the paper so you can feel them with your fingertips.",
+    "The jeweler will ____ the date inside the silver ring, cutting fine grooves into the metal with a sharp tool."
+  ],
+  [
+    "emboss",
+    "deboss",
+    "The printer will ____ the wedding invitations so that the lettering rises above the surface of the paper.",
+    "The manufacturer will ____ the logo into the leather cover, pressing it below the surface to create a recessed design."
+  ],
+  [
+    "attenuate",
+    "extenuate",
+    "The thick walls help ____ the noise from the street, reducing its volume to a faint hum inside the room.",
+    "His youth and lack of experience may ____ his misconduct, making it seem more forgivable without excusing it entirely."
+  ],
+  [
+    "rhapsody",
+    "prosody",
+    "The pianist performed a passionate ____, a musical composition that moved freely between contrasting moods rather than following a strict form.",
+    "In their study of ____, the students marked the poem's stressed syllables and analyzed its meter, rhythm, and rhyme.",
+    ["The mayor launched into a long ____ about plans for the city.", "wordOne"],
+    ["The breathtaking view left her in a ____ of delight, so overwhelmed with joy that she forgot the cold.", "wordOne"]
+  ],
   [
     "factious",
     "factitious",
@@ -669,6 +737,19 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
 ];
 
 const confusingWordPairNotes: Record<string, ConfusingWordNote> = {
+  "quantile-quartile": {
+    paragraphs: [
+      "Both quantiles and quartiles are values that divide sorted data into proportions.",
+      "For example, consider the sorted scores:",
+      "[60, 71, 79, 82, 85, 87, 90, 100]"
+    ],
+    bullets: [
+      "The 0.9 quantile (90th percentile) is a value below which approximately 90% of the data fall, with approximately 10% above it.",
+      "The first quartile (Q1, or 0.25 quantile) is a value below which approximately 25% of the data fall, with approximately 75% above it."
+    ]
+  },
+  "obnoxious-noxious": "Both words can mean offensive or unpleasant, but obnoxious is more common and idiomatic for annoying behavior. Use noxious for something harmful or poisonous—for example, an obnoxious guest but noxious fumes.",
+  "emboss-engrave": "Embossing raises a design above the surface. Engraving cuts a design into the surface. For example, embossed paper has raised lettering; an engraved metal plate has cut grooves.",
   "expletive-invective": {
     table: {
       columns: ["", "Expletive", "Invective"],
@@ -696,12 +777,54 @@ const confusingWordPairNotes: Record<string, ConfusingWordNote> = {
 };
 
 const confusingWordPairNoteImages: Record<string, ConfusingWordPair["noteImage"]> = {
+  "quantile-quartile": {
+    src: "/images/quantile-quartile-bars.svg",
+    alt: "A bar divided into 90% and 10%, with an arrow marking the 0.9 quantile at the boundary. Below it, a bar divided into four 25% sections, with an arrow marking the first quartile after the first section.",
+    width: 480,
+    height: 320,
+    wide: true
+  },
   "apothegm-apothem": {
     src: "/images/apothem.png",
     alt: "A regular hexagon with its apothem marked in red from the center perpendicular to a side.",
     width: 574,
     height: 488
   }
+};
+
+const confusingWordPairNoteGalleries: Record<string, ConfusingWordPair["noteImages"]> = {
+  "emboss-engrave": [
+    {
+      src: "/images/embossed-floral-design.png",
+      alt: "An embossed floral design raised above the surface of cream-colored paper.",
+      width: 422,
+      height: 436,
+      caption: "Embossed — raised above the surface"
+    },
+    {
+      src: "/images/engraved-floral-metal.png",
+      alt: "AI-generated close-up demonstrating a floral pattern engraved as recessed grooves in silver-colored metal.",
+      width: 1254,
+      height: 1254,
+      caption: "Engraved — cut into the surface"
+    }
+  ],
+  "emboss-deboss": [
+    {
+      src: "/images/embossed-floral-design.png",
+      alt: "An embossed floral design raised above the surface of cream-colored paper.",
+      width: 422,
+      height: 436,
+      caption: "Embossed — raised above the surface"
+    },
+    {
+      src: "/images/debossed-lettering.png",
+      alt: "Debossed lettering pressed below the surface of white stationery.",
+      width: 444,
+      height: 456,
+      caption: "Debossed — pressed below the surface"
+    }
+  ]
 };
 
 /**
@@ -721,6 +844,7 @@ function slugifyWord(word: string): string {
  * while `confusingWordPairNotes["coma-comma"] = "Use coma for unconsciousness."` adds a card note.
  * Every word has its own IPA line, e.g. `coma / ˈkoʊmə /` and `comma / ˈkɑmə /`.
  * The `apothegm-apothem` card includes an image-only note showing an apothem.
+ * The `emboss-deboss` note shows labeled photographs in left-to-right comparison order.
  */
 function buildConfusingWordPairs(rows: (ConfusingWordPairRow | ConfusingWordGroupRow)[]): ConfusingWordPair[] {
   const slugCounts = new Map<string, number>();
@@ -756,6 +880,7 @@ function buildConfusingWordPairs(rows: (ConfusingWordPairRow | ConfusingWordGrou
       pronunciations: words.map((word) => wordPronunciations[word]),
       note: confusingWordPairNotes[slug],
       noteImage: confusingWordPairNoteImages[slug],
+      noteImages: confusingWordPairNoteGalleries[slug],
       questions
     };
   });

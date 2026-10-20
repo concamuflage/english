@@ -27,6 +27,21 @@ includes it automatically. Original screenshots live in
 
 ## Sitemap generation
 
+### Word-group URLs
+
+Every group in `lib/confusingWords.ts` is exported as a permanent page. For example,
+`/english/gre/confusing-words/factitious-facetious` contains that group's IPA,
+practice sentences, and available notes in the initial HTML. The sitemap includes
+all these URLs automatically. Unknown or deleted group URLs return 404.
+
+The word list uses ordinary links, so crawlers and new tabs can reach each page.
+A normal click updates browser history and the existing card without reloading
+or moving the page. On mobile it opens the same practice dialog. Direct group
+URLs take precedence over saved progress and open the group on mobile; the
+collection URL still resumes the last saved selection with the dialog closed.
+Browser Back/Forward restores the group represented by the URL. Search and
+Next continue to use the same list and alphabetical order.
+
 `npm run build` generates `out/sitemap.xml` and `out/robots.txt` for
 `https://bumblebee.work`. During development, preview them at
 `http://localhost:3000/sitemap.xml` and `http://localhost:3000/robots.txt`.

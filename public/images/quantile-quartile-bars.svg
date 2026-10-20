@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="320" viewBox="0 0 480 320" role="img" aria-labelledby="title desc">
+  <title id="title">0.9 quantile and first quartile</title>
+  <desc id="desc">The upper bar contains 90% and 10% sections, with the 0.9 quantile marked at their boundary. The lower bar contains four 25% sections, with the first quartile marked after the first section.</desc>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#302600" text-anchor="middle">
+    <!-- A 400-unit bar starts at x=40, so its 0.9 quantile is x=40 + 0.9*400 = 400. -->
+    <rect x="40" y="24" width="400" height="48" rx="12" fill="none" stroke="#806000" stroke-width="2"/>
+    <path d="M52 24H400V72H52Q40 72 40 60V36Q40 24 52 24Z" fill="#cdbb7b"/>
+    <path d="M400 24V72" stroke="#806000" stroke-width="2"/>
+    <text x="220" y="55" font-size="22">90%</text>
+    <text x="420" y="54" font-size="16">10%</text>
+    <path d="M400 112V84m-7 8 7-8 7 8" fill="none" stroke="#806000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="365" y="143" font-size="22">0.9 quantile</text>
+    <!-- Four equal 100-unit sections each represent 25%; the first boundary is x=140. -->
+    <rect x="40" y="190" width="400" height="48" rx="12" fill="none" stroke="#806000" stroke-width="2"/>
+    <path d="M52 190H140V238H52Q40 238 40 226V202Q40 190 52 190Z" fill="#cdbb7b"/>
+    <path d="M140 190V238M240 190V238M340 190V238" stroke="#806000" stroke-width="2"/>
+    <g font-size="22">
+      <text x="90" y="221">25%</text>
+      <text x="190" y="221">25%</text>
+      <text x="290" y="221">25%</text>
+      <text x="390" y="221">25%</text>
+    </g>
+    <path d="M140 278V250m-7 8 7-8 7 8" fill="none" stroke="#806000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="140" y="309" font-size="22">first quartile</text>
+  </g>
+</svg>

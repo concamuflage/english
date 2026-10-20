@@ -56,6 +56,25 @@ with vowel-length marks omitted to match the site's General American style.
 The entry `quarrelsome / ˈkwɔr əl səm /` follows the American pronunciation in
 [Cambridge's quarrelsome pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/quarrelsome).
 
+The entries `rhapsody / ˈræp sə di /` and `prosody / ˈprɑ sə di /` follow
+[Collins's rhapsody pronunciation](https://www.collinsdictionary.com/us/dictionary/english-pronunciations/rhapsody) and
+[Cambridge's American prosody pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/prosody).
+
+The entries `attenuate / əˈtɛn ju eɪt /` and `extenuate / ɪkˈstɛn ju eɪt /` follow Cambridge's
+[attenuate entry](https://dictionary.cambridge.org/us/dictionary/english/attenuate) and
+[extenuate pronunciation](https://dictionary.cambridge.org/pronunciation/english/extenuate).
+
+The entries `emboss / ɪmˈbɑs /` and `deboss / dɪˈbɔs /` follow
+[Cambridge's American emboss pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/emboss) and
+[Dictionary.com's deboss entry](https://www.dictionary.com/browse/deboss).
+
+The entry `engrave / ɪnˈɡreɪv /` follows
+[Cambridge's engrave pronunciation](https://dictionary.cambridge.org/us/pronunciation/english/engrave).
+
+The entries `quantile / ˈkwɑn taɪl /` and `quartile / ˈkwɔr taɪl /` follow the American pronunciations in
+[Cambridge's quantile entry](https://dictionary.cambridge.org/us/dictionary/english/quantile) and
+[quartile entry](https://dictionary.cambridge.org/us/dictionary/english/quartile).
+
 ## Upstream license
 
 The MIT License (MIT)
