@@ -4,7 +4,7 @@ import Link from "next/link";
 /**
  * Renders the compact bee-only branding and primary blog navigation.
  *
- * Example: `/contact` is the rightmost link after `/entrepreneurship`.
+ * Example: `/business` follows `/entrepreneurship`, while `/contact` remains the rightmost link.
  */
 export function SiteHeader() {
   return (
@@ -22,6 +22,7 @@ export function SiteHeader() {
       <nav className="nav-links" aria-label="Primary navigation">
         <Link href="/english">English</Link>
         <Link href="/entrepreneurship">Entrepreneurship</Link>
+        <Link href="/business">Business</Link>
         <Link href="/contact">Contact</Link>
       </nav>
     </header>

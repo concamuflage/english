@@ -1,7 +1,7 @@
 export type Article = {
   slug: string;
   title: string;
-  section: "Reading" | "Vocabulary" | "Writing" | "GRE" | "Entrepreneurship";
+  section: "Reading" | "Vocabulary" | "Writing" | "GRE" | "Entrepreneurship" | "Business";
   excerpt: string;
   date: string;
   readingTime: string;
@@ -14,6 +14,22 @@ export type GreResource = {
 };
 
 export const articles: Article[] = [
+  {
+    slug: "wait-until-right-time-major-retail-chain",
+    title: "Wait Until the Right Time to Enter a Major Retail Chain",
+    section: "Business",
+    excerpt: "Lessons from entering major retail chains in Spain: evaluate the economics, build bargaining power, and reward long-term profitability.",
+    date: "2026-10-20",
+    readingTime: "5 min read"
+  },
+  {
+    slug: "selling-quinoa-validate-business-ideas",
+    title: "What Selling Quinoa Taught Me About Testing Business Ideas",
+    section: "Entrepreneurship",
+    excerpt: "A $1,000 lesson in testing market demand before investing in a company, a brand, and a customer service number.",
+    date: "2026-10-20",
+    readingTime: "2 min read"
+  },
   {
     slug: "validate-demand-google-keyword-planner",
     title: "How Can We Validate Demand with Google Keyword Planner?",

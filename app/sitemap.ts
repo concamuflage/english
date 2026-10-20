@@ -9,12 +9,12 @@ export const dynamic = "force-static";
  * Generates the production sitemap during each static build.
  *
  * Example: adding an article with slug `new-study-note` adds
- * `https://bumblebee.work/articles/new-study-note` automatically; `/contact` is listed explicitly.
+ * `https://bumblebee.work/articles/new-study-note` automatically; `/business` and `/contact` are listed explicitly.
  * Every word group is included too, e.g. `/english/gre/confusing-words/factitious-facetious`.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   // List destination pages only: /gre and /confusing-words redirect into /english.
-  const paths = ["/", "/english", "/english/gre", "/english/gre/confusing-words", "/entrepreneurship", "/contact"];
+  const paths = ["/", "/english", "/english/gre", "/english/gre/confusing-words", "/entrepreneurship", "/business", "/contact"];
   return [
     ...paths.map((path) => ({ url: new URL(path, "https://bumblebee.work").href })),
     ...confusingWordPairs.map((pair) => ({
