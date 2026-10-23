@@ -5,6 +5,8 @@ export type Article = {
   excerpt: string;
   date: string;
   readingTime: string;
+  /** Language of the article, e.g. `zh-CN` for 如何选择代理商？; omitted entries inherit the page language. */
+  language?: "en" | "zh-CN";
 };
 
 export type GreResource = {
@@ -14,6 +16,15 @@ export type GreResource = {
 };
 
 export const articles: Article[] = [
+  {
+    slug: "how-to-choose-a-distributor",
+    title: "如何选择代理商？",
+    section: "Business",
+    excerpt: "品牌出海如何选择代理商？先评估自身的营销、渠道和零售能力，再判断需要的是运营团队还是资金物流平台。",
+    date: "2026-10-22",
+    readingTime: "3 min read",
+    language: "zh-CN"
+  },
   {
     slug: "wait-until-right-time-major-retail-chain",
     title: "Wait Until the Right Time to Enter a Major Retail Chain",

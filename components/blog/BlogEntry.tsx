@@ -12,10 +12,11 @@ type BlogEntryProps = {
  * Example: `<BlogEntry article={article}><KeywordPlannerPost /></BlogEntry>`
  * renders an Entrepreneurship post using the same shell as an English article.
  * Body content uses black text, separate from the header's theme accents.
+ * An article with `language: "zh-CN"` marks its Chinese content for screen readers.
  */
 export function BlogEntry({ article, children }: BlogEntryProps) {
   return (
-    <article className="article-page">
+    <article className="article-page" lang={article.language}>
       <header>
         <p className="eyebrow">{article.section}</p>
         <h1>{article.title}</h1>

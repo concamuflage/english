@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { ComponentType } from "react";
 import { BlogEntry } from "@/components/blog/BlogEntry";
+import { ChoosingDistributorPost } from "@/components/blog/ChoosingDistributorPost";
 import { KeywordPlannerPost } from "@/components/blog/KeywordPlannerPost";
 import { QuinoaBusinessPost } from "@/components/blog/QuinoaBusinessPost";
 import { RetailChainPost } from "@/components/blog/RetailChainPost";
@@ -14,6 +15,7 @@ type ArticlePageProps = {
 
 // Register each authored body once; the same component can also be rendered in another section.
 const articleBodies: Partial<Record<string, ComponentType>> = {
+  "how-to-choose-a-distributor": ChoosingDistributorPost,
   "wait-until-right-time-major-retail-chain": RetailChainPost,
   "selling-quinoa-validate-business-ideas": QuinoaBusinessPost,
   "validate-demand-google-keyword-planner": KeywordPlannerPost
