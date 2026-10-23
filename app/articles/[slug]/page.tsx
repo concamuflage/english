@@ -2,8 +2,11 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { ComponentType } from "react";
 import { BlogEntry } from "@/components/blog/BlogEntry";
+import { BigCompanyHiringPost } from "@/components/blog/BigCompanyHiringPost";
 import { ChoosingDistributorPost } from "@/components/blog/ChoosingDistributorPost";
+import { DevelopingDistributorsPost } from "@/components/blog/DevelopingDistributorsPost";
 import { KeywordPlannerPost } from "@/components/blog/KeywordPlannerPost";
+import { MarketResearchPost } from "@/components/blog/MarketResearchPost";
 import { QuinoaBusinessPost } from "@/components/blog/QuinoaBusinessPost";
 import { RetailChainPost } from "@/components/blog/RetailChainPost";
 import { StudyNotePost } from "@/components/blog/StudyNotePost";
@@ -15,6 +18,9 @@ type ArticlePageProps = {
 
 // Register each authored body once; the same component can also be rendered in another section.
 const articleBodies: Partial<Record<string, ComponentType>> = {
+  "hiring-big-company-talent-for-small-businesses": BigCompanyHiringPost,
+  "market-research-without-resources": MarketResearchPost,
+  "how-to-find-overseas-distributors": DevelopingDistributorsPost,
   "how-to-choose-a-distributor": ChoosingDistributorPost,
   "wait-until-right-time-major-retail-chain": RetailChainPost,
   "selling-quinoa-validate-business-ideas": QuinoaBusinessPost,

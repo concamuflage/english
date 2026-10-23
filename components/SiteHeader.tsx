@@ -4,7 +4,7 @@ import Link from "next/link";
 /**
  * Renders the compact bee-only branding and primary blog navigation.
  *
- * Example: `/business` follows `/entrepreneurship`, while `/contact` remains the rightmost link.
+ * Example: `/global-expansion` displays 品牌出海 after Business; Contact remains the rightmost link.
  */
 export function SiteHeader() {
   return (
@@ -23,6 +23,7 @@ export function SiteHeader() {
         <Link href="/english">English</Link>
         <Link href="/entrepreneurship">Entrepreneurship</Link>
         <Link href="/business">Business</Link>
+        <Link href="/global-expansion" lang="zh-CN">品牌出海</Link>
         <Link href="/contact">Contact</Link>
       </nav>
     </header>
