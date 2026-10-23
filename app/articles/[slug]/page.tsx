@@ -9,6 +9,7 @@ import { KeywordPlannerPost } from "@/components/blog/KeywordPlannerPost";
 import { MarketResearchPost } from "@/components/blog/MarketResearchPost";
 import { QuinoaBusinessPost } from "@/components/blog/QuinoaBusinessPost";
 import { RetailChainPost } from "@/components/blog/RetailChainPost";
+import { RetailChainChinesePost } from "@/components/blog/RetailChainChinesePost";
 import { StudyNotePost } from "@/components/blog/StudyNotePost";
 import { articles } from "@/lib/content";
 
@@ -23,6 +24,7 @@ const articleBodies: Partial<Record<string, ComponentType>> = {
   "how-to-find-overseas-distributors": DevelopingDistributorsPost,
   "how-to-choose-a-distributor": ChoosingDistributorPost,
   "wait-until-right-time-major-retail-chain": RetailChainPost,
+  "wait-until-right-time-major-retail-chain-zh": RetailChainChinesePost,
   "selling-quinoa-validate-business-ideas": QuinoaBusinessPost,
   "validate-demand-google-keyword-planner": KeywordPlannerPost
 };
@@ -30,6 +32,7 @@ const articleBodies: Partial<Record<string, ComponentType>> = {
 /**
  * Gives each authored article a descriptive search title, summary, and canonical URL.
  * Example: the quinoa post uses its story title and `/articles/selling-quinoa-validate-business-ideas`.
+ * Retail-chain versions each use their own canonical URL and link both languages with hreflang.
  */
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -39,10 +42,22 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     notFound();
   }
 
+  const translation = articles.find((item) => item.slug === article.translationSlug);
+  // Link both localized URLs for search engines; each version remains independently indexable.
+  const languages = translation && article.language && translation.language
+    ? {
+        [article.language]: `https://bumblebee.work/articles/${article.slug}`,
+        [translation.language]: `https://bumblebee.work/articles/${translation.slug}`
+      }
+    : undefined;
+
   return {
     title: `${article.title} | Bumblebee`,
     description: article.excerpt,
-    alternates: { canonical: `https://bumblebee.work/articles/${article.slug}` }
+    alternates: {
+      canonical: `https://bumblebee.work/articles/${article.slug}`,
+      languages
+    }
   };
 }
 

@@ -1,12 +1,14 @@
 export type Article = {
   slug: string;
   title: string;
-  section: "Reading" | "Vocabulary" | "Writing" | "GRE" | "Entrepreneurship" | "Business" | "品牌出海";
+  section: "Reading" | "Vocabulary" | "Writing" | "GRE" | "Entrepreneurship" | "品牌出海";
   excerpt: string;
   date: string;
   readingTime: string;
   /** Language of the article, e.g. `zh-CN` for 如何选择代理商？; omitted entries inherit the page language. */
   language?: "en" | "zh-CN";
+  /** Slug of the other language version, e.g. `wait-until-right-time-major-retail-chain-zh`. */
+  translationSlug?: string;
 };
 
 export type GreResource = {
@@ -53,12 +55,24 @@ export const articles: Article[] = [
     language: "zh-CN"
   },
   {
+    slug: "wait-until-right-time-major-retail-chain-zh",
+    title: "等时机成熟，再进入大型零售连锁",
+    section: "品牌出海",
+    excerpt: "从进入西班牙大型零售连锁的经历中总结教训：先算清利润、积累议价能力，再让销售激励与企业的长期利益保持一致。",
+    date: "2026-10-20",
+    readingTime: "5 min read",
+    language: "zh-CN",
+    translationSlug: "wait-until-right-time-major-retail-chain"
+  },
+  {
     slug: "wait-until-right-time-major-retail-chain",
     title: "Wait Until the Right Time to Enter a Major Retail Chain",
-    section: "Business",
+    section: "品牌出海",
     excerpt: "Lessons from entering major retail chains in Spain: evaluate the economics, build bargaining power, and reward long-term profitability.",
     date: "2026-10-20",
-    readingTime: "5 min read"
+    readingTime: "5 min read",
+    language: "en",
+    translationSlug: "wait-until-right-time-major-retail-chain-zh"
   },
   {
     slug: "selling-quinoa-validate-business-ideas",
