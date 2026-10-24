@@ -51,7 +51,8 @@ a {
   display: flex;
   flex-shrink: 0;
   gap: 18px;
-  height: var(--site-header-height);
+  /* Grow with wrapped links; e.g. Contact remains above the bottom border on a 320px screen. */
+  min-height: 60px;
   justify-content: space-between;
   left: 0;
   padding: 9px clamp(20px, 5vw, 72px);
@@ -116,6 +117,7 @@ a {
 .nav-links {
   flex-wrap: wrap;
   gap: clamp(14px, 3vw, 34px);
+  min-width: 0;
 }
 
 .nav-links a {
@@ -123,6 +125,7 @@ a {
   font-size: 0.95rem;
   font-weight: 700;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -163,7 +166,35 @@ a {
     align-items: flex-start;
     flex-direction: column;
     gap: 4px;
+    min-height: 100px;
   }
+
+  .site-header .nav-links {
+    width: 100%;
+  }
+}
+
+.pronunciation-word-list {
+  max-width: 640px;
+}
+
+.pronunciation-word {
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+}
+
+.pronunciation-word summary {
+  color: var(--accent-deep);
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.pronunciation-word p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 8px 0 0;
 }
 
 .empty-page {
@@ -498,6 +529,38 @@ h3 {
   min-height: 320px;
   overflow-y: auto;
   padding: clamp(24px, 5vw, 44px);
+}
+
+.meaning-question-card {
+  --question-font-size: 18px;
+  align-content: start;
+  display: grid;
+  gap: 24px;
+  /* Keep sentence, choices, and explanation stacked, e.g. all use the full card width at 375px. */
+  grid-template-columns: minmax(0, 1fr);
+  max-height: none;
+  min-height: 0;
+}
+
+.meaning-question-card .selection-row {
+  justify-self: start;
+}
+
+.meaning-question-card + .meaning-question-card {
+  margin-top: 24px;
+}
+
+.meaning-question-card .selection-options {
+  flex-direction: row;
+}
+
+.meaning-question-feedback {
+  line-height: 1.6;
+  margin: 0;
+}
+
+.meaning-question-feedback:empty {
+  display: none;
 }
 
 .practice-dialog {
@@ -1034,7 +1097,8 @@ h3 {
     grid-column: 1 / -1;
   }
 
-  .selection-row {
+  /* Only numbered pair rows indent choices; standalone meaning cards have no status-icon column. */
+  .flashcard-question > .selection-row {
     grid-column: 2;
     justify-self: stretch;
   }

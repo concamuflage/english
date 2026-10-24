@@ -3,22 +3,17 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import type { ConfusingWordPair, ConfusingWordQuestion } from "@/lib/confusingWords";
-import { CONFUSING_WORDS_DESCRIPTION, CONFUSING_WORDS_PATH, CONFUSING_WORDS_TITLE, getConfusingWordMetadata, getConfusingWordPath } from "@/lib/confusingWordRoutes";
+import type { ConfusingWordPair } from "@/lib/confusingWords";
+import { QuestionCard } from "@/components/QuestionCard";
+import { GRE_WORD_COLLECTION, getConfusingWordMetadata, getConfusingWordPath } from "@/lib/confusingWordRoutes";
 
-type FeedbackState = {
-  choice: string;
-  isCorrect: boolean;
-};
-
-type FeedbackByQuestion = Record<number, FeedbackState>;
+type FeedbackByQuestion = Record<number, string>;
 
 type ConfusingWordsPracticeProps = {
   pairs: ConfusingWordPair[];
   initialSlug?: string;
+  collection?: typeof GRE_WORD_COLLECTION;
 };
-
-const LAST_PAIR_STORAGE_KEY = "confusing-words:last-pair";
 
 // Keep saved selections on their merged cards, e.g. ellipse-ellipsis resumes the new three-word group.
 const MERGED_GROUP_SLUGS: Readonly<Record<string, string>> = {
@@ -30,11 +25,6 @@ const MERGED_GROUP_SLUGS: Readonly<Record<string, string>> = {
 /** Normalizes word searches; e.g. ` MÉLANGE ` and `melange` both become `melange`. */
 function normalizeWordSearch(value: string) {
   return value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
-/** Accepts the primary answer or an alternative; e.g. both fathomless and unfathomable fit ocean depths. */
-function isCorrectAnswer(question: ConfusingWordQuestion, choice: string) {
-  return choice === question.answer || question.alternativeAnswers?.includes(choice) === true;
 }
 
 /**
@@ -146,8 +136,10 @@ function PracticeNote({ note, noteImage, noteImages }: Pick<ConfusingWordPair, "
  * Questions may accept multiple choices, e.g. fathomless and unfathomable for ocean depths.
  * Word links update the URL without replacing the card UI; direct URLs override saved progress.
  * Example: `/english/gre/confusing-words/factitious-facetious` starts with that group's content in HTML.
+ * A General collection keeps door/doorway URLs and saved selections separate from GRE practice.
+ * QuestionCard shares rendering and answer checking with the uncommon-meanings exercises.
  */
-export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPracticeProps) {
+export function ConfusingWordsPractice({ pairs, initialSlug, collection = GRE_WORD_COLLECTION }: ConfusingWordsPracticeProps) {
   const pathname = usePathname();
   const [selectedSlug, setSelectedSlug] = useState(initialSlug ?? pairs[0]?.slug ?? "");
   const [feedbackByQuestion, setFeedbackByQuestion] = useState<FeedbackByQuestion>({});
@@ -211,10 +203,10 @@ export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPra
 
   useEffect(() => {
     // URL selection wins over saved progress. History retains the collection's selection on Back.
-    const urlPair = pairs.find((pair) => getConfusingWordPath(pair.slug) === pathname);
+    const urlPair = pairs.find((pair) => getConfusingWordPath(pair.slug, collection) === pathname);
     let savedSlug: string | null = null;
     try {
-      savedSlug = window.localStorage.getItem(LAST_PAIR_STORAGE_KEY);
+      savedSlug = window.localStorage.getItem(collection.storageKey);
     } catch {
       // A direct group URL works even if browser storage is unavailable.
     }
@@ -235,24 +227,24 @@ export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPra
       if (urlPair || savedSlug || historySlug) setPairToResume(pair.slug);
     }
     try {
-      window.localStorage.setItem(LAST_PAIR_STORAGE_KEY, pair.slug);
+      window.localStorage.setItem(collection.storageKey, pair.slug);
     } catch {
       // Storage restrictions must not interfere with URL navigation or practice.
     }
-  }, [pairs, pathname]);
+  }, [pairs, pathname, collection]);
 
   useEffect(() => {
-    const pair = pairs.find((item) => getConfusingWordPath(item.slug) === pathname);
-    const metadata = pair ? getConfusingWordMetadata(pair) : {
-      title: CONFUSING_WORDS_TITLE,
-      description: CONFUSING_WORDS_DESCRIPTION,
-      canonical: `https://bumblebee.work${CONFUSING_WORDS_PATH}`
+    const pair = pairs.find((item) => getConfusingWordPath(item.slug, collection) === pathname);
+    const metadata = pair ? getConfusingWordMetadata(pair, collection) : {
+      title: collection.title,
+      description: collection.description,
+      canonical: `https://bumblebee.work${collection.path}`
     };
     // Native history preserves the UI, so keep its metadata aligned with the exported destination HTML.
     document.title = metadata.title;
     document.querySelector('meta[name="description"]')?.setAttribute("content", metadata.description);
     document.querySelector('link[rel="canonical"]')?.setAttribute("href", metadata.canonical);
-  }, [pairs, pathname]);
+  }, [pairs, pathname, collection]);
 
   useEffect(() => {
     if (!pairToResume || pairToResume !== selectedSlug) {
@@ -326,9 +318,10 @@ export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPra
    * Example: clicking `weather / whether` saves `weather-whether` locally and loads unanswered questions.
    * On mobile, the same tap opens the practice popup.
    * The URL becomes `/english/gre/confusing-words/weather-whether` without reloading or scrolling.
+   * General practice instead uses its own path, e.g. `/english/general/confusing-words/door-doorway`.
    */
   function selectPair(slug: string) {
-    const path = getConfusingWordPath(slug);
+    const path = getConfusingWordPath(slug, collection);
     if (window.location.pathname !== path) {
       // Preserve the current selection in the history entry before adding the next group.
       window.history.replaceState({ ...window.history.state, practiceSlug: selectedSlug }, "");
@@ -341,7 +334,7 @@ export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPra
       setIsCardOpen(true);
     }
     try {
-      window.localStorage.setItem(LAST_PAIR_STORAGE_KEY, slug);
+      window.localStorage.setItem(collection.storageKey, slug);
     } catch {
       // A failed browser-storage write must not prevent selecting or studying a pair.
     }
@@ -376,7 +369,7 @@ export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPra
   }
 
   /**
-   * Checks one sentence answer and stores visual-only feedback for its selection row.
+   * Stores a sentence's selected answer for the shared QuestionCard to check and display.
    *
    * Example: choosing `comma` for `He fell into a ____.` marks question 1 as wrong.
    * A listed alternative, e.g. unfathomable for ocean depths, receives correct feedback too.
@@ -391,68 +384,27 @@ export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPra
 
     setFeedbackByQuestion((currentFeedback) => ({
       ...currentFeedback,
-      [questionIndex]: {
-        choice,
-        isCorrect: isCorrectAnswer(question, choice)
-      }
+      [questionIndex]: choice
     }));
   }
 
   const practiceCard = (
-        <div className="flashcard">
-          <div className="flashcard-topline">
-            <span className="pair-pronunciations" tabIndex={isMobile ? -1 : undefined}>
-              {selectedPair.words.map((word, index) => (
-                <span key={word}>{word} {selectedPair.pronunciations[index]}</span>
-              ))}
-            </span>
-          </div>
-          <div className="question-stack">
-            {displayedQuestions.map((question, questionIndex) => {
-              const feedback = feedbackByQuestion[questionIndex];
-
-              return (
-                <div className="flashcard-question" key={question.sentence}>
-                  <div className="question-line">
-                    <span className={`question-status${feedback ? (feedback.isCorrect ? " correct-status" : " incorrect-status") : ""}`}>
-                      {feedback ? (feedback.isCorrect ? "✓" : "!") : questionIndex + 1}
-                    </span>
-                    <p className="flashcard-sentence">{question.sentence}</p>
-                  </div>
-                  <fieldset className="selection-row">
-                    <legend>Question {questionIndex + 1}</legend>
-                    <div className="selection-options">
-                      {choices.map((choice) => {
-                        const isSelected = feedback?.choice === choice;
-                        const isCorrectChoice = feedback && isCorrectAnswer(question, choice);
-                        const selectionClassName = [
-                          "selection-option",
-                          isSelected ? "selection-option-selected" : "",
-                          isSelected && !feedback.isCorrect ? "selection-option-wrong" : "",
-                          isCorrectChoice ? "selection-option-correct" : ""
-                        ]
-                          .filter(Boolean)
-                          .join(" ");
-
-                        return (
-                          <label className={selectionClassName} key={choice}>
-                            <input
-                              checked={isSelected}
-                              name={`${selectedPair.slug}-question-${questionIndex}`}
-                              onChange={() => selectAnswer(questionIndex, choice)}
-                              type="radio"
-                              value={choice}
-                            />
-                            <span>{choice}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </fieldset>
-                </div>
-              );
-            })}
-          </div>
+    <QuestionCard
+      name={selectedPair.slug}
+      questions={displayedQuestions.map((question) => ({ ...question, choices }))}
+      selections={feedbackByQuestion}
+      onSelect={selectAnswer}
+      header={
+        <div className="flashcard-topline">
+          <span className="pair-pronunciations" tabIndex={isMobile ? -1 : undefined}>
+            {selectedPair.words.map((word, index) => (
+              <span key={word}>{word} {selectedPair.pronunciations[index]}</span>
+            ))}
+          </span>
+        </div>
+      }
+      footer={
+        <>
           <PracticeNote note={selectedPair.note} noteImage={selectedPair.noteImage} noteImages={selectedPair.noteImages} />
           {isMobile && (
             <div className="practice-card-actions">
@@ -464,7 +416,9 @@ export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPra
               </button>
             </div>
           )}
-        </div>
+        </>
+      }
+    />
   );
 
   return (
@@ -489,7 +443,7 @@ export function ConfusingWordsPractice({ pairs, initialSlug }: ConfusingWordsPra
               className={pair.slug === selectedPair.slug ? "pair-button pair-button-active" : "pair-button"}
               key={pair.slug}
               ref={pair.slug === selectedPair.slug ? activePairButtonRef : null}
-              href={getConfusingWordPath(pair.slug)}
+              href={getConfusingWordPath(pair.slug, collection)}
               onClick={(event) => selectPairFromLink(event, pair.slug)}
             >
               <span>

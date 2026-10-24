@@ -1,23 +1,30 @@
 import { ConfusingWordsPractice } from "@/components/ConfusingWordsPractice";
-import { confusingWordPairs } from "@/lib/confusingWords";
+import { confusingWordPairs, type ConfusingWordPair } from "@/lib/confusingWords";
+import { GRE_WORD_COLLECTION } from "@/lib/confusingWordRoutes";
 
 /**
  * Shares the existing practice layout between the collection and permanent group URLs.
  * Example: initialSlug `factitious-facetious` exports that group's card, IPA, sentences, and notes in HTML.
+ * General English supplies its own pairs and collection, without the GRE introduction or vocabulary.
  */
-export function ConfusingWordsPage({ initialSlug }: { initialSlug?: string }) {
+export function ConfusingWordsPage({ initialSlug, pairs = confusingWordPairs, collection = GRE_WORD_COLLECTION }: {
+  initialSlug?: string;
+  pairs?: ConfusingWordPair[];
+  collection?: typeof GRE_WORD_COLLECTION;
+}) {
   return (
     <main className="section-band confusing-words-page">
-      <h1 className="section-page-title">GRE Confusing Words Practice</h1>
+      <h1 className="section-page-title">{collection.label} Confusing Words Practice</h1>
       <aside className="practice-introduction" aria-label="About this word-pair collection">
         <p>
-          I compiled this list while studying for the GRE. If you already know the difference, feel free to skip the pair.
+          {collection.path === GRE_WORD_COLLECTION.path ? "I compiled this list while studying for the GRE. " : ""}
+          If you already know the difference, feel free to skip the pair.
         </p>
         <p>
           If you spot a mistake or would like to suggest another pair, please feel free to send me an email.
         </p>
       </aside>
-      <ConfusingWordsPractice pairs={confusingWordPairs} initialSlug={initialSlug} />
+      <ConfusingWordsPractice pairs={pairs} initialSlug={initialSlug} collection={collection} />
       <footer className="pronunciation-references" aria-label="IPA references">
         <p>
           IPA references: primarily adapted from the General American wordlist in{" "}

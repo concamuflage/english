@@ -47,6 +47,38 @@ type ConfusingWordGroupRow = {
 };
 
 const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = [
+  [
+    "scruples",
+    "qualm",
+    "Her ____ were firm moral principles: she would never deceive a customer, even when dishonesty would bring a profit.",
+    "As the boat lurched, a ____ of nausea made him grip the rail and fear he would vomit.",
+    ["He is a man without ____.", "wordOne"],
+    ["A sudden ____ of anxiety struck her when the elevator stopped between floors; she feared being trapped, not doing anything wrong.", "wordTwo"]
+  ],
+  {
+    words: ["politic", "politics"],
+    questions: [
+      { sentence: "It seemed ____ to avoid criticizing her host, so she tactfully changed the subject.", answer: "politic" },
+      { sentence: "It is ____ (smart or tactful) to think before speaking.", answer: "politic" },
+      { sentence: "Waiting until the client had calmed down was a ____ decision that helped preserve the business relationship.", answer: "politic" },
+      { sentence: "Office ____ determined who got promoted: personal alliances mattered more than performance.", answer: "politics" }
+    ]
+  },
+  {
+    words: ["emotive", "emotional"],
+    questions: [
+      // "Emotional" is less precise here, but still valid English rather than a wrong answer.
+      { sentence: "An ____ ad campaign.", answer: "emotive", alternativeAnswers: ["emotional"] }
+    ]
+  },
+  {
+    words: ["piquant", "picante"],
+    questions: [
+      { sentence: "Her ____ wit, full of playful surprises and sharp observations, made even a routine meeting entertaining.", answer: "piquant" },
+      { sentence: "The story had a ____ irony: the detective investigating the theft was secretly the thief, a twist that made readers eager to learn more.", answer: "piquant" },
+      { sentence: "His ____ remark about her repeated failures stung her pride and left her visibly hurt.", answer: "piquant" }
+    ]
+  },
   ["coma", "comma", "After the crash, he fell into a ____.", "Add a ____ after the opening phrase."],
   ["bowl", "bowel", "She poured soup into the ____.", "The surgeon examined the lower ____."],
   ["geography", "geology", "The class studied the ____ of river valleys.", "The class studied the ____ of volcanic rock."],
@@ -737,6 +769,10 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
 ];
 
 const confusingWordPairNotes: Record<string, ConfusingWordNote> = {
+  "scruples-qualm": "Scruples can mean the moral principles that guide someone's conduct, not just a passing feeling of doubt. A qualm can be a sudden feeling of nausea or unease unrelated to morality. For example, a qualm of nausea on a boat is not a moral objection. The words do overlap when they mean moral doubts: 'She had scruples about lying' and 'She had qualms about lying' both work. Note the number: scruples is plural; qualm is singular, and its plural is qualms.",
+  "politic-politics": "Politic is an adjective meaning prudent, tactful, or strategically wise, as in 'a politic decision.' Politics is a noun referring to government and political activity, or to competition for power within a group, as in 'office politics.' For something relating to government, use political rather than politic: 'a political debate.'",
+  "emotive-emotional": '"Her emotional speech moved the crowd." "Her emotive speech moved the crowd." Both work. Emotional emphasizes feeling or expressing emotion; emotive emphasizes arousing emotion in others. They are not always interchangeable: "He\'s very emotional today" means he is upset or feeling strong emotions; "He\'s very emotive today" sounds odd in that sense. "An emotive ad campaign" fits when the campaign is designed to stir emotions; "an emotional ad campaign" is less precise for that meaning, though it is also possible.',
+  "piquant-picante": "In English, piquant can describe wit or a situation that is engaging, intriguing, or provocatively amusing; it can also describe a stinging remark. Picante describes spicy food or food prepared with a spicy sauce. Both can describe food, so these sentences focus on piquant's figurative meanings.",
   "quantile-quartile": {
     paragraphs: [
       "Both quantiles and quartiles are values that divide sorted data into proportions.",
