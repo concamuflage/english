@@ -33,6 +33,8 @@ body {
 
 main {
   flex: 1;
+  /* Let narrow viewports shrink the content instead of preserving its text's intrinsic width. */
+  min-width: 0;
 }
 
 a {
@@ -50,6 +52,8 @@ a {
   border-bottom: 1px solid var(--line);
   display: flex;
   flex-shrink: 0;
+  /* Wrap before the logo and links collide, including at tablet widths such as 768px. */
+  flex-wrap: wrap;
   gap: 18px;
   /* Grow with wrapped links; e.g. Contact remains above the bottom border on a 320px screen. */
   min-height: 60px;
@@ -170,12 +174,27 @@ a {
   }
 
   .site-header .nav-links {
+    gap: 8px 14px;
     width: 100%;
+  }
+
+  .site-header .brand-logo {
+    /* A large text setting may wrap the name beside the bee rather than clip it. */
+    flex-shrink: 1;
+    height: auto;
+    min-height: 40px;
+    min-width: 0;
+    white-space: normal;
+  }
+
+  .site-header .brand-logo span {
+    overflow-wrap: anywhere;
   }
 }
 
 .pronunciation-word-list {
-  max-width: 640px;
+  /* Keep word dividers compact: 320px on desktop, or the available width on mobile. */
+  max-width: 320px;
 }
 
 .pronunciation-word {
@@ -539,11 +558,19 @@ h3 {
   /* Keep sentence, choices, and explanation stacked, e.g. all use the full card width at 375px. */
   grid-template-columns: minmax(0, 1fr);
   max-height: none;
+  max-width: 100%;
   min-height: 0;
+  min-width: 0;
+  /* At 320px, 16px side padding leaves space for the sentence and answer pills. */
+  padding: clamp(16px, 4vw, 32px);
+  overflow-wrap: anywhere;
 }
 
 .meaning-question-card .selection-row {
   justify-self: start;
+  /* Fieldsets otherwise retain a minimum content width, preventing choices from wrapping. */
+  max-width: 100%;
+  min-width: 0;
 }
 
 .meaning-question-card + .meaning-question-card {
@@ -552,6 +579,13 @@ h3 {
 
 .meaning-question-card .selection-options {
   flex-direction: row;
+}
+
+.meaning-question-card .selection-option {
+  /* Longer answers can wrap inside a phone-width card instead of extending beyond its border. */
+  height: auto;
+  max-width: 100%;
+  min-height: 38px;
 }
 
 .meaning-question-feedback {

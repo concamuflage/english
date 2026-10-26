@@ -15,6 +15,18 @@ export const generalConfusingWordPairs: ConfusingWordPair[] = [
     note: "A door is the movable panel that opens or closes an entrance. A doorway is the opening you pass through, whether or not a door is fitted. For example, you can remove a door from its hinges, but the doorway remains. Door can also refer to an entrance in everyday speech, so some uses overlap."
   },
   {
+    slug: "illusion-delusion",
+    words: ["illusion", "delusion"],
+    pronunciations: ["/ ɪˈluːʒən /", "/ dɪˈluːʒən /"],
+    questions: [
+      { sentence: "The straight straw looked bent in the glass of water, but this optical ____ disappeared when she lifted it out.", answer: "illusion" },
+      { sentence: "The stage mirrors created the ____ of an endless hallway, although the set was only a few feet deep.", answer: "illusion" },
+      { sentence: "Despite clear evidence that the messages were ordinary advertisements, he held the fixed ____ that they contained secret instructions intended only for him.", answer: "delusion" },
+      { sentence: "He clung to the ____ that he could never lose money gambling, even after his bank statements showed years of losses.", answer: "delusion" }
+    ],
+    note: "An illusion is a misleading appearance or impression, often involving what you see: a straight straw can look bent in water. A delusion is a false belief held despite evidence against it: someone may remain convinced that gambling guarantees a profit despite repeated losses. Illusion can also refer to a mistaken belief, so the words sometimes overlap; optical effects favor illusion, while a firmly held false conviction favors delusion."
+  },
+  {
     slug: "venue-avenue",
     words: ["venue", "avenue"],
     pronunciations: ["/ ˈvɛnjuː /", "/ ˈævənuː /"],

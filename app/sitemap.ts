@@ -15,6 +15,7 @@ export const dynamic = "force-static";
  * General practice adds its collection and pair pages, e.g. `/english/general/confusing-words/door-doorway`.
  * The pronunciation collection includes `/english/general/commonly-mispronounced-words` once it has content.
  * Meaning practice includes `/english/general/uncommon-meaning-of-common-words`, starting with inform.
+ * Misleading word forms includes `/english/general/words-that-look-misleading`, starting with spendthrift.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   // List destination pages only: /gre and /confusing-words redirect into /english.
@@ -27,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `https://bumblebee.work${GENERAL_WORD_COLLECTION.path}` },
     { url: "https://bumblebee.work/english/general/commonly-mispronounced-words" },
     { url: "https://bumblebee.work/english/general/uncommon-meaning-of-common-words" },
+    { url: "https://bumblebee.work/english/general/words-that-look-misleading" },
     ...generalConfusingWordPairs.map((pair) => ({
       url: `https://bumblebee.work${getConfusingWordPath(pair.slug, GENERAL_WORD_COLLECTION)}`
     })),

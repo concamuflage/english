@@ -75,6 +75,16 @@ The entries `quantile / ˈkwɑn taɪl /` and `quartile / ˈkwɔr taɪl /` follow
 [Cambridge's quantile entry](https://dictionary.cambridge.org/us/dictionary/english/quantile) and
 [quartile entry](https://dictionary.cambridge.org/us/dictionary/english/quartile).
 
+## Commonly mispronounced words
+
+The disclosure list in `app/english/general/commonly-mispronounced-words/page.tsx`
+includes US readings from Cambridge for
+[presumptuous](https://dictionary.cambridge.org/us/pronunciation/english/presumptuous),
+[presume](https://dictionary.cambridge.org/pronunciation/english/presume), and
+[herb](https://dictionary.cambridge.org/us/pronunciation/english/herb).
+For example, expanding `herb` reveals US `/ɝːb/` (silent h).
+IPA stays hidden until the word is expanded.
+
 ## Upstream license
 
 The MIT License (MIT)

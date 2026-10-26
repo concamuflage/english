@@ -13,7 +13,7 @@ export const metadata: Metadata = {
  * Reserves the General English section without adding placeholder content.
  *
  * Example: `/english/general` lists Confusing Words, Commonly Mispronounced Words,
- * and Uncommon meaning of common words,
+ * Uncommon meaning of common words, and Words That Look Misleading,
  * with an empty body and a sidebar link back to `/english`.
  */
 export default function GeneralEnglishPage() {
@@ -26,7 +26,8 @@ export default function GeneralEnglishPage() {
         items={[
           { href: "/english/general/confusing-words", label: "Confusing Words" },
           { href: "/english/general/commonly-mispronounced-words", label: "Commonly Mispronounced Words" },
-          { href: "/english/general/uncommon-meaning-of-common-words", label: "Uncommon meaning of common words" }
+          { href: "/english/general/uncommon-meaning-of-common-words", label: "Uncommon meaning of common words" },
+          { href: "/english/general/words-that-look-misleading", label: "Words That Look Misleading" }
         ]}
       />
       <div className="section-content" />
