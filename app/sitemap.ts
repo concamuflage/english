@@ -18,10 +18,11 @@ export const dynamic = "force-static";
  * Misleading word forms includes `/english/general/words-that-look-misleading`, starting with spendthrift.
  * Math includes `/math/calculus/tangent-plane`, the rotatable tangent-plane post.
  * Cancellation adds `/math/calculus/canceling-height-changes`, exported from test.py.
+ * Calculus practice includes `/math/calculus/practices/second-step-error`, the handwritten formula question.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   // List destination pages only: /gre and /confusing-words redirect into /english.
-  const paths = ["/", "/english", "/english/gre", "/english/gre/confusing-words", "/math", "/math/calculus", "/math/calculus/tangent-plane", "/math/calculus/canceling-height-changes", "/entrepreneurship", "/global-expansion", "/contact"];
+  const paths = ["/", "/english", "/english/gre", "/english/gre/confusing-words", "/math", "/math/calculus", "/math/calculus/tangent-plane", "/math/calculus/canceling-height-changes", "/math/calculus/practices/second-step-error", "/entrepreneurship", "/global-expansion", "/contact"];
   return [
     ...paths.map((path) => ({ url: new URL(path, "https://bumblebee.work").href })),
     ...confusingWordPairs.map((pair) => ({
