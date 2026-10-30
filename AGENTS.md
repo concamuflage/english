@@ -7,6 +7,11 @@
 
 - When writing practice sentences, always give enough context so the user knows which one to choose. 
 
+# Mathematical Notation
+
+- Always use curly braces for explanatory braces beneath or above formulas, rather than square brackets. For example, label `f(a + Δx, b + Δy) − f(a, b)` with a curly underbrace and “total real height change” beneath it.
+- Display equations and formulas without rectangular borders or boxes. For example, show `E_total = E_step 1 + E_step 2` as an unboxed equation.
+
 
 # Site Color Theme
 

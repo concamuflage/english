@@ -1176,3 +1176,452 @@ h3 {
     display: none;
   }
 }
+
+/* Keep the fixed mathematical scene and its compact legend side by side. */
+.tangent-page {
+  padding-top: 28px;
+}
+
+.tangent-figure {
+  margin: 0;
+}
+
+.tangent-flow-page .calculus-post-introduction,
+.tangent-flow-content > .tangent-proof {
+  max-width: none;
+}
+
+.tangent-flow-content {
+  /* Contain the right float while letting later proof paragraphs reclaim its space. */
+  display: flow-root;
+  margin-top: 28px;
+}
+
+.tangent-flow-content > .tangent-visualization {
+  float: right;
+  margin: 0 0 28px 28px;
+  position: relative;
+  width: calc((100% - 28px) * 2 / 3);
+}
+
+.tangent-flow-content > .tangent-proof {
+  /* A layout-containment or overflow context would keep the proof narrow after the float ends. */
+  container: none;
+  margin: 0;
+  overflow: visible;
+}
+
+.tangent-flow-content > .tangent-proof > h2:first-child {
+  margin-top: 0;
+}
+
+/* Three visual columns: a narrower proof, then the graph and legend within the wider visualization. */
+.tangent-article-columns {
+  align-items: start;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.7fr);
+  margin-top: 28px;
+}
+
+.tangent-article-columns > * {
+  min-width: 0;
+}
+
+.tangent-article-columns > .tangent-visualization,
+.tangent-legends {
+  position: relative;
+}
+
+.tangent-article-columns > .tangent-visualization::before,
+.tangent-flow-content > .tangent-visualization::before,
+.tangent-legends::before {
+  /* Draw inside the existing gaps, e.g. halfway across the 28px explanation/plot gap. */
+  border-left: 1px dashed color-mix(in srgb, var(--line) 60%, transparent);
+  bottom: 0;
+  content: "";
+  left: -14px;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+}
+
+.tangent-legends::before {
+  left: -8px;
+}
+
+.tangent-article-columns .tangent-proof {
+  margin: 0;
+}
+
+.tangent-article-columns .tangent-proof > h2:first-child {
+  margin-top: 0;
+}
+
+.tangent-visualization > h2 {
+  /* Match the proof heading across the two columns, including the initial top alignment. */
+  color: var(--accent-deep);
+  font-size: clamp(1.3rem, 2vw, 1.65rem);
+  line-height: 1.35;
+  margin-top: 0;
+}
+
+/* Keep the proof readable in its column; equations wrap within a 320px phone viewport. */
+.tangent-proof {
+  /* Use the actual proof-column width for equation wrapping, e.g. 430px on a 1470px screen. */
+  container: tangent-proof / inline-size;
+  line-height: 1.75;
+  margin: 24px 0 48px;
+  max-width: 800px;
+  min-width: 0;
+  overflow-x: clip;
+  overflow-wrap: anywhere;
+}
+
+.tangent-proof .proof-equation {
+  /* Extra-wide aligned sums scroll locally rather than painting across the dashed divider. */
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.tangent-flow-content .proof-equation {
+  /* Query each formula's available width: e.g. 433px beside the plot, 1326px below it. */
+  container: proof-line / inline-size;
+}
+
+@media (min-width: 1001px) {
+  @container proof-line (min-width: 50vw) {
+    .tangent-flow-content .proof-equation-grid {
+      /* Center one-line equations only in the merged desktop section, e.g. 1326px below the plot.
+         Phones also exceed 50vw, so the desktop media query is essential to allow mobile wrapping. */
+      display: flex;
+      flex-wrap: nowrap;
+      margin-inline: auto;
+      max-width: none;
+      white-space: nowrap;
+      width: max-content;
+    }
+  }
+}
+
+.tangent-proof h2,
+.tangent-proof h3 {
+  color: var(--accent-deep);
+  line-height: 1.35;
+  margin-top: 32px;
+}
+
+.tangent-proof h2 {
+  font-size: clamp(1.3rem, 2vw, 1.65rem);
+}
+
+.tangent-proof h3 {
+  font-size: 1.15rem;
+}
+
+/* Emphasize the shared evaluation point, e.g. both derivatives use (a, b), without changing the background. */
+.proof-original-point {
+  border-left: 4px solid var(--accent);
+  color: var(--accent-deep);
+  font-weight: 600;
+  padding: 12px 18px;
+}
+
+.proof-equation {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
+  margin: 28px 0;
+  /* Start proof formulas at the left edge while their internal operator columns stay aligned. */
+  text-align: left;
+}
+
+.proof-equation-grid {
+  /* Shared columns keep continuation signs aligned; e.g. each bracketed step error occupies one row. */
+  align-items: baseline;
+  column-gap: 0.4em;
+  display: inline-grid;
+  grid-template-columns: max-content 1em minmax(0, max-content);
+  max-width: 100%;
+  padding: 12px;
+  row-gap: 8px;
+  text-align: left;
+}
+
+.proof-cancelled-term {
+  /* Cross out the matching +f(a + Δx, b) and −f(a + Δx, b) values where they cancel. */
+  text-decoration-line: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.proof-eq-left {
+  grid-column: 1;
+  text-align: right;
+}
+
+.proof-eq-operator {
+  grid-column: 2;
+  text-align: center;
+}
+
+.proof-eq-right {
+  grid-column: 3;
+  min-width: 0;
+}
+
+.proof-term {
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 100%;
+  text-align: center;
+}
+
+.proof-term > span:first-child {
+  padding: 0 3px 4px;
+}
+
+.proof-underbrace {
+  /* Stretch the curly brace beneath the whole term, e.g. f(end) − f(start), keeping its stroke thin. */
+  display: block;
+  fill: none;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 1;
+  width: 100%;
+}
+
+.proof-term-label {
+  display: block;
+  font-size: 0.78em;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .proof-equation-grid {
+    /* Put a long left-hand side above the aligned calculation, e.g. E_step1 + E_step2 at 375px. */
+    grid-template-columns: 1em minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .proof-eq-left {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  .proof-eq-operator {
+    grid-column: 1;
+  }
+
+  .proof-eq-right {
+    grid-column: 2;
+  }
+}
+
+@container tangent-proof (max-width: 600px) {
+  .proof-equation-grid {
+    /* A desktop proof column can be as narrow as a phone; move the left-hand side above the formula. */
+    grid-template-columns: 1em minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .proof-eq-left {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  .proof-eq-operator {
+    grid-column: 1;
+  }
+
+  .proof-eq-right {
+    grid-column: 2;
+  }
+}
+
+.tangent-figure figcaption {
+  line-height: 1.6;
+  margin-bottom: 16px;
+  /* Align both the coordinate line and the two-step line with the plot's left edge. */
+  text-align: left;
+}
+
+.tangent-layout {
+  align-items: start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+.tangent-layout > * {
+  min-width: 0;
+}
+
+.tangent-canvas {
+  cursor: grab;
+  display: block;
+  height: clamp(400px, 65vh, 680px);
+  /* A captured finger rotates the scene; page scrolling remains available outside the plot. */
+  touch-action: none;
+  width: 100%;
+}
+
+.tangent-canvas:active {
+  cursor: grabbing;
+}
+
+.tangent-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.tangent-controls button {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-deep);
+  cursor: pointer;
+  font: inherit;
+  min-height: 44px;
+  padding: 10px 18px;
+}
+
+.tangent-legends {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.tangent-legends > p {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.tangent-legends > h3 {
+  color: var(--accent-deep);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.tangent-legends h4 {
+  color: var(--accent-deep);
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+
+.tangent-legends section p {
+  font-size: inherit;
+  margin: 3px 0 8px;
+  /* Keep the source's line breaks for formulas, e.g. fx and fy on separate lines in test.py's legend. */
+  white-space: pre-line;
+}
+
+.calculus-post-conclusion {
+  line-height: 1.7;
+  margin-top: 32px;
+  max-width: 800px;
+}
+
+.calculus-post-introduction {
+  /* Give the introductory formula and download instructions a readable measure before the full-width plot. */
+  line-height: 1.7;
+  margin-bottom: 28px;
+  max-width: 900px;
+  overflow-wrap: anywhere;
+}
+
+.height-change-title {
+  /* Align both contribution terms, with the plus sign at the end of the first line. */
+  align-items: baseline;
+  column-gap: 0.35em;
+  display: grid;
+  grid-template-areas: "total equals x" ". . y";
+  grid-template-columns: max-content 1em minmax(0, 1fr);
+  row-gap: 8px;
+}
+
+.height-title-total { grid-area: total; }
+.height-title-equals { grid-area: equals; }
+.height-title-x { grid-area: x; }
+.height-title-y { grid-area: y; }
+
+@media (max-width: 1000px) {
+  .height-change-title {
+    /* Put the total above the calculation on phones while keeping Δx and Δy terms aligned. */
+    grid-template-areas: "total total" "equals x" ". y";
+    grid-template-columns: 1em minmax(0, 1fr);
+  }
+}
+
+.calculus-post-conclusion h2,
+.calculus-post-conclusion h3 {
+  color: var(--accent-deep);
+  font-size: 1.4rem;
+}
+
+.tangent-legends .tangent-legend-label {
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.tangent-height-key {
+  color: #b40060;
+}
+
+.tangent-swatch {
+  border-top-width: 3px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+  width: 18px;
+}
+
+@media (max-width: 1000px) {
+  .tangent-flow-content {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .tangent-flow-content > .tangent-visualization {
+    float: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .tangent-flow-content > .tangent-proof {
+    min-width: 0;
+    order: -1;
+    width: 100%;
+  }
+
+  .tangent-article-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tangent-article-columns > .tangent-visualization::before,
+  .tangent-flow-content > .tangent-visualization::before {
+    /* When the explanation stacks above the plot, turn that divider horizontal. */
+    border-left: 0;
+    border-top: 1px dashed color-mix(in srgb, var(--line) 60%, transparent);
+    bottom: auto;
+    left: 0;
+    right: 0;
+    top: -14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tangent-layout {
+    /* Keep the legend adjacent even on phones; the proof alone moves above the visualization. */
+    gap: 10px;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+  .tangent-legends::before {
+    left: -5px;
+  }
+}

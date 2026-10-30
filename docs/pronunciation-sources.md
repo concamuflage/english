@@ -80,9 +80,11 @@ The entries `quantile / ˈkwɑn taɪl /` and `quartile / ˈkwɔr taɪl /` follow
 The disclosure list in `app/english/general/commonly-mispronounced-words/page.tsx`
 includes US readings from Cambridge for
 [presumptuous](https://dictionary.cambridge.org/us/pronunciation/english/presumptuous),
-[presume](https://dictionary.cambridge.org/pronunciation/english/presume), and
-[herb](https://dictionary.cambridge.org/us/pronunciation/english/herb).
+[presume](https://dictionary.cambridge.org/pronunciation/english/presume),
+[herb](https://dictionary.cambridge.org/us/pronunciation/english/herb), and
+[couture](https://dictionary.cambridge.org/us/pronunciation/english/couture).
 For example, expanding `herb` reveals US `/ɝːb/` (silent h).
+Expanding `couture` reveals US `/kuːˈtʊr/`, with stress on the second syllable.
 IPA stays hidden until the word is expanded.
 
 ## Upstream license

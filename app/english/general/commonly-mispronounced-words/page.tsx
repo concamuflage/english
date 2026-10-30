@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Commonly Mispronounced Words | Bumblebee",
-  description: "Practice commonly mispronounced words in American English. Reveal IPA pronunciations for plaid, presumptuous, presume, and herb.",
+  description: "Practice commonly mispronounced words in American English. Reveal IPA pronunciations for plaid, presumptuous, presume, herb, and couture.",
   alternates: { canonical: "https://bumblebee.work/english/general/commonly-mispronounced-words" }
 };
 
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
  * Example: clicking or keyboard-activating `plaid` reveals `/plæd/`; activating it again hides the IPA.
  * An introductory note identifies American English as the pronunciation standard.
  * Only US readings are shown; for example, `herb` reveals `/ɝːb/` with a silent h.
+ * Expanding `couture` reveals `/kuːˈtʊr/`, with stress on the second syllable.
  */
 export default function CommonlyMispronouncedWordsPage() {
   return (
@@ -34,6 +35,10 @@ export default function CommonlyMispronouncedWordsPage() {
         <details className="pronunciation-word">
           <summary>herb</summary>
           <p>US: <span lang="en-fonipa">/ɝːb/</span> (silent h)</p>
+        </details>
+        <details className="pronunciation-word">
+          <summary>couture</summary>
+          <p>US: <span lang="en-fonipa">/kuːˈtʊr/</span></p>
         </details>
       </div>
     </main>

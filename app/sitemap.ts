@@ -16,10 +16,12 @@ export const dynamic = "force-static";
  * The pronunciation collection includes `/english/general/commonly-mispronounced-words` once it has content.
  * Meaning practice includes `/english/general/uncommon-meaning-of-common-words`, starting with inform.
  * Misleading word forms includes `/english/general/words-that-look-misleading`, starting with spendthrift.
+ * Math includes `/math/calculus/tangent-plane`, the rotatable tangent-plane post.
+ * Cancellation adds `/math/calculus/canceling-height-changes`, exported from test.py.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   // List destination pages only: /gre and /confusing-words redirect into /english.
-  const paths = ["/", "/english", "/english/gre", "/english/gre/confusing-words", "/entrepreneurship", "/global-expansion", "/contact"];
+  const paths = ["/", "/english", "/english/gre", "/english/gre/confusing-words", "/math", "/math/calculus", "/math/calculus/tangent-plane", "/math/calculus/canceling-height-changes", "/entrepreneurship", "/global-expansion", "/contact"];
   return [
     ...paths.map((path) => ({ url: new URL(path, "https://bumblebee.work").href })),
     ...confusingWordPairs.map((pair) => ({
