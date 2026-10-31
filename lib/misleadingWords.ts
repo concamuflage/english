@@ -21,5 +21,17 @@ export const misleadingWords: readonly MisleadingWord[] = [
       "“Spend” and “thrift” contradict each other, but “spend” comes first, so a spendthrift likes spending!",
       "A spendthrift is the opposite of someone who spends thriftily."
     ]
+  },
+  {
+    word: "callow",
+    questions: [{
+      sentence: "The director called the actor callow. This means the actor was ____.",
+      choicePrompt: "Choose the meaning of callow",
+      choices: ["insensitive and uncaring", "immature and inexperienced"],
+      answer: "immature and inexperienced"
+    }],
+    mnemonics: [
+      "When people grow old, they become callous, uncaring about other people’s pains. Callow is the opposite of the being old; a callow person is young, immature, and inexperienced."
+    ]
   }
 ];

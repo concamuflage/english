@@ -5,14 +5,14 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import type { ConfusingWordPair } from "@/lib/confusingWords";
 import { QuestionCard } from "@/components/QuestionCard";
-import { GRE_WORD_COLLECTION, getConfusingWordMetadata, getConfusingWordPath } from "@/lib/confusingWordRoutes";
+import { ENGLISH_WORD_COLLECTION, getConfusingWordMetadata, getConfusingWordPath } from "@/lib/confusingWordRoutes";
 
 type FeedbackByQuestion = Record<number, string>;
 
 type ConfusingWordsPracticeProps = {
   pairs: ConfusingWordPair[];
   initialSlug?: string;
-  collection?: typeof GRE_WORD_COLLECTION;
+  collection?: typeof ENGLISH_WORD_COLLECTION;
 };
 
 // Keep saved selections on their merged cards, e.g. ellipse-ellipsis resumes the new three-word group.
@@ -130,16 +130,16 @@ function PracticeNote({ note, noteImage, noteImages }: Pick<ConfusingWordPair, "
  * Reopening the page resumes a saved pair such as `blight-plight` with unanswered questions.
  * On mobile, tapping a pair opens a modal; closing it returns to the same place in the vertical list.
  * The mobile card's bottom Next button advances alphabetically with unanswered questions.
- * Its progress indicator shows list position, e.g. pair 1 of 245 with 244 pairs left, not completed practice.
+ * Its progress indicator shows list position, e.g. pair 1 of 258 with 257 pairs left, not completed practice.
  * Mobile actions place Next in the bottom center and the close icon at the lower right.
  * Mobile search filters any word in a group; e.g. `ragged` finds jagged / rugged / ragged.
  * Questions may accept multiple choices, e.g. fathomless and unfathomable for ocean depths.
  * Word links update the URL without replacing the card UI; direct URLs override saved progress.
- * Example: `/english/gre/confusing-words/factitious-facetious` starts with that group's content in HTML.
- * A General collection keeps door/doorway URLs and saved selections separate from GRE practice.
+ * Example: `/english/confusing-words/factitious-facetious` starts with that group's content in HTML.
+ * The merged list includes former General cards such as door/doorway and reuses saved selections from both sections.
  * QuestionCard shares rendering and answer checking with the uncommon-meanings exercises.
  */
-export function ConfusingWordsPractice({ pairs, initialSlug, collection = GRE_WORD_COLLECTION }: ConfusingWordsPracticeProps) {
+export function ConfusingWordsPractice({ pairs, initialSlug, collection = ENGLISH_WORD_COLLECTION }: ConfusingWordsPracticeProps) {
   const pathname = usePathname();
   const [selectedSlug, setSelectedSlug] = useState(initialSlug ?? pairs[0]?.slug ?? "");
   const [feedbackByQuestion, setFeedbackByQuestion] = useState<FeedbackByQuestion>({});
@@ -206,7 +206,9 @@ export function ConfusingWordsPractice({ pairs, initialSlug, collection = GRE_WO
     const urlPair = pairs.find((pair) => getConfusingWordPath(pair.slug, collection) === pathname);
     let savedSlug: string | null = null;
     try {
-      savedSlug = window.localStorage.getItem(collection.storageKey);
+      // Reuse the original selection, or migrate a General-only selection such as restrain-constrain.
+      savedSlug = window.localStorage.getItem(collection.storageKey)
+        ?? window.localStorage.getItem("general-confusing-words:last-pair");
     } catch {
       // A direct group URL works even if browser storage is unavailable.
     }
@@ -317,8 +319,8 @@ export function ConfusingWordsPractice({ pairs, initialSlug, collection = GRE_WO
    *
    * Example: clicking `weather / whether` saves `weather-whether` locally and loads unanswered questions.
    * On mobile, the same tap opens the practice popup.
-   * The URL becomes `/english/gre/confusing-words/weather-whether` without reloading or scrolling.
-   * General practice instead uses its own path, e.g. `/english/general/confusing-words/door-doorway`.
+   * The URL becomes `/english/confusing-words/weather-whether` without reloading or scrolling.
+   * Former General pairs use the same collection, e.g. `/english/confusing-words/door-doorway`.
    */
   function selectPair(slug: string) {
     const path = getConfusingWordPath(slug, collection);

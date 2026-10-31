@@ -1,10 +1,6 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
-/**
- * Preserves links to the former GRE practice page.
- *
- * Example: `/gre/confusing-words` redirects to `/english/gre/confusing-words`.
- */
-export default function GreConfusingWordsPage() {
-  redirect("/english/gre/confusing-words");
+/** Preserves the former section link; e.g. /gre/confusing-words redirects directly to /english/confusing-words. */
+export default function LegacyEnglishPage() {
+  permanentRedirect("/english/confusing-words");
 }

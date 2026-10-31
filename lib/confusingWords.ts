@@ -1,4 +1,5 @@
 import { wordPronunciations } from "@/lib/wordPronunciations";
+import { generalConfusingWordPairs } from "@/lib/generalConfusingWords";
 
 export type ConfusingWordQuestion = {
   sentence: string;
@@ -922,9 +923,9 @@ function buildConfusingWordPairs(rows: (ConfusingWordPairRow | ConfusingWordGrou
   });
 }
 
-// Sort by the first word (e.g. abstruse before acerbic), then the second word for matching first words.
-// Case and accents do not affect alphabetical order; existing slugs stay stable for saved selections.
-export const confusingWordPairs: ConfusingWordPair[] = buildConfusingWordPairs(confusingWordPairRows).sort(
+// Merge every former GRE and General card, then sort by first word (e.g. abstruse before door).
+// Stable slugs and unchanged question objects preserve saved selections, notes, and image attachments.
+export const confusingWordPairs: ConfusingWordPair[] = [...buildConfusingWordPairs(confusingWordPairRows), ...generalConfusingWordPairs].sort(
   (left, right) =>
     left.words[0].localeCompare(right.words[0], "en", { sensitivity: "base" }) ||
     left.words[1].localeCompare(right.words[1], "en", { sensitivity: "base" })

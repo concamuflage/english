@@ -10,6 +10,7 @@ import { misleadingWords } from "@/lib/misleadingWords";
  * Numbered questions use the Confusing Words card, with no explanation after choosing an answer.
  * Example: spendthrift's two mnemonics appear only when Note is expanded.
  * Reopening a word starts an unanswered exercise.
+ * Long choices such as callow's "immature and inexperienced" wrap inside narrow phone cards.
  */
 export function MisleadingWordsPractice() {
   const [selectedWord, setSelectedWord] = useState(misleadingWords[0].word);
@@ -82,7 +83,7 @@ export function MisleadingWordsPractice() {
   );
 
   return (
-    <div className="confusing-words-workspace">
+    <div className="confusing-words-workspace misleading-words-practice">
       <aside className="pair-list" aria-label="Misleading words">
         {isMobile && (
           <div className="word-list-search">

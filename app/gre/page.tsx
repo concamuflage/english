@@ -1,10 +1,6 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
-/**
- * Preserves links to the former top-level GRE page.
- *
- * Example: `/gre` redirects to `/english/gre`.
- */
-export default function GrePage() {
-  redirect("/english/gre");
+/** Preserves the former section link; e.g. /gre redirects directly to /english. */
+export default function LegacyEnglishPage() {
+  permanentRedirect("/english");
 }

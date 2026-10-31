@@ -1,0 +1,13 @@
+# Preserve the same destinations in Cloudflare's static asset hosting and Next's development server.
+# Example: /english/general/confusing-words/restrain-constrain becomes /english/confusing-words/restrain-constrain.
+/ /english/confusing-words 301
+/english/general /english 301
+/english/general/ /english 301
+/english/gre /english 301
+/english/gre/ /english 301
+/gre /english 301
+/confusing-words /english/confusing-words 301
+/gre/confusing-words /english/confusing-words 301
+/english/general/* /english/:splat 301
+/english/gre/* /english/:splat 301
+/gre/* /english/:splat 301

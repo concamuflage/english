@@ -993,6 +993,204 @@ h3 {
   display: none;
 }
 
+.misleading-words-practice .selection-row {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.misleading-words-practice .selection-option {
+  /* Callow's "immature and inexperienced" needs two padded lines in a 320px phone card. */
+  height: auto;
+  max-width: 100%;
+  min-height: 44px;
+}
+
+.context-meaning-practice {
+  margin-top: 32px;
+}
+
+.context-meaning-list-title {
+  color: var(--accent-deep);
+  font-size: 0.95rem;
+  margin: 0 0 6px;
+}
+
+.context-meaning-word-title {
+  color: var(--accent-deep);
+  font-size: 1.5rem;
+  margin: 0 0 8px;
+}
+
+.context-meaning-instructions {
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.context-meaning-practice .flashcard-shell {
+  /* Five matching rows can exceed the viewport; keep them in the page flow beside the list. */
+  position: static;
+}
+
+.context-meaning-practice .flashcard {
+  /* Let all sentences use the page scroll, including at a 375px phone width. */
+  max-height: none;
+  overflow: visible;
+}
+
+.context-matching-card {
+  /* Adapt to the card's own width, e.g. a 351px phone dialog or a 920px desktop card. */
+  container: context-matching / inline-size;
+}
+
+.context-matching-layout {
+  align-items: start;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1.6fr) minmax(200px, 1fr);
+}
+
+.context-matching-sentences,
+.context-matching-meanings ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.context-match-row {
+  --question-font-size: 1.1rem;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 20px 0;
+}
+
+.context-match-row:first-child {
+  padding-top: 0;
+}
+
+.context-match-row p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+.context-match-select-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.context-match-select-label select {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  display: block;
+  font: inherit;
+  font-size: 1rem;
+  margin-top: 6px;
+  min-height: 44px;
+  padding: 8px;
+  width: 100%;
+}
+
+.context-match-select-label select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.context-match-select-label select[aria-invalid="true"] {
+  border-color: var(--error);
+  color: var(--error-ink);
+}
+
+.context-match-row:has(.correct-status) select {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.context-matching-meanings {
+  border-left: 1px solid var(--line);
+  padding-left: 20px;
+}
+
+.context-matching-meanings h3 {
+  color: var(--accent-deep);
+  font-size: 1rem;
+  margin: 0 0 16px;
+}
+
+.context-matching-meanings li {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1.2em minmax(0, 1fr);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.context-matching-meanings li + li {
+  margin-top: 16px;
+}
+
+.context-meaning-letter {
+  color: var(--accent-deep);
+  font-weight: 700;
+}
+
+.context-matching-result {
+  line-height: 1.6;
+  margin: 20px 0 0;
+}
+
+.context-matching-result:empty {
+  display: none;
+}
+
+.context-matching-result-correct {
+  color: var(--success);
+}
+
+.context-matching-result-wrong {
+  color: var(--error-ink);
+}
+
+.context-matching-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.context-matching-reset {
+  background: var(--panel);
+  border: 0;
+  color: var(--accent-deep);
+  cursor: pointer;
+  font: inherit;
+  min-height: 44px;
+  padding: 8px 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.context-matching-actions .practice-close-button {
+  margin-left: auto;
+}
+
+@container context-matching (max-width: 650px) {
+  .context-matching-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .context-matching-meanings {
+    border-bottom: 1px solid var(--line);
+    border-left: 0;
+    grid-row: 1;
+    padding: 0 0 24px;
+  }
+}
+
 .practice-dialog {
   background: white;
   border: 1px solid var(--line);

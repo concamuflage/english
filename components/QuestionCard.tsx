@@ -4,6 +4,8 @@ import { useId, useState, type ReactNode } from "react";
 
 export type CardQuestion = {
   sentence: string;
+  /** Optional choice instruction; e.g. "Choose the meaning of put on a clinic" for a meaning question. */
+  choicePrompt?: string;
   choices: readonly string[];
   answer: string;
   alternativeAnswers?: readonly string[];
@@ -27,6 +29,7 @@ type QuestionCardProps = {
  * Example: either listed answer in a pliant/pliable question receives green feedback.
  * Row layout retains numbered status icons; single layout reveals any supplied explanation after a choice.
  * Example: the inform exercise explains guide/influence only after selecting inform or announce.
+ * Meaning questions can supply a choicePrompt, e.g. clinic asks for a phrase's meaning instead of a missing word.
  */
 function Question({ question, selection, index, name, onSelect, layout }: {
   question: CardQuestion;
@@ -42,7 +45,7 @@ function Question({ question, selection, index, name, onSelect, layout }: {
   const isCorrect = answered && correctChoices.includes(selection);
   const options = (
     <fieldset className="selection-row" aria-describedby={sentenceId}>
-      <legend>{layout === "rows" ? `Question ${index + 1}` : "Choose the word that fits the blank"}</legend>
+      <legend>{question.choicePrompt ?? (layout === "rows" ? `Question ${index + 1}` : "Choose the word that fits the blank")}</legend>
       <div className="selection-options">
         {question.choices.map((choice) => (
           <label

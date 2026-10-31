@@ -18,7 +18,7 @@ type SectionNavProps = {
 /**
  * Renders section navigation while omitting links to the current page.
  *
- * Example: `/english` lists GRE; `/english/gre` lists Confusing Words without GRE.
+ * Example: `/english` lists Confusing Words directly; `/math` lists Calculus without repeating Math.
  */
 export function SectionNav({ title, href, parent, items }: SectionNavProps) {
   const pathname = usePathname();

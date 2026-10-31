@@ -1,6 +1,6 @@
 import type { ConfusingWordPair } from "@/lib/confusingWords";
 
-/** General-only vocabulary; for example, door/doorway is not added to the GRE collection. */
+/** Additional vocabulary merged into the shared English list; e.g. restrain/constrain retains its overlapping valid answers. */
 export const generalConfusingWordPairs: ConfusingWordPair[] = [
   {
     slug: "door-doorway",
@@ -25,6 +25,41 @@ export const generalConfusingWordPairs: ConfusingWordPair[] = [
       { sentence: "He clung to the ____ that he could never lose money gambling, even after his bank statements showed years of losses.", answer: "delusion" }
     ],
     note: "An illusion is a misleading appearance or impression, often involving what you see: a straight straw can look bent in water. A delusion is a false belief held despite evidence against it: someone may remain convinced that gambling guarantees a profit despite repeated losses. Illusion can also refer to a mistaken belief, so the words sometimes overlap; optical effects favor illusion, while a firmly held false conviction favors delusion."
+  },
+  {
+    slug: "restrain-constrain",
+    words: ["restrain", "constrain"],
+    pronunciations: ["/ rɪˈstreɪn /", "/ kənˈstreɪn /"],
+    questions: [
+      // Both verbs can describe physical restriction or emotional control; restrain is the usual choice here.
+      { sentence: "The handler used a strong leash to ____ the dog, holding it back from running into the busy road.", answer: "restrain", alternativeAnswers: ["constrain"] },
+      { sentence: "She struggled to ____ her anger during the meeting, keeping her voice calm despite the insulting remarks.", answer: "restrain", alternativeAnswers: ["constrain"] },
+      { sentence: "A lack of funds may ____ the organizers to cancel the event, even though they want it to go ahead.", answer: "constrain" },
+      { sentence: "The new evidence may ____ the committee to revise its decision, despite its reluctance to change course.", answer: "constrain" }
+    ],
+    note: {
+      paragraphs: [
+        "Restrain usually emphasizes holding back a person, action, or emotion. Constrain often emphasizes limits on freedom or circumstances that force a choice.",
+        "Their meanings overlap. Both can describe physical restriction or controlling anger, so those practice sentences accept either answer; restrain is the more usual choice in those examples."
+      ],
+      bullets: [
+        "Restrain someone from leaving: stop or hold them back from leaving.",
+        "Constrain someone to stay: compel them to stay because of pressure or circumstances.",
+        "Constrain your choices: limit the options available to you."
+      ]
+    }
+  },
+  {
+    slug: "tallow-callow",
+    words: ["tallow", "callow"],
+    pronunciations: ["/ ˈtæloʊ /", "/ ˈkæloʊ /"],
+    questions: [
+      { sentence: "She melted the ____ made from rendered beef fat and poured it around the wicks to make candles.", answer: "tallow" },
+      { sentence: "The soap maker used ____ rendered from sheep fat as an ingredient in a batch of traditional soap.", answer: "tallow" },
+      { sentence: "The ____ recruit had never worked in an office before and made mistakes that an experienced colleague would have avoided.", answer: "callow" },
+      { sentence: "Looking back on his ____ judgment as a teenager, he realized how much maturity and experience he had gained since then.", answer: "callow" }
+    ],
+    note: "Tallow is a noun for rendered animal fat, especially from cattle or sheep, used in products such as candles and soap. Callow is an adjective meaning immature or inexperienced, often describing a young person. For example, a candle maker can melt tallow, while a callow recruit still has much to learn. Both words rhyme: tallow /ˈtæloʊ/ and callow /ˈkæloʊ/."
   },
   {
     slug: "venue-avenue",
