@@ -16,10 +16,15 @@ export type ConfusingWordNote = string | {
   paragraphs: string[];
   bullets: string[];
 } | {
-  table: { columns: string[]; rows: string[][] };
-  heading: string;
-  examples: string[];
-  conclusion: string;
+  table: {
+    columns: string[];
+    rows: string[][];
+    /** Literal mnemonic matches, e.g. `Acerbic: "Ac"` and `Acid: "Ac"`; these are memory cues, not etymology. */
+    highlights?: Record<string, string>;
+  };
+  heading?: string;
+  examples?: string[];
+  conclusion?: string;
 };
 
 export type ConfusingWordPair = {
@@ -290,9 +295,9 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
   [
     "adjure",
     "abjure",
-    "I ____ you to tell the truth.",
+    "I ____ (implore/beg) you to tell the truth.",
     "The convert chose to ____ old beliefs.",
-    ["The judge will ____ the witness to answer plainly.", "wordOne"]
+    ["The judge will ____ (command/order) the witness to answer plainly.", "wordOne"]
   ],
   [
     "lithe",
@@ -770,6 +775,17 @@ const confusingWordPairRows: (ConfusingWordPairRow | ConfusingWordGroupRow)[] = 
 ];
 
 const confusingWordPairNotes: Record<string, ConfusingWordNote> = {
+  "acerbic-ascetic": {
+    table: {
+      columns: ["Word", "Think of", "Meaning"],
+      rows: [
+        ["Acerbic", "Acid", "Sharp, biting words"],
+        ["Ascetic", "A scant life", "Self-denial, no luxury"]
+      ],
+      // In “A scant life”, emphasize only “sc”; leave the article “A” unhighlighted.
+      highlights: { Acerbic: "Ac", Acid: "Ac", Ascetic: "Asc", "A scant life": "sc" }
+    }
+  },
   "scruples-qualm": "Scruples can mean the moral principles that guide someone's conduct, not just a passing feeling of doubt. A qualm can be a sudden feeling of nausea or unease unrelated to morality. For example, a qualm of nausea on a boat is not a moral objection. The words do overlap when they mean moral doubts: 'She had scruples about lying' and 'She had qualms about lying' both work. Note the number: scruples is plural; qualm is singular, and its plural is qualms.",
   "politic-politics": "Politic is an adjective meaning prudent, tactful, or strategically wise, as in 'a politic decision.' Politics is a noun referring to government and political activity, or to competition for power within a group, as in 'office politics.' For something relating to government, use political rather than politic: 'a political debate.'",
   "emotive-emotional": '"Her emotional speech moved the crowd." "Her emotive speech moved the crowd." Both work. Emotional emphasizes feeling or expressing emotion; emotive emphasizes arousing emotion in others. They are not always interchangeable: "He\'s very emotional today" means he is upset or feeling strong emotions; "He\'s very emotive today" sounds odd in that sense. "An emotive ad campaign" fits when the campaign is designed to stir emotions; "an emotional ad campaign" is less precise for that meaning, though it is also possible.',

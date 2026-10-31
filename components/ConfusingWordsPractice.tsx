@@ -52,6 +52,14 @@ function shuffleQuestions(cardSlug: string, questions: ConfusingWordPair["questi
   });
 }
 
+/** Highlights a literal memory cue; e.g. `Acerbic` with `Ac` emphasizes only its first two letters. */
+function highlightNoteCue(text: string, cue?: string) {
+  const start = cue ? text.indexOf(cue) : -1;
+  if (!cue || start < 0) return text;
+
+  return <>{text.slice(0, start)}<strong className="practice-note-root">{cue}</strong>{text.slice(start + cue.length)}</>;
+}
+
 /**
  * Renders text, comparison tables, and image notes inside a collapsed-by-default disclosure.
  *
@@ -61,6 +69,7 @@ function shuffleQuestions(cardSlug: string, questions: ConfusingWordPair["questi
  * The emboss/deboss note keeps the embossed photo on the left and debossed photo on the right.
  * Wide diagrams, e.g. the quantile/quartile bars, use the available note width without cropping.
  * The quantile/quartile explanation renders paragraphs and bullet points above its diagram.
+ * Acerbic/ascetic highlights matching letters in its word-and-memory-cue table.
  */
 function PracticeNote({ note, noteImage, noteImages }: Pick<ConfusingWordPair, "note" | "noteImage" | "noteImages">) {
   if (!note && !noteImage && !noteImages?.length) {
@@ -86,15 +95,15 @@ function PracticeNote({ note, noteImage, noteImages }: Pick<ConfusingWordPair, "
             <tbody>
               {note.table.rows.map(([label, ...cells]) => (
                 <tr key={label}>
-                  <th scope="row">{label}</th>
-                  {cells.map((cell, index) => <td key={index}>{cell}</td>)}
+                  <th scope="row">{highlightNoteCue(label, note.table.highlights?.[label])}</th>
+                  {cells.map((cell, index) => <td key={index}>{highlightNoteCue(cell, note.table.highlights?.[cell])}</td>)}
                 </tr>
               ))}
             </tbody>
           </table>
-          <p><strong>{note.heading}</strong></p>
-          <ul>{note.examples.map((example) => <li key={example}>{example}</li>)}</ul>
-          <p>{note.conclusion}</p>
+          {note.heading && <p><strong>{note.heading}</strong></p>}
+          {note.examples && note.examples.length > 0 && <ul>{note.examples.map((example) => <li key={example}>{example}</li>)}</ul>}
+          {note.conclusion && <p>{note.conclusion}</p>}
         </>
       )}
       {noteImage && (

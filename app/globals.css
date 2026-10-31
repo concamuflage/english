@@ -286,16 +286,6 @@ a {
   top: calc(var(--site-header-height) + 30px);
 }
 
-.calculus-back-link {
-  align-items: center;
-  color: var(--muted);
-  display: inline-flex;
-  font-size: 0.9rem;
-  gap: 8px;
-  padding-block: 6px;
-  text-decoration: none;
-}
-
 .calculus-nav-label,
 .calculus-kicker,
 .calculus-resource-type {
@@ -308,7 +298,7 @@ a {
 }
 
 .calculus-nav-label {
-  margin: 38px 0 12px;
+  margin: 0 0 12px;
 }
 
 .calculus-library-nav ul {
@@ -1427,6 +1417,16 @@ h3 {
 
 .practice-note-table th {
   color: var(--accent-deep);
+}
+
+/* Matching mnemonic letters stay distinct even in bold row labels, e.g. Ac in Acerbic/Acid. */
+.practice-note-root {
+  color: var(--accent-deep);
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .practice-note ul {

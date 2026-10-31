@@ -13,12 +13,12 @@ export const metadata: Metadata = {
  * Practices links to the second-step error question, which distinguishes fy(a, b) from fy(a + Δx, b).
  * Dedicated resource cards keep titles, descriptions, and actions in a single link instead of nesting button borders.
  * The two blog cards sit side by side on desktop and stack on phones; section navigation becomes a compact row.
+ * The sidebar starts with its section label and the Blogs/Practices links.
  */
 export default function CalculusPage() {
   return (
     <main className="calculus-library">
       <aside className="calculus-library-nav">
-        <Link className="calculus-back-link" href="/math"><span aria-hidden="true">←</span> Math</Link>
         <p className="calculus-nav-label">In this section</p>
         <nav aria-label="Calculus sections">
           <ul>
