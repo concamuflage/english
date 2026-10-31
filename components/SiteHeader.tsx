@@ -10,6 +10,7 @@ import Link from "next/link";
  * Example: `/global-expansion` displays 品牌出海 after Entrepreneurship; Contact is the rightmost link.
  * Wrapped links expand the header; e.g. a narrow viewport updates sticky offsets to its measured height.
  * Math links to `/math`, where Calculus contains interactive plots.
+ * Life Experiences links to `/life-experiences`, including the author's Kindle sign-in story.
  */
 export function SiteHeader() {
   const headerRef = useRef<HTMLElement>(null);
@@ -50,6 +51,7 @@ export function SiteHeader() {
         <Link href="/math">Math</Link>
         <Link href="/entrepreneurship">Entrepreneurship</Link>
         <Link href="/global-expansion" lang="zh-CN">品牌出海</Link>
+        <Link href="/life-experiences">Life Experiences</Link>
         <Link href="/contact">Contact</Link>
       </nav>
     </header>

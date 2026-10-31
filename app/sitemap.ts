@@ -17,10 +17,12 @@ export const dynamic = "force-static";
  * Math includes `/math/calculus/tangent-plane`, the rotatable tangent-plane post.
  * Cancellation adds `/math/calculus/canceling-height-changes`, exported from test.py.
  * Calculus practice includes `/math/calculus/practices/second-step-error`, the handwritten formula question.
+ * The Yes/No quiz lives at `/math/calculus/practices/tangent-plane-existence`.
+ * Life Experiences includes `/life-experiences`; its Kindle article is picked up from `articles` below.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   // List canonical destinations only; legacy GRE/General URLs and / redirect to these pages.
-  const paths = ["/english", "/english/confusing-words", "/math", "/math/calculus", "/math/calculus/tangent-plane", "/math/calculus/canceling-height-changes", "/math/calculus/practices/second-step-error", "/entrepreneurship", "/global-expansion", "/contact"];
+  const paths = ["/english", "/english/confusing-words", "/math", "/math/calculus", "/math/calculus/tangent-plane", "/math/calculus/canceling-height-changes", "/math/calculus/practices/second-step-error", "/math/calculus/practices/tangent-plane-existence", "/entrepreneurship", "/global-expansion", "/life-experiences", "/contact"];
   return [
     ...paths.map((path) => ({ url: new URL(path, "https://bumblebee.work").href })),
     ...confusingWordPairs.map((pair) => ({

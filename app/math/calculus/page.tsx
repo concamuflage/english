@@ -11,6 +11,7 @@ export const metadata: Metadata = {
  * Groups calculus content under Blogs and Practices with matching sidebar anchors.
  * Example: Practices opens `/math/calculus#practices`; Blogs contains the +0.3/−0.3 visualization.
  * Practices links to the second-step error question, which distinguishes fy(a, b) from fy(a + Δx, b).
+ * A second practice asks whether partial derivatives alone guarantee a tangent plane, with Yes/No choices.
  * Dedicated resource cards keep titles, descriptions, and actions in a single link instead of nesting button borders.
  * The two blog cards sit side by side on desktop and stack on phones; section navigation becomes a compact row.
  * The sidebar starts with its section label and the Blogs/Practices links.
@@ -24,7 +25,7 @@ export default function CalculusPage() {
           <ul>
             {/* Native anchors also scroll when reselecting the current hash after resizing, e.g. #practices on a phone. */}
             <li><a className="calculus-blogs-link" href="#blogs"><span>Blogs</span><span className="calculus-nav-count" aria-label="2 articles">02</span></a></li>
-            <li><a className="calculus-practices-link" href="#practices"><span>Practices</span><span className="calculus-nav-count" aria-label="1 practice">01</span></a></li>
+            <li><a className="calculus-practices-link" href="#practices"><span>Practices</span><span className="calculus-nav-count" aria-label="2 practices">02</span></a></li>
           </ul>
         </nav>
       </aside>
@@ -61,18 +62,30 @@ export default function CalculusPage() {
         <section id="practices" className="calculus-index-section" aria-labelledby="calculus-practices-title">
           <div className="calculus-library-section-heading">
             <div><h2 id="calculus-practices-title">Practices</h2><p>Put your understanding to the test.</p></div>
-            <span className="calculus-section-count">1 question</span>
+            <span className="calculus-section-count">2 questions</span>
           </div>
-          <article className="calculus-resource-card calculus-practice-card">
-            <Link href="/math/calculus/practices/second-step-error">
-              <div>
-                <span className="calculus-resource-type">Linear approximation</span>
-                <h3>Which formula gives the second-step error?</h3>
-                <p>Choose between two formulas and check your reasoning.</p>
-              </div>
-              <span className="calculus-practice-action">Start practice <span aria-hidden="true">↗</span></span>
-            </Link>
-          </article>
+          <div className="calculus-practice-list">
+            <article className="calculus-resource-card calculus-practice-card">
+              <Link href="/math/calculus/practices/second-step-error">
+                <div>
+                  <span className="calculus-resource-type">Linear approximation</span>
+                  <h3>Which formula gives the second-step error?</h3>
+                  <p>Choose between two formulas and check your reasoning.</p>
+                </div>
+                <span className="calculus-practice-action">Start practice <span aria-hidden="true">↗</span></span>
+              </Link>
+            </article>
+            <article className="calculus-resource-card calculus-practice-card">
+              <Link href="/math/calculus/practices/tangent-plane-existence">
+                <div>
+                  <span className="calculus-resource-type">Yes/No quiz</span>
+                  <h3>Do partial derivatives guarantee a tangent plane?</h3>
+                  <p>Decide whether the existence of partial derivatives is enough.</p>
+                </div>
+                <span className="calculus-practice-action">Start quiz <span aria-hidden="true">↗</span></span>
+              </Link>
+            </article>
+          </div>
         </section>
       </div>
     </main>

@@ -6,6 +6,7 @@ import { BigCompanyHiringPost } from "@/components/blog/BigCompanyHiringPost";
 import { ChoosingDistributorPost } from "@/components/blog/ChoosingDistributorPost";
 import { DevelopingDistributorsPost } from "@/components/blog/DevelopingDistributorsPost";
 import { KeywordPlannerPost } from "@/components/blog/KeywordPlannerPost";
+import { KindleAccountPost } from "@/components/blog/KindleAccountPost";
 import { MarketResearchPost } from "@/components/blog/MarketResearchPost";
 import { QuinoaBusinessPost } from "@/components/blog/QuinoaBusinessPost";
 import { RetailChainPost } from "@/components/blog/RetailChainPost";
@@ -19,6 +20,7 @@ type ArticlePageProps = {
 
 // Register each authored body once; the same component can also be rendered in another section.
 const articleBodies: Partial<Record<string, ComponentType>> = {
+  "kindle-mac-amazon-account-not-found": KindleAccountPost,
   "hiring-big-company-talent-for-small-businesses": BigCompanyHiringPost,
   "market-research-without-resources": MarketResearchPost,
   "how-to-find-overseas-distributors": DevelopingDistributorsPost,
@@ -77,6 +79,7 @@ export function generateStaticParams() {
  *
  * Example: `/articles/validate-demand-google-keyword-planner` renders KeywordPlannerPost with its screenshots.
  * `/articles/selling-quinoa-validate-business-ideas` renders QuinoaBusinessPost with the supplied photograph.
+ * `/articles/kindle-mac-amazon-account-not-found` renders the Chinese Life Experiences post.
  */
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;

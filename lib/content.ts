@@ -1,7 +1,7 @@
 export type Article = {
   slug: string;
   title: string;
-  section: "Reading" | "Vocabulary" | "Writing" | "GRE" | "Entrepreneurship" | "品牌出海";
+  section: "Reading" | "Vocabulary" | "Writing" | "GRE" | "Entrepreneurship" | "品牌出海" | "Life Experiences";
   excerpt: string;
   date: string;
   readingTime: string;
@@ -18,6 +18,15 @@ export type GreResource = {
 };
 
 export const articles: Article[] = [
+  {
+    slug: "kindle-mac-amazon-account-not-found",
+    title: "中国用户登录 Kindle 遇到“账户不存在”怎么办？",
+    section: "Life Experiences",
+    excerpt: "Amazon.com 账户明明能登录，Mac 版 Kindle 却提示账户不存在？分享我把 Mac 地区从中国大陆改为美国后成功登录的经历和操作步骤。",
+    date: "2026-10-31",
+    readingTime: "2 min read",
+    language: "zh-CN"
+  },
   {
     slug: "hiring-big-company-talent-for-small-businesses",
     title: "为什么中小企业聘用那些直接从大公司出来的人是件非常危险的事情？",

@@ -40,5 +40,19 @@ export const contextDependentWords: readonly ContextDependentWord[] = [
       { id: "trusting", text: "naive, overly trusting" }
     ],
     reference: { label: "Collins Dictionary", href: "https://www.collinsdictionary.com/dictionary/english/ingenuous" }
+  },
+  {
+    word: "sloppy",
+    sentences: [
+      { sentence: "Sloppy handwriting", meaningId: "messy-handwriting" },
+      { sentence: "Sloppy work", meaningId: "careless-work" },
+      { sentence: "A sloppy kiss", meaningId: "wet-kiss" }
+    ],
+    meanings: [
+      { id: "wet-kiss", text: "A very wet, messy kiss." },
+      { id: "messy-handwriting", text: "Messy handwriting that's difficult to read." },
+      { id: "careless-work", text: "Work done carelessly, with mistakes." }
+    ],
+    reference: { label: "Collins Dictionary", href: "https://www.collinsdictionary.com/dictionary/english/sloppy" }
   }
 ];

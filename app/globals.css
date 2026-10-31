@@ -467,6 +467,11 @@ a {
   font-size: 1.2rem;
 }
 
+.calculus-practice-list {
+  display: grid;
+  gap: 16px;
+}
+
 .calculus-practice-card > a {
   align-items: center;
   flex-direction: row;
